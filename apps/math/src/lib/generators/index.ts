@@ -33,6 +33,7 @@ import RegularPolygonPreview from './regular-polygon/Preview.svelte'
 import SpherePreview from './sphere/Preview.svelte'
 import StemAndLeafPreview from './stem-and-leaf/Preview.svelte'
 import TrapezoidPreview from './trapezoid/Preview.svelte'
+import TreeDiagramPreview from './tree-diagram/Preview.svelte'
 import TrianglePreview from './triangle/Preview.svelte'
 import VennDiagramPreview from './venn-diagram/Preview.svelte'
 
@@ -62,6 +63,7 @@ export const PREVIEWS: Record<string, Component> = {
   'two-way-table': TwoWayTablePreview,
   'histogram': HistogramPreview,
   'venn-diagram': VennDiagramPreview,
+  'tree-diagram': TreeDiagramPreview,
   'pie-chart': PieChartPreview,
   'mapping-diagram': MappingDiagramPreview,
   'length-reading': LengthReadingPreview,

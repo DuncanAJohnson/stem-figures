@@ -1392,6 +1392,59 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('tree-diagram', [
+    {
+      slug: 'tree-diagram-two-marbles-without-replacement',
+      title: 'Tree diagram for drawing two marbles without replacement',
+      alt: 'A probability tree of two draws from a bag of 3 red and 2 blue marbles without replacement, with 3/5 and 2/5 on the first branches, 2/4 and 2/4 after red, 3/4 and 1/4 after blue, and each outcome’s probability listed at the right',
+      caption:
+        'A probability tree for drawing two marbles, one after the other without replacement, from a bag of 3 red (R) and 2 blue (B). The first draw branches into R with probability 3/5 and B with 2/5; after R the second draw is R or B with 2/4 each, and after B it’s R with 3/4 and B with 1/4. The outcome column lists R, R = 3/10, R, B = 3/10, B, R = 3/10 and B, B = 1/10.',
+      settings: {
+        stages: [
+          { title: '1st draw', outcomes: ['R', 'B'], probs: [['3/5', '2/5']] },
+          { title: '2nd draw', outcomes: ['R', 'B'], same: false, probs: [['2/4', '2/4'], ['3/4', '1/4']] },
+        ],
+        stageTitles: true,
+      },
+    },
+    {
+      slug: 'tree-diagram-coin-flipped-twice',
+      title: 'Tree diagram of a coin flipped twice',
+      alt: 'A probability tree of a coin flipped twice, with H and T and 0.5 on every branch, and the four outcomes HH, HT, TH and TT each listed with probability 0.25',
+      caption:
+        'A probability tree for flipping a coin twice. Each flip branches into H and T with probability 0.5 on every branch, and the outcome column lists the four paths, H, H, H, T, T, H and T, T, each with probability 0.25. Use it to introduce sample spaces and independent events.',
+      settings: {},
+    },
+    {
+      slug: 'tree-diagram-coin-and-a-die',
+      title: 'Tree diagram of flipping a coin and rolling a die',
+      alt: 'A probability tree of flipping a coin, then rolling a six-sided die, with 1/2 on the coin’s branches, 1/6 on each of the die’s, and the 12 outcomes from H, 1 to T, 6 each with probability 1/12',
+      caption:
+        'A probability tree for flipping a coin and then rolling a six-sided die. The coin branches into H and T with probability 1/2 each, and each of those into the numbers 1 to 6 with probability 1/6 each. The outcome column lists all 12 paths, H, 1 to T, 6, each with probability 1/12.',
+      settings: {
+        stages: [
+          { outcomes: ['H', 'T'], probs: [['1/2', '1/2']] },
+          { outcomes: ['1', '2', '3', '4', '5', '6'], probs: [['1/6', '1/6', '1/6', '1/6', '1/6', '1/6']] },
+        ],
+      },
+    },
+    {
+      slug: 'complete-the-tree-diagram-without-replacement',
+      title: 'Complete the tree diagram: two marbles without replacement',
+      alt: 'A probability tree of two draws from a bag of 3 red and 2 blue marbles without replacement, with 3/5 and 2/5 on the first branches and blank lines on the second draw’s branches and for every outcome’s probability',
+      caption:
+        'A probability tree for drawing two marbles without replacement from a bag of 3 red (R) and 2 blue (B), for students to complete. The first draw’s branches are labeled R, 3/5 and B, 2/5; the four branches of the second draw have blank lines for their probabilities, and so does each of the four outcomes R, R, R, B, B, R and B, B in the outcome column.',
+      settings: {
+        stages: [
+          { outcomes: ['R', 'B'], probs: [['3/5', '2/5']] },
+          { outcomes: ['R', 'B'], same: false, probs: [['2/4', '2/4'], ['3/4', '1/4']] },
+        ],
+        blanks: ['p0-0', 'p0-1', 'p1-0', 'p1-1'],
+        showPathProbs: 'blank',
+      },
+    },
+  ]),
+
   ...examplesOf('pie-chart', [
     {
       slug: 'pie-chart-of-favorite-fruit',

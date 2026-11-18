@@ -69,6 +69,12 @@ and `docs/adr/` for decisions.
   the universal set (two overlapping, separate or one inside the other), with a
   number, a letter or expression, or the sorted elements of typed lists in each
   region, and regions shaded by clicking them on the figure.
+- `/tree-diagram` **Tree Diagram Generator**: a probability tree of up to four
+  stages, each with two to six outcomes that every branch of the stage splits
+  into, probabilities on the branches as typed (the same on every branch, or
+  typed per branch for dependent events), an outcome column of each path and
+  its probability multiplied out, left to right or top to bottom; any label
+  can be a blank line, by kind or by clicking it on the figure.
 - `/pie-chart` **Pie Chart Generator**: a table of counts, percents or
   degrees typed or pasted, drawn as sectors clockwise from 12 o'clock, labeled
   inside or outside by name, value, percent, angle or fraction (each sector's

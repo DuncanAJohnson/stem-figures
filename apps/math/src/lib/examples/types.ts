@@ -16,6 +16,7 @@ import type { Settings as NumberLineSettings } from '$lib/generators/number-line
 import type { Settings as PieChartSettings } from '$lib/generators/pie-chart/settings'
 import type { Settings as PolygonSettings } from '$lib/generators/regular-polygon/settings'
 import type { Settings as StemAndLeafSettings } from '$lib/generators/stem-and-leaf/settings'
+import type { Settings as TreeDiagramSettings } from '$lib/generators/tree-diagram/settings'
 import type { Settings as TriangleSettings } from '$lib/generators/triangle/settings'
 import type { Settings as TwoWayTableSettings } from '$lib/generators/two-way-table/settings'
 import type { Settings as VennSettings } from '$lib/generators/venn-diagram/settings'
@@ -44,6 +45,7 @@ export interface SettingsById {
   'two-way-table': TwoWayTableSettings
   'histogram': HistogramSettings
   'venn-diagram': VennSettings
+  'tree-diagram': TreeDiagramSettings
   'pie-chart': PieChartSettings
   'mapping-diagram': MappingSettings
   'length-reading': LengthSettings

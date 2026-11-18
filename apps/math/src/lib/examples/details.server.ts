@@ -31,6 +31,7 @@ import { family as rectangleFamily } from '$lib/generators/rectangle/family'
 import * as polygon from '$lib/generators/regular-polygon/settings'
 import * as stemAndLeaf from '$lib/generators/stem-and-leaf/settings'
 import { family as trapezoidFamily } from '$lib/generators/trapezoid/family'
+import * as tree from '$lib/generators/tree-diagram/settings'
 import * as triangle from '$lib/generators/triangle/settings'
 import * as twoWay from '$lib/generators/two-way-table/settings'
 import * as venn from '$lib/generators/venn-diagram/settings'
@@ -371,6 +372,22 @@ function vennAnswer(s: SettingsById['venn-diagram']): ExampleDetails['answer'] {
   return lines.length ? { heading: 'Answer key', lines } : null
 }
 
+function treeAnswer(s: SettingsById['tree-diagram']): ExampleDetails['answer'] {
+  const read = tree.readTree(s)
+  const problem = read.problems.sums ?? read.problems.overOne
+  if (problem) throw new Error(`The tree diagram example can’t be drawn as written: ${problem}`)
+  // Each branch probability left blank on the figure, then every path's probability.
+  const blank = (key: string, show: tree.Show) => show === 'blank' || s.blanks.includes(key)
+  const branches = read.nodes.flat().flatMap((n) => {
+    if (!n.prob || !blank(`p${n.id}`, s.showProbs)) return []
+    const before = n.t.slice(0, -1).map((j, k) => s.stages[k].outcomes[j].trim())
+    return [`P(${n.outcome}${before.length ? ` after ${tree.pathName(before, 'comma')}` : ''}) = ${n.prob}`]
+  })
+  const paths = read.paths.flatMap((p) => (p.prob ? [`P(${tree.pathName(p.outcomes, 'comma')}) = ${p.prob.text}`] : []))
+  const lines = [...branches, ...paths]
+  return lines.length ? { heading: 'Answer key', lines } : null
+}
+
 function pieChartAnswer(s: SettingsById['pie-chart']): ExampleDetails['answer'] {
   const pie = buildPieChart(s)
   const problem = pie.read.problems.table ?? pie.read.problems.total ?? pie.read.problems.sum
@@ -416,6 +433,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'two-way-table': { definition: definitionOf(twoWay), answer: twoWayAnswer },
   'histogram': { definition: definitionOf(histogram), answer: histogramAnswer },
   'venn-diagram': { definition: definitionOf(venn), answer: vennAnswer },
+  'tree-diagram': { definition: definitionOf(tree), answer: treeAnswer },
   'pie-chart': { definition: definitionOf(pieChart), answer: pieChartAnswer },
   'mapping-diagram': { definition: definitionOf(mapping), answer: mappingAnswer },
   'length-reading': { definition: lengthSettings, answer: (s) => ({ heading: 'Answer key', lines: lengthAnswer(s).split(' · ') }) },

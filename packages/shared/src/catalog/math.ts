@@ -401,6 +401,22 @@ export const MATH: CatalogEntry[] = [
     ],
   },
   {
+    id: 'tree-diagram',
+    site: 'math',
+    name: 'Tree Diagram Generator',
+    path: '/tree-diagram',
+    blurb: 'Probability tree diagrams of up to four stages, with probabilities on the branches, the outcomes listed and blanks for students.',
+    description:
+      'Probability tree diagrams with outcomes, branch probabilities and blanks.',
+    keywords: [
+      'tree diagram', 'tree diagrams', 'probability tree', 'probability trees', 'probability tree diagram', 'tree diagram generator',
+      'sample space', 'outcomes', 'compound events', 'compound probability', 'independent events', 'dependent events',
+      'conditional probability', 'with replacement', 'without replacement', 'coin', 'coin flip', 'dice', 'spinner', 'marbles',
+      'branches', 'multiplication rule', 'and rule', 'probability', 'statistics', 'stats', 'ap stats', '7.sp.c.8', 'hss-cp',
+      'fill in the blanks', 'printable',
+    ],
+  },
+  {
     id: 'pie-chart',
     site: 'math',
     name: 'Pie Chart Generator',

@@ -582,6 +582,36 @@ _Avoid_: Universe, sample space (fine in teaching), rectangle
 The part of a Venn diagram inside exactly some of the sets and outside the rest, such as A only (A ∩ B′) or neither: four for two overlapping sets, eight for three, outside included. In text mode each holds what's typed for it, numbers, letters or words, split at its commas one piece to a line (as in red flesh, mushy, savory); in sets mode, the elements that belong there, written in rows round its middle; one left empty is drawn empty, or with a blank line when the teacher asks for one. Clicking a region on the figure fills it in or shades it. A shaded region is filled with a tint, gray or a black-and-white pattern, under the circles' outlines.
 _Avoid_: Section, area (that's a shape's measure), zone, part
 
+### Tree diagrams
+
+**Tree diagram**:
+A probability tree: a figure showing every way a sequence of events can turn out, each event's outcomes branching from every outcome before it, with probabilities on the branches. Every node in a stage branches into the same outcomes. Its generator is the Tree Diagram Generator.
+_Avoid_: Probability tree (fine as a search word, not as the name), decision tree, factor tree
+
+**Stage**:
+One event in a tree diagram's sequence, such as a coin flip, a spin or a draw from a bag, drawn as one column of branches (one row when the tree grows downward). It may have a stage title over it, like 1st draw.
+_Avoid_: Level, round, trial, event column
+
+**Outcome**:
+One result a stage can have, such as H or Red, written at the end of its branch. Each stage's outcomes are typed once and repeat under every node.
+_Avoid_: Choice, option, result
+
+**Branch**:
+The line from a node to one of its outcomes, with that outcome's probability given the path before it, written as typed (3/7 stacked, 0.4 as a decimal). In a stage marked the same on every branch, each outcome has one probability wherever it appears; otherwise each branch has its own, as for drawing without replacement.
+_Avoid_: Edge, arm, line
+
+**Path**:
+One route from the start to a leaf: one way the whole sequence turns out, named by its outcomes (H, Red, or HR). Its probability is the product of its branches', written as a fraction in lowest terms when every branch's is a fraction.
+_Avoid_: Leaf outcome, final outcome, combination
+
+**Outcome column**:
+The list beside the leaves giving each path's name and probability, one line per leaf (an outcome row under the leaves when the tree grows downward).
+_Avoid_: Outcome list, results table, sample space list
+
+**Blank** (on a tree diagram):
+A label drawn as a blank line for students to fill in. A probability left empty is a blank, and clicking any label on the figure makes it one; a whole kind of label (outcomes, probabilities, path names, path probabilities) can be shown, blanked or hidden. A hidden label isn't drawn at all.
+_Avoid_: Missing value, gap, hidden label
+
 ### 3D shapes
 
 **3D Shape**:

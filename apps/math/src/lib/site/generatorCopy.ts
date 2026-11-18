@@ -817,6 +817,45 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school', 'Algebra 1'],
   },
 
+  'tree-diagram': {
+    heading: 'Probability tree diagrams with blanks for students',
+    intro: [
+      'The Tree Diagram Generator draws a probability tree from the stages you type: each stage is one event, like a coin flip, a spin or a draw from a bag, and every branch of a stage splits into the same outcomes. Probabilities are written on the branches as you type them, fractions stacked, and the outcome column at the end lists each path, like H, T, with its probability worked out by multiplying along the branches.',
+      'Each stage’s probabilities can be the same on every branch, for independent events, or different on each, for dependent events like drawing without replacement. Leave a probability empty for students to fill in, click any label on the figure to make it a blank, or blank or hide every outcome, probability or path at once for a worksheet or exam question.',
+    ],
+    settings: [
+      'Up to four stages, each with two to six outcomes, up to 36 paths in all',
+      'Each outcome’s probability, the same on every branch or typed for each branch, written as typed: fractions, decimals, percents or letters like x',
+      'An outcome column of each path’s name, written H, T or HT, and its probability, multiplied out and in lowest terms when the branches are fractions',
+      'Outcomes, probabilities, path names and path probabilities each shown, left as blank lines or hidden, and any single label made a blank by clicking it',
+      'Left to right or top to bottom, a label at the start, a title over each stage, and small, medium or large labels',
+    ],
+    faqs: [
+      {
+        q: 'How do I make a tree diagram for drawing without replacement?',
+        a: 'Type the first draw’s outcomes and probabilities, like Red 3/5 and Blue 2/5, then add a second stage and untick Same on every branch. Each branch of the first draw gets its own row, so after Red you can type 2/4 and 2/4, and after Blue 3/4 and 1/4.',
+      },
+      {
+        q: 'How do I leave probabilities for students to fill in?',
+        a: 'Leave a probability empty and its branch gets a blank line. To blank a label you’ve typed, click it on the figure; click it again to bring it back, or click Clear blanks. Under Labels you can make every outcome, probability, path name or path probability a blank at once, or hide it.',
+      },
+      {
+        q: 'How are the path probabilities worked out?',
+        a: 'Each path’s probability is the product of the probabilities on its branches. When every one is a fraction it’s written as a fraction in lowest terms; otherwise as a decimal. If a branch on the path is blank or a letter, the path’s probability is left blank.',
+      },
+      {
+        q: 'What if my probabilities don’t add up to 1?',
+        a: 'The panel tells you which branches don’t add up to 1, so you can check a typo before printing. The tree is still drawn as you typed it.',
+      },
+      {
+        q: 'Can the tree go from top to bottom?',
+        a: 'Yes, under Layout, for trees of up to 12 paths. The outcome column becomes a row under the leaves, each path’s name over its probability.',
+      },
+    ],
+    imageAlt: 'A printable probability tree diagram of two marbles drawn without replacement from a bag of 3 red and 2 blue, with fractions on the branches and each outcome’s probability listed, made with the Tree Diagram Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Statistics'],
+  },
+
   'histogram': {
     heading: 'Histograms from a data set or a frequency table',
     intro: [

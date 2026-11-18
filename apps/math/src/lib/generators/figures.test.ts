@@ -42,6 +42,8 @@ import { buildTriangle } from './triangle/layout.js'
 import * as triangle from './triangle/settings.js'
 import { buildStemAndLeaf } from './stem-and-leaf/layout.js'
 import * as stem from './stem-and-leaf/settings.js'
+import { buildTree } from './tree-diagram/layout.js'
+import * as tree from './tree-diagram/settings.js'
 import { buildVenn } from './venn-diagram/layout.js'
 import * as venn from './venn-diagram/settings.js'
 
@@ -415,6 +417,23 @@ describe('venn diagram', () => {
   test.each(VENN)('%s', (q) => {
     const s = venn.settingsFromParams(params(q))
     expect({ query: venn.settingsToQuery(s), figure: buildVenn(s) }).toMatchSnapshot()
+  })
+})
+
+const TREE = [
+  '',
+  'o1=R%7CB&p1=3%2F5%7C2%2F5&o2=R%7CB&p2=2%2F4%7C2%2F4%3B3%2F4%7C1%2F4&s2=0&stageTitles=1&t1=1st+draw&t2=2nd+draw',
+  'o1=H%7CT&p1=1%2F2%7C1%2F2&o2=1%7C2%7C3%7C4%7C5%7C6&p2=1%2F6%7C1%2F6%7C1%2F6%7C1%2F6%7C1%2F6%7C1%2F6',
+  'direction=down&start=Start&o1=Win%7CLose&p1=0.3%7C&o2=Win%7CLose&p2=x%7C1-x&pathStyle=joined&blank=p0-0%7Cq1-1',
+  'labelSize=large&showProbs=blank&showNames=hide&o1=A%7CB%7CC&p1=20%25%7C30%25%7C50%25',
+  'o1=H%7CT&o2=H%7CT&o3=H%7CT&o4=H%7CT&showOutcomes=hide&showPathProbs=hide',
+]
+
+describe('tree diagram', () => {
+  test.each(TREE)('%s', (q) => {
+    const s = tree.settingsFromParams(params(q))
+    const { read, ...figure } = buildTree(s)
+    expect({ query: tree.settingsToQuery(s), problems: read.problems, figure }).toMatchSnapshot()
   })
 })
 
