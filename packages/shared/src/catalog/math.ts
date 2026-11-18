@@ -280,6 +280,22 @@ export const MATH: CatalogEntry[] = [
     ],
   },
   {
+    id: 'net',
+    site: 'math',
+    name: 'Net Generator',
+    path: '/net',
+    blurb: 'Nets of cubes, prisms, pyramids, cylinders and cones, labeled for surface area.',
+    description:
+      'Make a printable net of a 3D shape for your class. Unfold a cube into any of its 11 nets, or a prism, pyramid, cylinder or cone drawn to scale, label its edges with their measures or with x, name the faces or write their areas, add glue tabs for cutting it out, then copy it into a worksheet or test on surface area.',
+    keywords: [
+      'net', 'nets', 'net of a cube', 'cube net', 'cube nets', '11 nets of a cube', 'net of a prism', 'net of a pyramid', 'net of a cylinder',
+      'net of a cone', 'net of a 3d shape', 'nets of 3d shapes', 'nets of solids', 'unfold', 'unfolded', 'flattened', 'fold', 'folding',
+      'surface area', 'lateral area', 'faces', 'edges', 'vertices', '3d', 'three dimensional', 'solid', 'solids', 'geometric solids', '3d shape',
+      'prism', 'rectangular prism', 'triangular prism', 'cube', 'pyramid', 'square pyramid', 'triangular pyramid', 'tetrahedron', 'cylinder', 'cone',
+      'polyhedra', 'polyhedron', 'slant height', 'sector', 'glue tabs', 'template', 'cut out', 'papercraft', 'to scale', 'geometry', 'printable',
+    ],
+  },
+  {
     id: 'sphere',
     site: 'math',
     name: 'Sphere Generator',

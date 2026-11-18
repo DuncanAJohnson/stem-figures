@@ -22,6 +22,7 @@ import HistogramPreview from './histogram/Preview.svelte'
 import KitePreview from './kite/Preview.svelte'
 import LengthReadingPreview from './length-reading/Preview.svelte'
 import MappingDiagramPreview from './mapping-diagram/Preview.svelte'
+import NetPreview from './net/Preview.svelte'
 import NormalCurvePreview from './normal-curve/Preview.svelte'
 import NumberLinePreview from './number-line/Preview.svelte'
 import ParallelLinesPreview from './parallel-lines/Preview.svelte'
@@ -60,6 +61,7 @@ export const PREVIEWS: Record<string, Component> = {
   'pyramid': PyramidPreview,
   'cone': ConePreview,
   'sphere': SpherePreview,
+  'net': NetPreview,
   'box-plot': BoxPlotPreview,
   'dot-plot': DotPlotPreview,
   'scatter-plot': ScatterPlotPreview,

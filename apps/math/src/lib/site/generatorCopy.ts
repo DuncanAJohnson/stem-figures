@@ -546,6 +546,48 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school', 'Geometry'],
   },
 
+  'net': {
+    heading: 'Nets of cubes, prisms, pyramids, cylinders and cones',
+    intro: [
+      'The Net Generator unfolds a 3D shape flat, drawn to scale from the measures you type: a cube in any of its 11 nets, a prism on a rectangle, a right or isosceles triangle or a regular polygon, a pyramid on a rectangle or a regular polygon, a cylinder or a cone. The edges between faces are dashed fold lines, and the cut edges round the outside are solid.',
+      'Teachers use it for surface area, from counting the faces of a box to finding a cone’s sector, and for showing which flat shapes fold into which solids. Each edge length can be labeled with its measure, with text like x, or left off; the faces can be named or given their areas, and glue tabs can be added for students to cut it out and fold it up.',
+    ],
+    settings: [
+      'The 3D shape: a cube, a prism, a pyramid, a cylinder or a cone',
+      'Any of the 11 nets of a cube',
+      'A prism’s base: a rectangle, a right or isosceles triangle, or a regular polygon of 3 to 8 sides; a pyramid’s: a rectangle or a regular polygon',
+      'Each measure typed as a number, a fraction or with √, and labeled with its measure, text like x, or nothing',
+      'A pyramid’s or cone’s height or slant height, with the other worked out; a rectangular pyramid’s second slant height, a cylinder’s circumference and a cone’s sector angle worked out and labeled if you want',
+      'Fold lines dashed or solid, glue tabs, and right-angle squares',
+      'Face names (A, B, C …), face areas, or both, and matching faces tinted alike',
+      'The 3D shape drawn beside its net',
+      'A unit (cm, m, mm, in, ft, yd, units or your own), rounding for worked-out measures, and labels you can drag on the figure',
+    ],
+    faqs: [
+      {
+        q: 'Can I show all 11 nets of a cube?',
+        a: 'Yes. Choose Cube, and pick any of the 11 nets under Net. Each is drawn with the same edge, so you can make one figure per net, or ask students which of them fold into a cube.',
+      },
+      {
+        q: 'Which edges are labeled?',
+        a: 'One edge for each measure the shape has, on the outside of the net where there is room, so students find each face’s other sides by matching edges. An edge that is only ever a fold, like the base of a pyramid, is labeled just inside a face.',
+      },
+      {
+        q: 'Does it work out the surface area?',
+        a: 'Only if you ask. Under Faces, choose Areas to write each face’s area in it, for an answer key; with Nothing or Names, the net doesn’t give the answer away.',
+      },
+      {
+        q: 'Can students cut it out and fold it?',
+        a: 'Yes. Under Lines, turn on Glue tabs to add a tab on one of each pair of edges that meet when it’s folded, and teeth round a cylinder’s or cone’s circles. It prints to fit the page, not to an exact size, so measure the printed net if the size matters.',
+      },
+      {
+        q: 'Why is a pyramid’s height not on the net?',
+        a: 'A pyramid’s height runs up through its middle, so it isn’t on any face. You can still give the height, and the slant height drawn on the net is worked out from it.',
+      },
+    ],
+    imageAlt: 'A printable net of a rectangular prism, its faces joined by dashed fold lines and labeled 8 cm, 3 cm and 5 cm, made with the Net Generator',
+    educationalLevel: ['Elementary school', 'Middle school', 'High school', 'Geometry'],
+  },
   'sphere': {
     heading: 'Spheres and hemispheres with the radius or diameter labeled',
     intro: [

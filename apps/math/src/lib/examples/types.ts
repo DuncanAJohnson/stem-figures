@@ -12,6 +12,7 @@ import type { Settings as CumulativeSettings } from '$lib/generators/cumulative-
 import type { Settings as HistogramSettings } from '$lib/generators/histogram/settings'
 import type { LengthSettings } from '$lib/generators/length-reading/settings'
 import type { Settings as MappingSettings } from '$lib/generators/mapping-diagram/settings'
+import type { Settings as NetSettings } from '$lib/generators/net/settings'
 import type { Settings as NormalCurveSettings } from '$lib/generators/normal-curve/settings'
 import type { Settings as NumberLineSettings } from '$lib/generators/number-line/settings'
 import type { Settings as PieChartSettings } from '$lib/generators/pie-chart/settings'
@@ -41,6 +42,7 @@ export interface SettingsById {
   'pyramid': ShapeSettings
   'cone': ShapeSettings
   'sphere': ShapeSettings
+  'net': NetSettings
   'box-plot': BoxPlotSettings
   'dot-plot': DotPlotSettings
   'scatter-plot': ScatterPlotSettings

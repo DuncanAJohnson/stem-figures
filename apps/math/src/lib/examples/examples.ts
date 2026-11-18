@@ -515,6 +515,73 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('net', [
+    {
+      slug: 'net-of-a-rectangular-prism-8-cm-by-3-cm-by-5-cm',
+      title: 'Net of a rectangular prism 8 cm by 3 cm by 5 cm',
+      alt: 'The net of a rectangular prism: four rectangles in a row with a rectangle above and below the second, fold lines dashed, labeled 8 cm, 3 cm and 5 cm',
+      caption:
+        'The net of a rectangular prism (a box) drawn to scale: its four sides in a row, 3 cm, 8 cm, 3 cm and 8 cm wide and 5 cm tall, with its top and bottom on the second. The fold lines between faces are dashed and the cut edges round the outside are solid. Only one edge of each length is labeled, so students match edges to find the rest. Use it for surface area.',
+      settings: { length: '8', height: '5' },
+    },
+    {
+      slug: 'net-of-a-cube-with-faces-named',
+      title: 'Net of a cube with its faces named',
+      alt: 'The cross-shaped net of a cube, six squares with dashed fold lines, the faces named A to F and one edge labeled 4 cm',
+      caption:
+        'The cross-shaped net of a cube: a row of four squares with one square above and one below the second. The faces are named A to F in reading order and one edge is labeled 4 cm. Ask which face is opposite A when it’s folded, or for its surface area.',
+      settings: { shape: 'cube', faceText: 'names' },
+    },
+    {
+      slug: 'cube-net-with-glue-tabs-to-cut-out',
+      title: 'Cube net with glue tabs to cut out',
+      alt: 'A net of a cube, two squares then a row of three then one, with gray glue tabs on seven of its edges and dashed fold lines',
+      caption:
+        'One of the 11 nets of a cube, two squares on top, a row of three below them and one square under that, with a gray glue tab on one of each pair of edges that meet when it’s folded. The fold lines, tabs’ included, are dashed. Print it for students to cut out, fold and glue into a cube.',
+      settings: { shape: 'cube', cubeNet: 7, tabs: true, sideLabel: 'none' },
+    },
+    {
+      slug: 'net-of-a-triangular-prism-with-a-right-triangle-base',
+      title: 'Net of a triangular prism with a right triangle base',
+      alt: 'The net of a triangular prism: three rectangles 8 cm, 6 cm and 10 cm wide and 12 cm long, with a right triangle above and below the middle one',
+      caption:
+        'The net of a triangular prism whose ends are right triangles with legs 6 cm and 8 cm and a 10 cm hypotenuse. Its three rectangular sides are in a row, all 12 cm long, with a triangle above and below the middle one and a right-angle square at each right angle. The 6 cm is written inside the middle rectangle, since that edge is a fold on both sides.',
+      settings: { base: 'right', triHeight: '8', height: '12' },
+    },
+    {
+      slug: 'net-of-a-square-pyramid-with-slant-height',
+      title: 'Net of a square pyramid with its slant height',
+      alt: 'The net of a square pyramid: a square with sides 6 cm and a triangle on each side, the bottom triangle’s slant height dashed and labeled 5 cm',
+      caption:
+        'The net of a square pyramid: a 6 cm square base with a triangle on each of its sides. The slant height is drawn dashed down the middle of the bottom triangle, with a right-angle square where it meets the base, and labeled 5 cm. Use it to find the lateral area or the surface area.',
+      settings: { shape: 'pyramid', length: '6', width: '6' },
+    },
+    {
+      slug: 'net-of-a-rectangular-pyramid-with-face-areas',
+      title: 'Net of a rectangular pyramid with face areas',
+      alt: 'The net of a rectangular pyramid, a 10 cm by 6 cm base with a triangle on each side, each face named and its area written in it, matching faces tinted alike',
+      caption:
+        'The net of a rectangular pyramid with a 10 cm by 6 cm base, whose two pairs of triangles have different slant heights, 5 cm and about 6.4 cm, each dashed and labeled. Each face is named A to E with its area written under its name, and faces that match are tinted alike. Use it as an answer key for surface area.',
+      settings: { shape: 'pyramid', length: '10', width: '6', faceText: 'both', shade: true },
+    },
+    {
+      slug: 'net-of-a-cylinder-with-radius-3-cm-and-height-10-cm',
+      title: 'Net of a cylinder with radius 3 cm and height 10 cm',
+      alt: 'The net of a cylinder: a rectangle 10 cm tall and 18.8 cm long with a circle of radius 3 cm touching its top and bottom',
+      caption:
+        'The net of a cylinder: a rectangle with a circle touching the middle of its top and of its bottom. The top circle’s radius is drawn and labeled 3 cm, the rectangle’s height 10 cm, and its length, the circles’ circumference, 18.8 cm. Use it to show why a cylinder’s lateral area is its circumference times its height.',
+      settings: { shape: 'cylinder', height: '10', circLabel: 'measure' },
+    },
+    {
+      slug: 'net-of-a-cone-with-its-sector-angle',
+      title: 'Net of a cone with its sector angle',
+      alt: 'The net of a cone: a sector of a circle with straight sides 5 cm and a 216° angle at its tip, and a circle of radius 3 cm touching its arc',
+      caption:
+        'The net of a cone with radius 3 cm and slant height 5 cm: its curved side unrolled into a sector of a circle of radius 5 cm, its angle of 216° marked at its tip, and its base, a circle of radius 3 cm, touching the middle of the arc. Use it to find a cone’s lateral area.',
+      settings: { shape: 'cone', angleLabel: 'measure' },
+    },
+  ]),
+
   ...examplesOf('sphere', [
     {
       slug: 'sphere-with-radius-6-cm',

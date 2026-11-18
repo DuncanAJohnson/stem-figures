@@ -7,6 +7,9 @@ import { buildShape } from './3d-shape/layout.js'
 import * as shape from './3d-shape/settings.js'
 import { readShape } from './3d-shape/solve.js'
 import { buildBarGraph } from './bar-graph/layout.js'
+import { buildNet } from './net/layout.js'
+import * as netSettings from './net/settings.js'
+import { readNet } from './net/solve.js'
 import * as bar from './bar-graph/settings.js'
 import { buildPlot } from './box-plot/boxplot.js'
 import * as box from './box-plot/settings.js'
@@ -233,6 +236,25 @@ const MAPPING = [
   `inputs=x%2C+2x%2C+1%2F2&outputs=sqrt(2)%2C+x%5E2&shape=box&title=Relation+R&titleMode=text&${arrows(['x', 'x^2'], ['1/2', 'sqrt(2)'])}`,
   'inputs=1%2C+2&outputs=3&shape=none&inputTitleMode=blank&outputTitleMode=none&titleMode=blank&labelSize=large',
   `inputs=1&outputs=2&${arrows(['1', '2'], ['5', '2'])}`,
+]
+
+const NET = [
+  '',
+  'shape=cube&faceText=names',
+  'shape=cube&cubeNet=7&tabs=1&sideLabel=none',
+  'shape=cube&cubeNet=11&fold=solid&unit=in&side=2',
+  'base=right&triBase=6&triHeight=8&height=12',
+  'base=isosceles&triHeight=4&height=10&triHeightLabel=measure&tabs=1',
+  'base=regular&sides=6&side=4&height=9&apothemLabel=measure&showShape=1&shade=1',
+  'shape=pyramid&length=6&width=6',
+  'shape=pyramid&length=10&width=6&faceText=both&shade=1',
+  'shape=pyramid&base=regular&sides=3&side=6&height=4&tabs=1&labelSize=large',
+  'shape=cylinder&height=10&circLabel=measure&tabs=1',
+  'shape=cylinder&diameter=1&radius=8&heightLabel=text&heightText=h',
+  'shape=cone&angleLabel=measure&showShape=1',
+  'shape=cone&radius=2&height=&slant=9&tabs=1&faceText=areas',
+  'length=8&height=5&lengthLabel=text&lengthText=x&moved=length%3A10%2C4',
+  'shape=pyramid&length=6&width=6&height=&slant=2',
 ]
 
 const SHAPE = [
@@ -589,6 +611,15 @@ describe('3D shape', () => {
     const read = readShape(s)
     const figure = read.values ? buildShape(s, { ...read, values: read.values }) : null
     expect({ query: kind.settingsToQuery(s), read, figure }).toMatchSnapshot()
+  })
+})
+
+describe('net', () => {
+  test.each(NET)('%s', (q) => {
+    const s = netSettings.settingsFromParams(params(q))
+    const read = readNet(s)
+    const figure = read.values ? buildNet(s, { ...read, values: read.values }) : null
+    expect({ query: netSettings.settingsToQuery(s), read, figure }).toMatchSnapshot()
   })
 })
 

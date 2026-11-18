@@ -713,6 +713,32 @@ _Avoid_: Slant, lateral height, side length
 How far an oblique shape's top slides sideways past its base, measured along the base's extended line. Any two of the height, the lean and the slanted side edge are enough; the third is worked out.
 _Avoid_: Offset, shift, overhang
 
+### Nets
+
+**Net**:
+A 3D shape unfolded flat, every face joined to another along an edge, so it folds back up into the shape: a cube in one of its 11 nets, a prism, a pyramid, a cylinder or a cone, drawn to scale from the same measures the 3D shape generators take. Its generator is the Net Generator. A net isn’t a **Shape**; each of its faces is.
+_Avoid_: Pattern, template (fine as search words), unfolding, flat pattern
+
+**Face** (of a net):
+One flat piece of a net: a rectangle, triangle or polygon, a cylinder’s or cone’s circle, or a cone’s **sector**, its curved side unrolled into part of a circle with the slant height for its radius. Faces can be named A, B, C … in reading order, have their areas written in them, and be tinted so faces of the same shape and size share a color.
+_Avoid_: Side (that’s a face’s edge on a flat shape), panel, piece
+
+**Fold line**:
+An edge two faces share on the net, folded when it’s made up; dashed unless the teacher wants it solid. An edge with a glue tab on it is a fold line too, between its face and the tab.
+_Avoid_: Crease, hinge, dotted line
+
+**Cut edge**:
+An edge round the outside of a net, solid and thicker. Each of a polyhedron’s cut edges meets one other when the net is folded; a cylinder’s or cone’s circle meets the edge it touches.
+_Avoid_: Outline, border, boundary
+
+**Glue tab**:
+A gray trapezoid out from one of each pair of cut edges that meet when the net is folded, for students to cut the net out and glue it up; a circle gets teeth round it instead. A tab only goes where it doesn’t lie over a face or another tab. The net prints to fit the page, not to an exact size.
+_Avoid_: Flap, tab (alone)
+
+**Cube net**:
+One of the 11 ways six squares can be joined so they fold into a cube, numbered 1 to 11: six with a row of four squares (net 1 is the cross), three with a row of three under two, the staircase, and two rows of three.
+_Avoid_: Hexomino (fine as a search word)
+
 ### Mapping diagrams
 
 **Mapping diagram**:

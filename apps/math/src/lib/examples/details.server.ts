@@ -26,6 +26,9 @@ import { buildPieChart, hiddenText } from '$lib/generators/pie-chart/layout'
 import * as pieChart from '$lib/generators/pie-chart/settings'
 import type { Interval } from '$lib/generators/number-line/inequality'
 import { buildCurve } from '$lib/generators/normal-curve/layout'
+import { areaOf, unfold } from '$lib/generators/net/layout'
+import * as net from '$lib/generators/net/settings'
+import { partName as netPartName, readNet } from '$lib/generators/net/solve'
 import * as normal from '$lib/generators/normal-curve/settings'
 import * as numberLine from '$lib/generators/number-line/settings'
 import { family as parallelogramFamily } from '$lib/generators/parallelogram/family'
@@ -283,6 +286,34 @@ function solidAnswer(s: SettingsById['prism']): ExampleDetails['answer'] {
   return { heading: 'Answer key', lines: [...solved, `Volume: ${volume}`, ...(area ? [`${areaName}: ${area}`] : [])] }
 }
 
+/** A net's worked-out measures, each face's area and the surface area,
+ *  rounded as its labels are. */
+function netAnswer(s: SettingsById['net']): ExampleDetails['answer'] {
+  const read = readNet(s)
+  const v = read.values
+  if (!v) throw new Error(`The net example doesn’t make a shape: ${read.problem ?? Object.values(read.problems)[0]}`)
+  const { form } = read
+  const length = lengthIn(s)
+  const rounded = (x: number) => shapeParts.roundTo(x, s.round)
+  const area = (x: number) => `${rounded(x)}${s.unit.trim() === 'units' ? ' square units' : squared(s)}`
+  const name = (k: (typeof form.parts)[number]) => {
+    const n = netPartName(s, form, k)
+    return n[0].toUpperCase() + n.slice(1)
+  }
+  const solved = form.parts
+    .filter((k) => !(form.inputs as string[]).includes(k) || read.given[k] === null)
+    .filter((k) => k !== 'angle')
+    .map((k) => `${name(k)}: ${length(v[k])}`)
+  if (form.parts.includes('angle')) solved.push(`Sector angle: ${rounded(v.angle)}°`)
+  const faces = unfold(s, { ...read, values: v }).faces.map(areaOf)
+  const total = faces.reduce((t, a) => t + a, 0)
+  // Faces of the same area, counted together: 2 × 15 cm².
+  const counts = new Map<string, number>()
+  for (const a of faces) counts.set(rounded(a), (counts.get(rounded(a)) ?? 0) + 1)
+  const list = [...counts].map(([a, n]) => `${n > 1 ? `${n} × ` : ''}${a}${s.unit.trim() === 'units' ? ' square units' : squared(s)}`).join(' + ')
+  return { heading: 'Answer key', lines: [...solved, `Faces: ${list}`, `Surface area: ${area(total)}`] }
+}
+
 function boxPlotAnswer(s: SettingsById['box-plot']): ExampleDetails['answer'] {
   const { rows } = boxPlot.readPlot(s)
   const out = rows.flatMap((r, i) => {
@@ -492,6 +523,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'pyramid': { definition: definitionOf(solidSettings('pyramid')), answer: solidAnswer },
   'cone': { definition: definitionOf(solidSettings('cone')), answer: solidAnswer },
   'sphere': { definition: definitionOf(solidSettings('sphere')), answer: solidAnswer },
+  'net': { definition: definitionOf(net), answer: netAnswer },
   'box-plot': { definition: definitionOf(boxPlot), answer: boxPlotAnswer },
   'dot-plot': { definition: definitionOf(dotPlot), answer: dotPlotAnswer },
   'scatter-plot': { definition: definitionOf(scatter), answer: scatterAnswer },

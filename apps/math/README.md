@@ -35,6 +35,14 @@ and `docs/adr/` for decisions.
   like AC, and a named line crossing at any point (a bisector). Labels in one
   letter are solved as a check, and the parts are drawn to the solved lengths
   unless typed.
+- `/net` **Net Generator**: a 3D shape unfolded flat and drawn to scale from
+  the 3D shape generators' measures: a cube in any of its 11 nets, a prism
+  (rectangle, right or isosceles triangle, or regular polygon base), a pyramid
+  (rectangle or regular polygon base), a cylinder or a cone. Fold lines dashed
+  or solid, cut edges solid; one edge of each measure labeled (measure, text or
+  nothing), with slant heights, a triangle's height, an apothem, a radius, a
+  cylinder's circumference and a cone's sector angle; face names and areas,
+  matching faces tinted, glue tabs, and the 3D shape beside the net.
 - `/mapping-diagram` **Mapping Diagram Generator**: inputs and outputs typed or
   pasted as lists (or as ordered pairs), and arrows chosen per input, so it can
   show a function or a relation that isn't one; the panel says which, and why.
