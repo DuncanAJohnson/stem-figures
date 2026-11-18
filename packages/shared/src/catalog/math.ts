@@ -307,6 +307,22 @@ export const MATH: CatalogEntry[] = [
     ],
   },
   {
+    id: 'scatter-plot',
+    site: 'math',
+    name: 'Scatter Plot Generator',
+    path: '/scatter-plot',
+    blurb: 'Scatter plots from paired data, with a line of best fit, its equation and r.',
+    description:
+      'Make a printable scatter plot for your class. Type or paste x and y values, let the axes fit the data with a zig-zag break, add the least-squares line of best fit or your own, write its equation and the correlation coefficient or leave blanks, and copy it into a worksheet or test.',
+    keywords: [
+      'scatter plot', 'scatter plots', 'scatterplot', 'scatter graph', 'scatter diagram', 'scattergram', 'scatter chart',
+      'line of best fit', 'best fit line', 'trend line', 'linear regression', 'least squares', 'least squares regression line', 'lsrl',
+      'regression line', 'linreg', 'correlation', 'correlation coefficient', 'r value', 'r squared', 'positive correlation',
+      'negative correlation', 'no correlation', 'bivariate data', 'paired data', 'two variable data', 'association', 'outlier',
+      'residual', 'prediction', 'extrapolation', 'interpolation', 'statistics', 'stats', 'data', 'data display', 'axis break', 'printable',
+    ],
+  },
+  {
     id: 'bar-graph',
     site: 'math',
     alsoOn: ['biology'],

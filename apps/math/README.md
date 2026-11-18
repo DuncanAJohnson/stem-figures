@@ -42,6 +42,13 @@ and `docs/adr/` for decisions.
   drawn as dots or X's stacked over a number line that fits the data's own
   step (whole numbers by 1, eighths by 1/8) unless typed, with fractions and
   mixed numbers numbering it in fractions. Marks shrink as a column grows.
+- `/scatter-plot` **Scatter Plot Generator**: paired data typed as a table
+  of x and y or pasted as a list of pairs (one a line, or in brackets;
+  switching fills the other in), drawn as dots or crosses on axes that fit
+  the data unless typed, each starting at 0 when the data comes close to it
+  and otherwise after a zig-zag break. A line of best fit (least squares, or
+  the teacher's own y = mx + b) runs across the graph, with its equation and
+  r or r² placed clear of the points, written or as blank lines.
 - `/stem-and-leaf` **Stem-and-Leaf Plot Generator**: one data set, or two
   back to back, split into stems and leaves at a leaf unit (digits past it
   cut off), with split stems, negative stems, leaves in order or as typed,

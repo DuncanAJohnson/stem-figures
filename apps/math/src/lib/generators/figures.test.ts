@@ -12,6 +12,8 @@ import { buildPlot } from './box-plot/boxplot.js'
 import * as box from './box-plot/settings.js'
 import { buildPlot as buildDotPlot } from './dot-plot/dotplot.js'
 import * as dot from './dot-plot/settings.js'
+import { buildScatter } from './scatter-plot/scatter.js'
+import * as scatter from './scatter-plot/settings.js'
 import { buildCumulative } from './cumulative-frequency/layout.js'
 import * as cumulative from './cumulative-frequency/settings.js'
 import { buildGraph } from './coordinate-grid/graph.js'
@@ -361,6 +363,26 @@ describe('dot plot', () => {
     const s = dot.settingsFromParams(params(q))
     const { stacks, problems } = dot.readPlot(s)
     expect({ query: dot.settingsToQuery(s), stacks, problems, plot: buildDotPlot(s) }).toMatchSnapshot()
+  })
+})
+
+const SCATTER = [
+  '',
+  'row=1%7C52&row=2%7C60&row=3%7C65&row=4%7C71&row=5%7C70&fit=best&r=r&titleMode=text&title=Study&xTitleMode=text&xTitle=Hours',
+  'input=list&data=-5%2C12%0A-3%2C9%0A0%2C5%0A4%2C-1%0A6%2C-4&fit=best&r=r2&labelSize=large',
+  'input=list&data=61%2C215%0A80%2C445%0A94%2C650&mark=cross&gridlines=light&minor=2',
+  'input=list&data=2%2C20%0A5%2C31%0A8%2C45&fit=own&line=y%3D5x%2B10&equation=blank&r=blank',
+  'input=list&data=(1%2C2)%2C(3%2C4)&xFrom=0&xTo=10&xStep=1&yFrom=0&yTo=30&yStep=5&xEvery=2&yEvery=0',
+  'input=list&data=1%2C2%0A12%2C4&xFrom=0&xTo=10',
+  'input=list&data=1%2C2%0A3%2Cx&fit=own&line=y%3Dx%5E2',
+  'row=3%7C1&row=3%7C5&fit=best',
+]
+
+describe('scatter plot', () => {
+  test.each(SCATTER)('%s', (q) => {
+    const s = scatter.settingsFromParams(params(q))
+    const { points, problems, line, r } = scatter.readScatter(s)
+    expect({ query: scatter.settingsToQuery(s), points, problems, line, r, plot: buildScatter(s) }).toMatchSnapshot()
   })
 })
 

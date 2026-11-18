@@ -653,6 +653,43 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Elementary school', 'Middle school'],
   },
 
+  'scatter-plot': {
+    heading: 'Scatter plots with a line of best fit',
+    intro: [
+      'The Scatter Plot Generator draws a scatter plot from paired data you type or paste: an x and a y value for each point, such as hours studied and test score. The axes fit the data unless you set them, and an axis that starts well past 0 begins with a zig-zag break, so the points fill the graph.',
+      'Add the least-squares line of best fit, worked out as LinReg on a calculator, or draw your own line from its equation. Write the equation and the correlation coefficient r (or r²) on the graph, or leave blank lines for students to fill in, or show the points alone for students to draw a line by eye.',
+    ],
+    settings: [
+      'The data, as a table of x and y values or a list of pairs pasted from a spreadsheet',
+      'Dots or crosses for the points',
+      'A line of best fit: none, least squares, or your own typed as y = mx + b',
+      'The line’s equation and r or r² on the graph, written, as a blank line or hidden, rounded to the places you choose',
+      'A chart title and axis titles, as text or a blank line for students',
+      'Each axis’s range and count-by, worked out from the data unless you type them, and which lines are numbered',
+      'Light, standard, bold or no gridlines, and minor gridlines',
+    ],
+    faqs: [
+      {
+        q: 'How is the line of best fit worked out?',
+        a: 'It is the least-squares regression line through every point, the same line a TI-84’s LinReg(ax+b), Desmos or a spreadsheet’s trendline gives. Its equation is rounded to the decimal places you choose.',
+      },
+      {
+        q: 'Can students draw the line of best fit themselves?',
+        a: 'Yes. Leave the line off for students to draw one by eye, or draw it and set the equation to a blank line so they write it. You can also type your own line, such as y = 2x + 10, to show a line drawn by eye.',
+      },
+      {
+        q: 'Why does an axis have a zig-zag?',
+        a: 'When the data starts far from 0, such as test scores from 55 to 95, the axis starts just below the data and the zig-zag shows that part of it has been left out. Type 0 in the axis’s From box to start it at 0 instead.',
+      },
+      {
+        q: 'Can I paste data from a spreadsheet?',
+        a: 'Yes. Copy two columns, x then y, and paste them into the table, or into the list of pairs. A row of column headings is skipped.',
+      },
+    ],
+    imageAlt: 'A printable scatter plot of hours studied against test scores with a line of best fit and its equation, made with the Scatter Plot Generator',
+    educationalLevel: ['Middle school', 'High school'],
+  },
+
   'bar-graph': {
     heading: 'Bar graphs and column graphs from a table',
     intro: [

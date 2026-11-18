@@ -31,6 +31,8 @@ import * as numberLine from '$lib/generators/number-line/settings'
 import { family as parallelogramFamily } from '$lib/generators/parallelogram/family'
 import { family as rectangleFamily } from '$lib/generators/rectangle/family'
 import * as polygon from '$lib/generators/regular-polygon/settings'
+import * as scatter from '$lib/generators/scatter-plot/settings'
+import { describeCorrelation, leastSquares } from '$lib/stats/regression'
 import * as stemAndLeaf from '$lib/generators/stem-and-leaf/settings'
 import { family as trapezoidFamily } from '$lib/generators/trapezoid/family'
 import * as tree from '$lib/generators/tree-diagram/settings'
@@ -309,6 +311,19 @@ function dotPlotAnswer(s: SettingsById['dot-plot']): ExampleDetails['answer'] {
   }
 }
 
+function scatterAnswer(s: SettingsById['scatter-plot']): ExampleDetails['answer'] {
+  const read = scatter.readScatter(s)
+  const problem = Object.values(read.problems).find(Boolean)
+  if (problem) throw new Error(`The scatter plot example can’t be drawn as written: ${problem}`)
+  if (read.all.length < 2) return null
+  // The least-squares line and r, whether or not the figure shows them, to two places.
+  const fit = leastSquares(read.all)
+  const lines = [`Number of points: ${read.all.length}`]
+  if (fit) lines.push(`Line of best fit (least squares): ${scatter.equationText(fit, 2)}`)
+  if (read.r !== null) lines.push(`r = ${scatter.rounded(read.r, 2)} (${describeCorrelation(read.r)}), r² = ${scatter.rounded(read.r * read.r, 2)}`)
+  return { heading: 'Answer key', lines }
+}
+
 function barGraphAnswer(s: SettingsById['bar-graph']): ExampleDetails['answer'] {
   const read = barGraph.readGraph(s)
   const problem = read.problems.table ?? read.problems.from ?? read.problems.to ?? read.problems.step
@@ -452,6 +467,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'sphere': { definition: definitionOf(solidSettings('sphere')), answer: solidAnswer },
   'box-plot': { definition: definitionOf(boxPlot), answer: boxPlotAnswer },
   'dot-plot': { definition: definitionOf(dotPlot), answer: dotPlotAnswer },
+  'scatter-plot': { definition: definitionOf(scatter), answer: scatterAnswer },
   'bar-graph': { definition: definitionOf(barGraph), answer: barGraphAnswer },
   'stem-and-leaf': { definition: definitionOf(stemAndLeaf), answer: stemAndLeafAnswer },
   'cumulative-frequency': { definition: definitionOf(cumulative), answer: cumulativeAnswer },

@@ -16,6 +16,7 @@ import type { Settings as NormalCurveSettings } from '$lib/generators/normal-cur
 import type { Settings as NumberLineSettings } from '$lib/generators/number-line/settings'
 import type { Settings as PieChartSettings } from '$lib/generators/pie-chart/settings'
 import type { Settings as PolygonSettings } from '$lib/generators/regular-polygon/settings'
+import type { Settings as ScatterPlotSettings } from '$lib/generators/scatter-plot/settings'
 import type { Settings as StemAndLeafSettings } from '$lib/generators/stem-and-leaf/settings'
 import type { Settings as TreeDiagramSettings } from '$lib/generators/tree-diagram/settings'
 import type { Settings as TriangleSettings } from '$lib/generators/triangle/settings'
@@ -40,6 +41,7 @@ export interface SettingsById {
   'sphere': ShapeSettings
   'box-plot': BoxPlotSettings
   'dot-plot': DotPlotSettings
+  'scatter-plot': ScatterPlotSettings
   'bar-graph': BarGraphSettings
   'stem-and-leaf': StemAndLeafSettings
   'cumulative-frequency': CumulativeSettings

@@ -466,6 +466,18 @@ _Avoid_: Point, symbol, dot (when it may be an X)
 How many times a value appears, typed beside it in the table of values and counts, and the number of marks drawn over it. A value typed on two rows has its counts added together; a count of 0 draws no marks but still widens the line.
 _Avoid_: Frequency (fine in teaching and as a search word), tally
 
+**Scatter Plot**:
+A figure of paired data as points on a graph, one for each pair, its x value across and its y value up, to show how two quantities go together. The teacher types the pairs as a table of x and y or pastes them as a list of pairs; both give the same figure. Its axes fit the data unless typed, and one that starts past 0 begins with a zig-zag break. Its generator is the Scatter Plot Generator.
+_Avoid_: Scatter graph, scatter diagram, scattergram (fine as search words, not as the name); coordinate grid (that graphs equations and points typed one by one, on axes the teacher sets)
+
+**Line of best fit**:
+The straight line drawn through a scatter plot's points: the least-squares line through every point (as LinReg on a calculator works it out), or the teacher's own typed as y = mx + b. Its equation can be written on the graph, left as a blank line for students, or hidden; it runs across the graph past any breaks.
+_Avoid_: Trend line, regression line, LSRL (fine as search words and in teaching), fit
+
+**Correlation coefficient**:
+r, how closely a scatter plot's points follow a straight line, from −1 to 1, written on the graph as r or r², or as a blank line for students. It is worked out from every point typed, whether or not a line is drawn.
+_Avoid_: Correlation (alone, for the number), R, r value
+
 **Bar Graph**:
 A figure of separate bars, one for each category (or one for each series in each category), whose lengths show values read off a numbered value axis. The bars stand up as columns or run sideways; a column graph is a bar graph with upright bars. Its generator is the Bar Graph Generator.
 _Avoid_: Bar chart, column graph, column chart (fine as search words, not as the name); histogram (its bars touch, over a numbered axis)

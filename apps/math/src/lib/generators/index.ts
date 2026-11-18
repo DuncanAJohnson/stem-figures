@@ -31,6 +31,7 @@ import PrismPreview from './prism/Preview.svelte'
 import PyramidPreview from './pyramid/Preview.svelte'
 import RectanglePreview from './rectangle/Preview.svelte'
 import RegularPolygonPreview from './regular-polygon/Preview.svelte'
+import ScatterPlotPreview from './scatter-plot/Preview.svelte'
 import SpherePreview from './sphere/Preview.svelte'
 import StemAndLeafPreview from './stem-and-leaf/Preview.svelte'
 import TrapezoidPreview from './trapezoid/Preview.svelte'
@@ -58,6 +59,7 @@ export const PREVIEWS: Record<string, Component> = {
   'sphere': SpherePreview,
   'box-plot': BoxPlotPreview,
   'dot-plot': DotPlotPreview,
+  'scatter-plot': ScatterPlotPreview,
   'bar-graph': BarGraphPreview,
   'stem-and-leaf': StemAndLeafPreview,
   'cumulative-frequency': CumulativeFrequencyPreview,
