@@ -902,6 +902,46 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school'],
   },
 
+  'normal-curve': {
+    heading: 'Normal distribution curves with shaded areas',
+    intro: [
+      'The Normal Curve Generator draws a normal distribution curve from a mean and standard deviation, with a tick at each standard deviation from the mean, numbered in values, z-scores or μ ± σ, or left blank for students. Dashed lines rise from each tick to the curve, and the percent of the area in each section can be written, rounded as the empirical rule gives it or exactly.',
+      'Shade the area left of a value, right of one, between two or outside two, typed as values or z-scores, and write its area as a probability or a percent, or leave a blank line for students. Or type the area and the cut-off is worked out, as invNorm does. Areas match a calculator’s normalcdf to 4 decimal places, and the shading is drawn along the curve as printed.',
+    ],
+    settings: [
+      'The mean and standard deviation, with ticks to 3 or 4 standard deviations either side',
+      'One or two rows of numbers under the axis: values, z-scores, μ ± σ or blank lines, and more ticks at values you type',
+      'Dashed or solid lines at each standard deviation, and the percent in each section by the empirical rule or exactly',
+      'Up to four shaded regions, left of, right of, between or outside values or z-scores, or found from their area, each with its area as a probability, a percent or a blank line',
+      'Marked values: a dotted line up to the curve with the value, its z-score, its percentile rank or your own text over it',
+      'Color, or black and white with hatching for printing, and a density axis',
+      'A chart title and axis title, as text or a blank line for students',
+    ],
+    faqs: [
+      {
+        q: 'How do I draw the 68–95–99.7 rule?',
+        a: 'Leave the mean and standard deviation as they are, or type your own, and choose Empirical rule under Percent in each section. Each section is labeled 34%, 13.5%, 2.35% or 0.15%. Choose Exact to write the areas to two decimal places instead, such as 34.13%.',
+      },
+      {
+        q: 'How do I shade the area for a probability question?',
+        a: 'Add a region, choose Left of, Right of, Between or Outside, and type the bound or bounds as values or as z-scores. Its area is written on it as a probability, such as 0.0228, or as a percent. Choose Blank for a line students fill in. The panel lists each region’s probability.',
+      },
+      {
+        q: 'Can it find the value for a given area, like invNorm?',
+        a: 'Yes. Choose Area for how the region is given and type the area, such as 0.1 for the top 10% or 0.95 for the middle 95%. The cut-off is worked out and written under the axis as a value or a z-score, or left blank for students to find. Middle and outer areas are split evenly either side of the mean.',
+      },
+      {
+        q: 'Can I show z-scores and values together?',
+        a: 'Yes. Pick Values for Numbers and z-scores for Second row, and each tick has its value with its z-score under it. Pick μ ± σ to write μ − 2σ, μ − σ, μ and so on.',
+      },
+      {
+        q: 'How do I mark percentile ranks on a bell curve?',
+        a: 'Add a marked value for each score and choose Percentile for its label. A dotted line rises to the curve with the score’s percentile rank, such as 84th, over it, as school psychologists show standard scores with a mean of 100 and SD of 15.',
+      },
+    ],
+    imageAlt: 'A printable normal distribution curve with a mean of 100 and standard deviation of 15, the area above 130 shaded, made with the Normal Curve Generator',
+    educationalLevel: ['High school'],
+  },
   'venn-diagram': {
     heading: 'Venn diagrams with numbers, elements or shading',
     intro: [

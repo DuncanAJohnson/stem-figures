@@ -386,6 +386,22 @@ export const MATH: CatalogEntry[] = [
     ],
   },
   {
+    id: 'normal-curve',
+    site: 'math',
+    name: 'Normal Curve Generator',
+    path: '/normal-curve',
+    blurb: 'Normal distribution curves from a mean and SD, with regions shaded and their areas written.',
+    description:
+      'Make a printable normal distribution curve for your class. Give the mean and standard deviation, number the axis in values or z-scores, shade the area left of, right of, between or outside values, write each area or leave a blank, find a cut-off from an area as invNorm does, and mark percentile ranks, then copy it into a worksheet or test.',
+    keywords: [
+      'normal curve', 'normal curves', 'normal distribution', 'normal distribution curve', 'bell curve', 'bell shaped curve', 'gaussian',
+      'standard normal', 'standard normal curve', 'standard normal distribution', 'z-score', 'z score', 'z-scores', 'z table',
+      'standard deviation', 'mean', 'empirical rule', '68-95-99.7', '68 95 99.7 rule', 'area under the curve', 'shaded area',
+      'shaded region', 'probability', 'normal probability', 'percentile', 'percentile rank', 'inverse normal', 'invnorm',
+      'normalcdf', 'two tailed', 'critical value', 'ap statistics', 'statistics', 'stats', 'distribution', 'printable',
+    ],
+  },
+  {
     id: 'venn-diagram',
     site: 'math',
     name: 'Venn Diagram Generator',

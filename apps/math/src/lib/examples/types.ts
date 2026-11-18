@@ -12,6 +12,7 @@ import type { Settings as CumulativeSettings } from '$lib/generators/cumulative-
 import type { Settings as HistogramSettings } from '$lib/generators/histogram/settings'
 import type { LengthSettings } from '$lib/generators/length-reading/settings'
 import type { Settings as MappingSettings } from '$lib/generators/mapping-diagram/settings'
+import type { Settings as NormalCurveSettings } from '$lib/generators/normal-curve/settings'
 import type { Settings as NumberLineSettings } from '$lib/generators/number-line/settings'
 import type { Settings as PieChartSettings } from '$lib/generators/pie-chart/settings'
 import type { Settings as PolygonSettings } from '$lib/generators/regular-polygon/settings'
@@ -44,6 +45,7 @@ export interface SettingsById {
   'cumulative-frequency': CumulativeSettings
   'two-way-table': TwoWayTableSettings
   'histogram': HistogramSettings
+  'normal-curve': NormalCurveSettings
   'venn-diagram': VennSettings
   'tree-diagram': TreeDiagramSettings
   'pie-chart': PieChartSettings

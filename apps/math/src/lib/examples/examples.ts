@@ -1328,6 +1328,108 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('normal-curve', [
+    {
+      slug: 'normal-curve-iq-scores-area-above-130',
+      title: 'Normal curve of IQ scores with the area above 130 shaded',
+      alt: 'A normal curve titled IQ scores with a mean of 100 and standard deviation of 15, the area right of 130 shaded blue and labeled 0.0228',
+      caption:
+        'A bell-shaped normal curve titled IQ scores, with ticks at 55, 70, 85, 100, 115, 130 and 145 and their z-scores, −3 to 3, written under them. Dashed lines rise from each tick to the curve. The area under the curve right of 130 is shaded blue and labeled 0.0228, the probability of an IQ score above 130.',
+      settings: {
+        mean: '100',
+        sd: '15',
+        second: 'z',
+        regions: [{ kind: 'right', by: 'value', a: '130', b: '', area: 'probability', bounds: 'value', fill: '' }],
+        title: 'IQ scores',
+        titleMode: 'text',
+      },
+    },
+    {
+      slug: 'empirical-rule-68-95-99-7-normal-curve',
+      title: 'Empirical rule (68–95–99.7) on a normal curve',
+      alt: 'A normal curve with dashed lines at each standard deviation, labeled μ − 3σ to μ + 3σ, and the percent in each section: 34%, 13.5%, 2.35% and 0.15%',
+      caption:
+        'A normal curve with ticks at each standard deviation from the mean, labeled μ − 3σ, μ − 2σ, μ − σ, μ, μ + σ, μ + 2σ and μ + 3σ, with their z-scores from −3 to 3 under them. Dashed lines rise from each tick to the curve, and each section is labeled with its share of the area by the empirical rule: 34% either side of the mean, then 13.5%, 2.35%, and 0.15% in each tail.',
+      settings: {
+        numbers: 'symbols',
+        second: 'z',
+        percents: 'rule',
+      },
+    },
+    {
+      slug: 'normal-distribution-probability-between-two-values',
+      title: 'Normal distribution: probability between two values',
+      alt: 'A normal curve of test scores with a mean of 500 and standard deviation of 100, the area between 400 and 650 shaded with a blank line on it for the probability',
+      caption:
+        'A normal curve titled Test scores, with a mean of 500 and standard deviation of 100, and ticks at 200, 300, 400, 500, 600, 700 and 800. The area between 400 and 650 is shaded blue and both bounds are written under the axis. A blank line on the shaded area is for students to write the probability that a score is between 400 and 650.',
+      settings: {
+        mean: '500',
+        sd: '100',
+        regions: [{ kind: 'between', by: 'value', a: '400', b: '650', area: 'blank', bounds: 'value', fill: '' }],
+        title: 'Test scores',
+        titleMode: 'text',
+      },
+    },
+    {
+      slug: 'inverse-normal-top-10-percent-cut-off',
+      title: 'Inverse normal: the cut-off for the top 10%',
+      alt: 'A normal curve with a mean of 70 and standard deviation of 8, the top 10% shaded and labeled 10%, with a blank line under the axis for the cut-off score',
+      caption:
+        'A normal curve of exam marks with a mean of 70 and standard deviation of 8, with ticks at 46, 54, 62, 70, 78, 86 and 94. The area in the right tail is shaded blue and labeled 10%, and a blank line under the axis where it starts is for students to find the mark that cuts off the top 10%.',
+      settings: {
+        mean: '70',
+        sd: '8',
+        regions: [{ kind: 'right', by: 'area', a: '0.1', b: '', area: 'percent', bounds: 'blank', fill: '' }],
+        xTitle: 'Exam mark',
+        xTitleMode: 'text',
+      },
+    },
+    {
+      slug: 'two-tailed-95-percent-critical-values-z-1-96',
+      title: 'Two-tailed test: critical values z = ±1.96',
+      alt: 'A black-and-white standard normal curve with both tails beyond z = −1.96 and z = 1.96 shaded gray, each labeled 0.025',
+      caption:
+        'A standard normal curve in black and white with its axis numbered in z-scores from −3 to 3. Both tails are shaded with gray, left of z = −1.96 and right of z = 1.96, with the critical values written under the axis and each tail labeled 0.025, the 5% significance level split between the two tails of a two-tailed test.',
+      settings: {
+        numbers: 'z',
+        regions: [{ kind: 'outside', by: 'area', a: '0.05', b: '', area: 'probability', bounds: 'z', fill: '' }],
+        look: 'bw',
+      },
+    },
+    {
+      slug: 'percentile-ranks-on-a-bell-curve-standard-scores',
+      title: 'Percentile ranks on a bell curve of standard scores',
+      alt: 'A bell curve of standard scores with a mean of 100 and standard deviation of 15, with dotted lines at 70, 85, 115 and 130 labeled with their percentile ranks: 2nd, 16th, 84th and 98th',
+      caption:
+        'A bell curve of standard scores with a mean of 100 and standard deviation of 15, numbered 55 to 145 under the axis with z-scores from −3 to 3 below them. Dotted lines rise to the curve at scores of 70, 85, 115 and 130, labeled with their percentile ranks: 2nd, 16th, 84th and 98th. The axis is titled Standard score.',
+      settings: {
+        mean: '100',
+        sd: '15',
+        second: 'z',
+        sdLines: 'off',
+        marks: [
+          { at: '70', label: 'percentile', text: '' },
+          { at: '85', label: 'percentile', text: '' },
+          { at: '115', label: 'percentile', text: '' },
+          { at: '130', label: 'percentile', text: '' },
+        ],
+        xTitle: 'Standard score',
+        xTitleMode: 'text',
+      },
+    },
+    {
+      slug: 'blank-normal-curve-for-students-to-label',
+      title: 'Blank normal curve for students to label',
+      alt: 'A normal curve with dashed lines at each standard deviation and a blank line under each tick for students to write the values',
+      caption:
+        'A normal curve with seven ticks, at the mean and at one, two and three standard deviations either side, with dashed lines rising from each to the curve. A blank line under each tick is for students to write the values from a given mean and standard deviation, and a blank line under the axis is for its title.',
+      settings: {
+        numbers: 'blank',
+        xTitleMode: 'blank',
+      },
+    },
+  ]),
+
   ...examplesOf('venn-diagram', [
     {
       slug: 'venn-diagram-football-and-tennis',

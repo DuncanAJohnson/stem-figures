@@ -44,6 +44,8 @@ import { buildStemAndLeaf } from './stem-and-leaf/layout.js'
 import * as stem from './stem-and-leaf/settings.js'
 import { buildTree } from './tree-diagram/layout.js'
 import * as tree from './tree-diagram/settings.js'
+import { buildCurve } from './normal-curve/layout.js'
+import * as normal from './normal-curve/settings.js'
 import { buildVenn } from './venn-diagram/layout.js'
 import * as venn from './venn-diagram/settings.js'
 
@@ -410,6 +412,27 @@ describe('histogram', () => {
     const s = histogram.settingsFromParams(params(q))
     const { layout, ...figure } = buildHistogram(s)
     expect({ query: histogram.settingsToQuery(s), figure, layout: { ...layout, px: undefined } }).toMatchSnapshot()
+  })
+})
+
+const reg = (...r: string[]) => r.map((x) => `reg=${encodeURIComponent(x)}`).join('&')
+const NORMAL = [
+  '',
+  `mean=100&sd=15&second=z&titleMode=text&title=IQ%20scores&${reg('right|value|130||probability|value|')}`,
+  'numbers=symbols&second=z&percents=rule',
+  'reach=4&percents=exact&sdLines=solid&density=1&labelSize=large',
+  `mean=500&sd=100&${reg('between|value|400|650|blank|value|', 'left|value|300||percent|none|red')}`,
+  `numbers=z&look=bw&${reg('outside|area|0.05||probability|z|')}`,
+  `mean=70&sd=8&${reg('right|area|10%||percent|blank|')}&xTitleMode=text&xTitle=Exam%20mark`,
+  `mean=100&sd=15&sdLines=off&mark=70%7Cpercentile%7C&mark=85%7Cz%7C&mark=130%7Ctext%7CJo&mark=150%7Cblank%7C&ticks=92%2C%20108`,
+  `numbers=none&second=none&${reg('left|z|-0.5||probability|z|', 'right|z|0.5||probability|z|')}`,
+  `mean=x&sd=-2&${reg('between|value|5|1|probability|value|', 'right|value|99||probability|value|')}`,
+]
+
+describe('normal curve', () => {
+  test.each(NORMAL)('%s', (q) => {
+    const s = normal.settingsFromParams(params(q))
+    expect({ query: normal.settingsToQuery(s), figure: buildCurve(s) }).toMatchSnapshot()
   })
 })
 

@@ -65,6 +65,14 @@ and `docs/adr/` for decisions.
   frequency or frequency density; a frequency polygon can go over the bars or
   alone; the horizontal axis is numbered at the bin edges or every step, with
   a zig-zag break when it starts past 0. A frequency left empty draws no bar.
+- `/normal-curve` **Normal Curve Generator**: a normal curve from a mean and
+  standard deviation, with ticks to ±3σ or ±4σ numbered in values, z-scores or
+  μ ± σ (one or two rows, or blank lines), dashed SD lines, and the empirical
+  rule's section percents or exact ones. Up to four shaded regions, left of,
+  right of, between or outside bounds typed as values or z-scores or worked
+  out from an area (invNorm), each with its area written as a probability or
+  percent or left blank; marked values with their percentile ranks; and an
+  optional density axis. Areas come from `$lib/stats/normal.ts`.
 - `/venn-diagram` **Venn Diagram Generator**: one, two or three sets in a box for
   the universal set (two overlapping, separate or one inside the other), with a
   number, a letter or expression, or the sorted elements of typed lists in each

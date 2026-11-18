@@ -22,6 +22,7 @@ import HistogramPreview from './histogram/Preview.svelte'
 import KitePreview from './kite/Preview.svelte'
 import LengthReadingPreview from './length-reading/Preview.svelte'
 import MappingDiagramPreview from './mapping-diagram/Preview.svelte'
+import NormalCurvePreview from './normal-curve/Preview.svelte'
 import NumberLinePreview from './number-line/Preview.svelte'
 import ParallelLinesPreview from './parallel-lines/Preview.svelte'
 import ParallelogramPreview from './parallelogram/Preview.svelte'
@@ -62,6 +63,7 @@ export const PREVIEWS: Record<string, Component> = {
   'cumulative-frequency': CumulativeFrequencyPreview,
   'two-way-table': TwoWayTablePreview,
   'histogram': HistogramPreview,
+  'normal-curve': NormalCurvePreview,
   'venn-diagram': VennDiagramPreview,
   'tree-diagram': TreeDiagramPreview,
   'pie-chart': PieChartPreview,

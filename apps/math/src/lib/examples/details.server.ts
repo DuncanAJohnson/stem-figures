@@ -25,6 +25,8 @@ import * as mapping from '$lib/generators/mapping-diagram/settings'
 import { buildPieChart, hiddenText } from '$lib/generators/pie-chart/layout'
 import * as pieChart from '$lib/generators/pie-chart/settings'
 import type { Interval } from '$lib/generators/number-line/inequality'
+import { buildCurve } from '$lib/generators/normal-curve/layout'
+import * as normal from '$lib/generators/normal-curve/settings'
 import * as numberLine from '$lib/generators/number-line/settings'
 import { family as parallelogramFamily } from '$lib/generators/parallelogram/family'
 import { family as rectangleFamily } from '$lib/generators/rectangle/family'
@@ -363,6 +365,29 @@ function histogramAnswer(s: SettingsById['histogram']): ExampleDetails['answer']
   return { heading: 'Answer key', lines: [...read.bins.map((b) => `${b.name}: ${histogram.fmt(b.frequency ?? 0)}`), `n = ${histogram.fmt(read.n)}`] }
 }
 
+function normalAnswer(s: SettingsById['normal-curve']): ExampleDetails['answer'] {
+  const { read } = buildCurve(s)
+  const problem = [read.problems.mean, read.problems.sd, read.problems.ticks, ...read.problems.regions, ...read.problems.marks].find(Boolean)
+  if (problem) throw new Error(`The normal curve example can’t be drawn as written: ${problem}`)
+  // Whatever is left blank on the figure, worked out as students would.
+  const lines: string[] = []
+  for (const r of read.regions) {
+    const blankBounds = r.settings.bounds === 'blank' || r.settings.bounds === 'none'
+    const blankArea = r.settings.area === 'blank' || r.settings.area === 'none'
+    if (blankBounds && r.settings.by === 'area') lines.push(r.sentence)
+    else if (blankArea) lines.push(r.sentence)
+  }
+  for (const m of read.marks) {
+    if (m.settings.label === 'blank') lines.push(`Marked value: ${normal.rounded(read.xOf(m.z))} (z = ${normal.rounded(m.z)}, ${normal.percentileText(m.z)} percentile)`)
+  }
+  // A standard normal curve's blank ticks are left to the teacher's own mean and SD.
+  if ((s.numbers === 'blank' || s.second === 'blank') && (read.mu !== 0 || read.sigma !== 1)) {
+    const ks = Array.from({ length: 2 * s.reach + 1 }, (_, i) => i - s.reach)
+    lines.push(`Ticks: ${ks.map((k) => normal.rounded(read.xOf(k))).join(', ')}`)
+  }
+  return lines.length ? { heading: 'Answer key', lines } : null
+}
+
 function vennAnswer(s: SettingsById['venn-diagram']): ExampleDetails['answer'] {
   const read = venn.readVenn(s)
   const problem = read.problems.elements
@@ -432,6 +457,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'cumulative-frequency': { definition: definitionOf(cumulative), answer: cumulativeAnswer },
   'two-way-table': { definition: definitionOf(twoWay), answer: twoWayAnswer },
   'histogram': { definition: definitionOf(histogram), answer: histogramAnswer },
+  'normal-curve': { definition: definitionOf(normal), answer: normalAnswer },
   'venn-diagram': { definition: definitionOf(venn), answer: vennAnswer },
   'tree-diagram': { definition: definitionOf(tree), answer: treeAnswer },
   'pie-chart': { definition: definitionOf(pieChart), answer: pieChartAnswer },

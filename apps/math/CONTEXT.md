@@ -582,6 +582,28 @@ _Avoid_: Universe, sample space (fine in teaching), rectangle
 The part of a Venn diagram inside exactly some of the sets and outside the rest, such as A only (A ∩ B′) or neither: four for two overlapping sets, eight for three, outside included. In text mode each holds what's typed for it, numbers, letters or words, split at its commas one piece to a line (as in red flesh, mushy, savory); in sets mode, the elements that belong there, written in rows round its middle; one left empty is drawn empty, or with a blank line when the teacher asks for one. Clicking a region on the figure fills it in or shades it. A shaded region is filled with a tint, gray or a black-and-white pattern, under the circles' outlines.
 _Avoid_: Section, area (that's a shape's measure), zone, part
 
+### Normal curves
+
+**Normal Curve**:
+A figure of the bell-shaped curve of a normal distribution over one horizontal axis, from a mean and standard deviation, with a tick at each standard deviation from the mean (to 3 or 4 either side). Its generator is the Normal Curve Generator.
+_Avoid_: Bell curve, normal distribution, Gaussian (fine as search words, not as the name)
+
+**SD line**:
+A dashed or solid line from an SD tick up to the curve, at the mean and at each standard deviation either side. The numbers under the ticks are in one or two rows: values, z-scores, μ ± σ, or blank lines for students.
+_Avoid_: Standard deviation marker, gridline
+
+**Shaded region**:
+The area under a normal curve left of a bound, right of one, between two, or outside two (both tails), filled down to the axis along the curve as drawn. Its bounds are typed as values or z-scores, or worked out from its area as invNorm does (a middle or outer area split evenly either side of the mean). Its area is written on it as a probability (to 4 decimal places) or a percent, as a blank line, or not at all, and its bounds are written under the axis, where they take the place of any SD number in their way. Not a Venn diagram's region.
+_Avoid_: Probability area, tail (fine for one outside the mean), region (alone, that's a Venn diagram's)
+
+**Section percent**:
+The share of a normal curve's area between two neighboring SD lines, written in its section (or over it when it's too thin): rounded as the empirical rule gives it (34%, 13.5%, 2.35%, and 0.15% past 3 standard deviations) or exact to two decimal places.
+_Avoid_: Empirical rule label, 68–95–99.7 (that's the rule, the sum of sections)
+
+**Marked value**:
+A dotted line from the axis up to a normal curve at a value the teacher types, with its value, its z-score, its percentile rank (2nd, 84th, <1st, >99th), the teacher's own text or a blank line over the curve.
+_Avoid_: Marker, point (a normal curve has no plotted points)
+
 ### Tree diagrams
 
 **Tree diagram**:
