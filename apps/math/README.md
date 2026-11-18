@@ -154,9 +154,9 @@ After adding or changing an example, or changing how a generator draws, take
 the pictures again. With the site running:
 
 ```sh
-./scripts/agent-dev.mjs stemfigures/apps/math                          # from the workspace root; prints its address
-node scripts/snapshot-examples.mjs --app=math http://localhost:10003/  # from stemfigures/, with that address
-node scripts/snapshot-examples.mjs --app=math http://localhost:10003/ triangle   # just the examples whose page matches "triangle"
+(cd apps/math && bun run dev)                          # from the repo root; Vite prints its address
+node scripts/snapshot-examples.mjs --app=math http://localhost:5173/  # from stemfigures/, with that address
+node scripts/snapshot-examples.mjs --app=math http://localhost:5173/ triangle   # just the examples whose page matches "triangle"
 ```
 
 It opens each example's generator, exports the figure as the Download buttons
@@ -170,7 +170,7 @@ them, and delete the PNG of an example you removed or renamed.
 
 ```bash
 npm install   # once, from the stemfigures repo root (npm workspaces)
-../../../scripts/agent-dev.mjs stemfigures/apps/math   # from the workspace, never npm run dev directly
+bun run dev   # Vite dev server; prints its address
 npm run check   # svelte-check: strict TypeScript across .ts and .svelte files
 npm test        # unit tests and figure snapshots
 npm run build
