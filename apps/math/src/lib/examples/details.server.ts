@@ -32,8 +32,11 @@ import { family as parallelogramFamily } from '$lib/generators/parallelogram/fam
 import { family as rectangleFamily } from '$lib/generators/rectangle/family'
 import * as polygon from '$lib/generators/regular-polygon/settings'
 import * as scatter from '$lib/generators/scatter-plot/settings'
+import * as segment from '$lib/generators/segment-addition/settings'
+import { show as showLength, solve as solveSegments } from '$lib/generators/segment-addition/solve'
 import { describeCorrelation, leastSquares } from '$lib/stats/regression'
 import * as stemAndLeaf from '$lib/generators/stem-and-leaf/settings'
+import * as tableOfValues from '$lib/generators/table-of-values/settings'
 import { family as trapezoidFamily } from '$lib/generators/trapezoid/family'
 import * as tree from '$lib/generators/tree-diagram/settings'
 import * as triangle from '$lib/generators/triangle/settings'
@@ -324,6 +327,18 @@ function scatterAnswer(s: SettingsById['scatter-plot']): ExampleDetails['answer'
   return { heading: 'Answer key', lines }
 }
 
+function segmentAnswer(s: SettingsById['segment-addition']): ExampleDetails['answer'] {
+  const r = solveSegments(s)
+  if (r.problem) throw new Error(`The segment addition example doesn’t work out as written: ${r.problem}`)
+  // What the figure says, then the letter and every length that can be worked out.
+  const lengths = [
+    ...s.parts.map((_, k) => [segment.partName(s, k), r.parts[k]] as const),
+    ...s.spans.map((sp, k) => [segment.spanName(s, sp), r.spans[k]] as const),
+  ].flatMap(([name, v]) => (v === null ? [] : [`${name} = ${showLength(v)}`]))
+  const lines = [...r.equations, ...(r.letter && r.value !== null ? [`${r.letter} = ${showLength(r.value)}`] : []), ...lengths]
+  return lines.length ? { heading: 'Answer key', lines } : null
+}
+
 function barGraphAnswer(s: SettingsById['bar-graph']): ExampleDetails['answer'] {
   const read = barGraph.readGraph(s)
   const problem = read.problems.table ?? read.problems.from ?? read.problems.to ?? read.problems.step
@@ -451,6 +466,18 @@ function mappingAnswer(s: SettingsById['mapping-diagram']): ExampleDetails['answ
   return { heading: 'Answer key', lines: [map.verdict.text, `Ordered pairs: ${pairs.join(', ')}`] }
 }
 
+function tableOfValuesAnswer(s: SettingsById['table-of-values']): ExampleDetails['answer'] {
+  const read = tableOfValues.readTable(s)
+  const problem = read.problems.rule ?? read.problems.x ?? read.problems.typed
+  if (problem) throw new Error(`The table of values example can’t be drawn as written: ${problem}`)
+  if (read.missing.some((m) => m.value === null)) throw new Error('The table of values example has a blank that can’t be worked out')
+  // Each blank and its value, then the rule when it was left for students, and the pattern.
+  const lines = read.missing.map((m) => `${m.name}: ${m.value}`)
+  if (s.showRule === 'blank' && read.ruleText) lines.push(`The rule: ${mathText(tableOfValues.ruleAsY(read.ruleText))}`)
+  if (read.pattern) lines.push(read.pattern)
+  return lines.length ? { heading: 'Answer key', lines } : null
+}
+
 const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<SettingsById[G]>; answer: Answer<SettingsById[G]> } } = {
   'coordinate-grid': { definition: definitionOf(grid), answer: gridAnswer },
   'number-line': { definition: definitionOf(numberLine), answer: numberLineAnswer },
@@ -468,6 +495,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'box-plot': { definition: definitionOf(boxPlot), answer: boxPlotAnswer },
   'dot-plot': { definition: definitionOf(dotPlot), answer: dotPlotAnswer },
   'scatter-plot': { definition: definitionOf(scatter), answer: scatterAnswer },
+  'segment-addition': { definition: definitionOf(segment), answer: segmentAnswer },
   'bar-graph': { definition: definitionOf(barGraph), answer: barGraphAnswer },
   'stem-and-leaf': { definition: definitionOf(stemAndLeaf), answer: stemAndLeafAnswer },
   'cumulative-frequency': { definition: definitionOf(cumulative), answer: cumulativeAnswer },
@@ -478,6 +506,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'tree-diagram': { definition: definitionOf(tree), answer: treeAnswer },
   'pie-chart': { definition: definitionOf(pieChart), answer: pieChartAnswer },
   'mapping-diagram': { definition: definitionOf(mapping), answer: mappingAnswer },
+  'table-of-values': { definition: definitionOf(tableOfValues), answer: tableOfValuesAnswer },
   'length-reading': { definition: lengthSettings, answer: (s) => ({ heading: 'Answer key', lines: lengthAnswer(s).split(' · ') }) },
   'circle': { definition: definitionOf(circle), answer: circleAnswer },
 }

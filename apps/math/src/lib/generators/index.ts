@@ -32,8 +32,10 @@ import PyramidPreview from './pyramid/Preview.svelte'
 import RectanglePreview from './rectangle/Preview.svelte'
 import RegularPolygonPreview from './regular-polygon/Preview.svelte'
 import ScatterPlotPreview from './scatter-plot/Preview.svelte'
+import SegmentAdditionPreview from './segment-addition/Preview.svelte'
 import SpherePreview from './sphere/Preview.svelte'
 import StemAndLeafPreview from './stem-and-leaf/Preview.svelte'
+import TableOfValuesPreview from './table-of-values/Preview.svelte'
 import TrapezoidPreview from './trapezoid/Preview.svelte'
 import TreeDiagramPreview from './tree-diagram/Preview.svelte'
 import TrianglePreview from './triangle/Preview.svelte'
@@ -51,6 +53,7 @@ export const PREVIEWS: Record<string, Component> = {
   'regular-polygon': RegularPolygonPreview,
   'angles': AnglesPreview,
   'parallel-lines': ParallelLinesPreview,
+  'segment-addition': SegmentAdditionPreview,
   'circle': CirclePreview,
   'prism': PrismPreview,
   'cylinder': CylinderPreview,
@@ -70,6 +73,7 @@ export const PREVIEWS: Record<string, Component> = {
   'tree-diagram': TreeDiagramPreview,
   'pie-chart': PieChartPreview,
   'mapping-diagram': MappingDiagramPreview,
+  'table-of-values': TableOfValuesPreview,
   'length-reading': LengthReadingPreview,
   'composite-shape': CompositeShapePreview,
   transformations: TransformationsPreview,

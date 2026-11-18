@@ -13,6 +13,8 @@ import * as box from './box-plot/settings.js'
 import { buildPlot as buildDotPlot } from './dot-plot/dotplot.js'
 import * as dot from './dot-plot/settings.js'
 import { buildScatter } from './scatter-plot/scatter.js'
+import { buildSegments } from './segment-addition/layout.js'
+import * as segment from './segment-addition/settings.js'
 import * as scatter from './scatter-plot/settings.js'
 import { buildCumulative } from './cumulative-frequency/layout.js'
 import * as cumulative from './cumulative-frequency/settings.js'
@@ -26,6 +28,8 @@ import { buildDiagram } from './mapping-diagram/layout.js'
 import * as mapping from './mapping-diagram/settings.js'
 import { buildTable } from './two-way-table/layout.js'
 import * as twoWay from './two-way-table/settings.js'
+import { buildTable as buildValues } from './table-of-values/layout.js'
+import * as values from './table-of-values/settings.js'
 import { buildPieChart } from './pie-chart/layout.js'
 import * as pie from './pie-chart/settings.js'
 import { buildQuadrilateral } from '$lib/shapes/quadrilateral/layout.js'
@@ -286,6 +290,19 @@ const CUMULATIVE = [
 ]
 
 const TRAVEL = `cols=Walk%7CBus%7CCar&${rows('Year 7|12|10|8|30', 'Year 8|15|8|6|29', 'Year 9|9|14|5|28')}&tot=36%7C32%7C19%7C87`
+const VALUES = [
+  '',
+  'rule=y%3D2x%2B1&to=3&blank=y3%2Cy5&showRule=text',
+  'rule=y%3Dx%2F4&from=0&to=2&step=1%2F2&direction=down&xHeading=Input&yHeading=Output&title=Halves&titleMode=text&showRule=blank',
+  'rule=y%3D1%2Fx&from=-2&to=2&form=decimal&places=1',
+  'rule=y%3Dsin(x)&from=0&to=180%C2%B0&step=30%C2%B0&labelSize=large&headers=plain',
+  'rule=y%3D2x&from=0&to=pi&step=pi%2F2',
+  'rule=y%3D3x&xFrom=list&list=-2%2C+1%2F2%2C+a',
+  'source=typed&row=Figure+1%7C4&row=Figure+2%7C7&row=Figure+3%7C&xHeading=Figure&yHeading=&blank=x0',
+  'rule=x%3D4',
+  'from=0&to=100',
+]
+
 const TWO_WAY = [
   '',
   TRAVEL,
@@ -386,6 +403,20 @@ describe('scatter plot', () => {
   })
 })
 
+const SEGMENT = [
+  '',
+  'pt=A&pt=M&pt=B&part=4x-3%7Cticks%3D1&part=2x%252B9%7Cticks%3D1&span=0-2%7Cmode%3Dblank&cross=1&crossName=%E2%84%93&turn=20',
+  'pt=P&pt=Q&pt=R&pt=S&part=5&part=x%7Cmode%3Dblank&part=9&span=0-2%7Clabel%3D12&span=1-3%7Clabel%3D16&span=0-3&end=triangle&cross=2&crossAngle=60&crossName=m',
+  'pt=A&pt=B%7Cdot%3D0&part=%7Csize%3D2&span=&start=line&end=triangle&labelSize=large',
+]
+
+describe('segment addition', () => {
+  test.each(SEGMENT)('%s', (q) => {
+    const s = segment.settingsFromParams(params(q))
+    expect({ query: segment.settingsToQuery(s), figure: buildSegments(s) }).toMatchSnapshot()
+  })
+})
+
 describe('bar graph', () => {
   test.each(BAR)('%s', (q) => {
     const s = bar.settingsFromParams(params(q))
@@ -426,6 +457,14 @@ describe('two-way table', () => {
     const s = twoWay.settingsFromParams(params(q))
     const { read, ...figure } = buildTable(s)
     expect({ query: twoWay.settingsToQuery(s), missing: read.missing, problems: read.problems, figure }).toMatchSnapshot()
+  })
+})
+
+describe('table of values', () => {
+  test.each(VALUES)('%s', (q) => {
+    const s = values.settingsFromParams(params(q))
+    const { read, ...figure } = buildValues(s)
+    expect({ query: values.settingsToQuery(s), missing: read.missing, problems: read.problems, pattern: read.pattern, notes: read.notes, figure }).toMatchSnapshot()
   })
 })
 

@@ -1092,6 +1092,78 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school', 'Algebra 1'],
   },
 
+  'segment-addition': {
+    heading: 'Segment addition, midpoint and bisector figures',
+    intro: [
+      'The Segment Addition Generator draws points in order on a segment, ray or line, with each part between two points labeled above the line: a length like 12, an expression like 2x + 3, or a blank line for students. Add a brace under the whole segment, or any stretch of it, with its own label, so the figure shows AB + BC = AC.',
+      'Mark congruent parts with ticks for midpoint problems, and add a line crossing at a point for a segment bisector or perpendicular bisector. When the labels use one letter, the generator solves for it as a check, and draws the parts to scale from the answer unless you set their lengths yourself.',
+    ],
+    settings: [
+      'Two to seven points in order, each named and dotted or not',
+      'Each part’s label: a length, an expression in one letter, a blank line or nothing, and none to three congruence ticks',
+      'Up to three braces under the line, from any point to a later one, each labeled, blank or unlabeled',
+      'Each end stopping at its point or running on to an arrow, for a segment, a ray or a line',
+      'A line crossing at any point, named, at any angle, with a right-angle mark at 90°',
+      'How long each part is drawn, worked out from the labels or typed for a figure not drawn to scale; turning the whole figure; small, medium or large labels',
+    ],
+    faqs: [
+      {
+        q: 'Does it solve for x?',
+        a: 'Yes, as a check. When every label is a number or an expression in the same letter, it writes the equations the figure gives (AB + BC = AC, and AM = MB for parts with the same ticks), solves for the letter and lists every length below the parts. It tells you when the labels don’t add up or a length comes out 0 or less.',
+      },
+      {
+        q: 'How do I make a midpoint or segment bisector problem?',
+        a: 'Use three points, such as A, M and B, label AM and MB with expressions, and give both parts one tick. For a bisector, add a crossing line at M and name it; at 90° it gets a right-angle mark, for a perpendicular bisector.',
+      },
+      {
+        q: 'Is the figure drawn to scale?',
+        a: 'When the labels can be worked out, each part is drawn as long as its length, with none shorter than a fifth of the longest. Type a size for each part under Drawn lengths to draw it however you like, such as for a figure marked not drawn to scale.',
+      },
+      {
+        q: 'Can I make a ray or a line instead of a segment?',
+        a: 'Yes. Set either end to an arrow under Ends: one arrow makes a ray, two make a line with its points named along it, for questions on collinear points and naming rays.',
+      },
+    ],
+    imageAlt: 'A printable segment addition figure: points A, B and C on a segment, with AB labeled 2x + 1, BC labeled 3x − 4 and a brace under AC labeled 27, made with the Segment Addition Generator',
+    educationalLevel: ['Middle school', 'High school', 'Geometry'],
+  },
+
+  'table-of-values': {
+    heading: 'Tables of values for functions, rules and patterns',
+    intro: [
+      'The Table of Values Generator draws a table of x-values and the y-values a rule gives for them, running across in two rows or down in two columns. Type a rule like y = 2x + 1, y = x^2 − 3 or y = 1/x and the x-values as a range or a list, and every y is worked out for you: whole numbers and fractions exactly, anything else rounded. Or type the pairs yourself, numbers or words, for a pattern or a table with no rule.',
+      'Click any value on the figure to leave it blank for students, or blank every y at once. The settings panel gives each missing value and says whether the table is linear and its rate of change, so the answer key is ready too. Write the rule above the table, or leave a blank line for students to find it.',
+    ],
+    settings: [
+      'A rule in x, like y = 2x + 1, y = x^2, y = 3(2)^x or y = sin x, or pairs typed or pasted one per row, words too',
+      'The x-values as a range (From, To and Step) or a list, written as fractions, multiples of π or degrees when you type them that way',
+      'Blanks: click any value to leave it blank, blank every y at once, or leave a cell empty in a typed table',
+      'Worked-out values as fractions in lowest terms or as decimals, rounded to 0 to 4 places; where the rule has no value, undefined',
+      'The headings (x and y, Input and Output, x and f(x), or your own), a table title, and the rule written above the table or left as a blank line',
+      'The table running across in two rows or down in two columns, gray or plain headings, and small, medium or large labels',
+    ],
+    faqs: [
+      {
+        q: 'How do I make a complete-the-table worksheet?',
+        a: 'Type the rule and x-values, then click Blank every y, or click the values you want students to find one by one. Each blank and its value is listed under the table for your answer key.',
+      },
+      {
+        q: 'Can I make a find-the-rule question?',
+        a: 'Yes. Type the rule and leave The rule, above the table on Blank line, so students write it in. Or pick Typed and type the pairs; the settings panel says whether they are linear and gives the line they follow.',
+      },
+      {
+        q: 'Can the values be fractions or decimals?',
+        a: 'Yes. Type x-values like 1/2 or a step of 0.5, and the y-values are written as fractions in lowest terms, or as decimals if you pick Decimals. Values that are not fractions, like the square root of 2, are rounded to the places you choose.',
+      },
+      {
+        q: 'Can I make an input-output table or a T-chart?',
+        a: 'Yes. Pick the Input / Output headings, or type your own, and set the table to run down for a T-chart in two columns.',
+      },
+    ],
+    imageAlt: 'A printable table of values for y = 2x + 1, with x from −2 to 3 across the top and two of the y-values left blank, made with the Table of Values Generator',
+    educationalLevel: ['Middle school', 'High school', 'Pre-algebra', 'Algebra 1'],
+  },
+
   'circle': {
     heading: 'Circle diagrams for circle theorems, arcs and sectors',
     intro: [

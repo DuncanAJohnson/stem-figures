@@ -386,6 +386,28 @@ _Avoid_: Heading, bearing, rotation
 The angle over 180° that wraps around the outside, such as the 300° beside a 60° angle. It's an angle like any other, so it can be labeled, marked and shaded.
 _Avoid_: Exterior angle (a shape's is different), outside angle
 
+### Segment addition
+
+**Segment Addition**:
+A figure of points in order on one straight line, with the parts between them labeled, for segment addition, midpoint and bisector problems: AB + BC = AC. The line is a segment, a ray or a line, by how its two ends finish. Its generator is the Segment Addition Generator. Unlike a **Number Line**, it has no numbers along it; its lengths are what's written on its parts.
+_Avoid_: Segment diagram, collinear points figure (fine as search words), number line
+
+**Part** (in this figure):
+The piece of the line between two neighbouring points, named by them (AB), labeled above the line with a length, an expression in one letter like 2x + 3, a blank line or nothing, and marked with none to three congruence ticks. Parts with the same ticks are congruent, as the two halves at a midpoint are.
+_Avoid_: Segment (any two points make one; a part is between neighbours), piece, section
+
+**Span**:
+A stretch of the line from one point to a later one, over one or more parts, drawn as a brace under the point names with its own label: the AC in AB + BC = AC. Up to three; spans that overlap go in separate rows, the shorter nearer the line.
+_Avoid_: Whole, total, bracket, segment (alone)
+
+**Crossing line**:
+A line through one of the points at any angle, named like ℓ, with a right-angle mark at 90°: a segment bisector where it crosses at a midpoint. The braces go below its arrow.
+_Avoid_: Bisector (only when it crosses at a midpoint), transversal, perpendicular
+
+**Solving** (in this figure):
+Working out the letter and every length from the labels, as a check shown under the parts: each span equals the sum of its parts, and parts with the same ticks are equal. Only numbers and expressions linear in one letter are read; a blank part follows from a span around it. Each part is drawn as long as its length, worked out this way, unless the teacher types the drawn lengths; none is drawn shorter than a fifth of the longest.
+_Avoid_: Answer (fine in an example's answer key), check
+
 ### Circles
 
 **Circle** (the figure):
@@ -708,3 +730,29 @@ _Avoid_: Line, connection, link
 **Function** (on a mapping diagram):
 A mapping diagram where every input has exactly one arrow. The generator tells the teacher whether theirs is one, and why not (an input with two outputs, or one with none), but never writes it on the figure.
 _Avoid_: Well-defined, valid
+
+### Tables of values
+
+**Table of Values**:
+A figure of x-values and the y-value for each, in a table that runs across (an x row over a y row) or down (an x column beside a y column), each headed x and y, Input and Output, or the teacher's own words. Its values come from a rule or are typed as pairs. Its generator is the Table of Values Generator.
+_Avoid_: Function table, input-output table, in-out table, T-chart, x-y table (all fine as search words, not as the name); two-way table (counts sorted two ways)
+
+**Rule** (on a table of values):
+The equation the y-values come from, typed in x as y = 2x + 1 (y = can be left off, and f(x) = reads as y =), worked out at each x-value. It can be written above the table, left as a blank line after y = for students to find, or left off. Its worked-out values are written as whole numbers and fractions in lowest terms (or multiples of π, when the x-values are), or as decimals; anything else is rounded, and where the rule has no value it's written undefined.
+_Avoid_: Function (fine in teaching), formula, equation (that's a coordinate grid's or number line's row)
+
+**x-values**:
+The numbers a table of values works its rule out at: a range (From, To and Step, written as the range is typed, in fractions, π or degrees) or a list typed as the teacher wants them written. A table holds up to 20.
+_Avoid_: Inputs (that's a mapping diagram's), domain, x column
+
+**Pair** (on a table of values):
+One x-value and its y-value, typed when the table is Typed rather than from a rule. Either can be a number, math or words (Figure 1), and either can be left empty.
+_Avoid_: Ordered pair (fine in teaching), point, row
+
+**Blank** (on a table of values):
+A value left empty for students: clicked on the figure, set by Blank every y, or typed empty. Each one's value is worked out where it can be (what the rule gives, or, in a typed table, the value on the line the other pairs are on) and listed for the teacher, named by the headings: y when x = 3.
+_Avoid_: Missing value (that's the list of them), hidden value, gap
+
+**Pattern** (on a table of values):
+What the panel says the pairs do: linear, with its rate of change (and, for typed pairs, the line y = mx + b), not linear, or not a function when an x-value has two y-values. It's never written on the figure.
+_Avoid_: Trend, relationship, slope (fine in teaching)

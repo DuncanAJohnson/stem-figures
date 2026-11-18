@@ -197,6 +197,21 @@ export const MATH: CatalogEntry[] = [
     ],
   },
   {
+    id: 'segment-addition',
+    site: 'math',
+    name: 'Segment Addition Generator',
+    path: '/segment-addition',
+    blurb: 'Points on a segment with lengths or expressions on each part, braces and congruence ticks.',
+    description:
+      'Make printable segment addition figures for geometry. Put points in order on a segment, ray or line, label each part with a length or an expression like 2x + 3, add a brace for the whole, mark midpoints with congruence ticks or a bisector, and copy it into a worksheet or test.',
+    keywords: [
+      'segment addition', 'segment addition postulate', 'segments', 'line segment', 'line segments', 'midpoint', 'midpoints',
+      'segment bisector', 'bisector', 'perpendicular bisector', 'congruent segments', 'congruence marks', 'tick marks',
+      'collinear points', 'between', 'betweenness', 'partition', 'solve for x', 'algebraic expressions', 'ray', 'rays', 'line',
+      'brace', 'segment length', 'measuring segments', 'geometry', 'diagram', 'labels', 'printable',
+    ],
+  },
+  {
     id: 'circle',
     site: 'math',
     name: 'Circle Generator',
@@ -474,6 +489,21 @@ export const MATH: CatalogEntry[] = [
       'mapping diagram', 'mapping diagrams', 'mapping', 'arrow diagram', 'function', 'functions', 'relation', 'relations',
       'is it a function', 'not a function', 'function or not', 'one-to-one', 'many-to-one', 'input', 'output', 'inputs',
       'outputs', 'domain', 'range', 'codomain', 'ordered pairs', 'pairs', 'arrows', 'ovals', 'algebra', 'printable',
+    ],
+  },
+  {
+    id: 'table-of-values',
+    site: 'math',
+    name: 'Table of Values Generator',
+    path: '/table-of-values',
+    blurb: 'Tables of x and y values from a rule or typed pairs, with blanks for students to fill in.',
+    description:
+      'Make a printable table of values for your class. Type a rule like y = 2x + 1 and the x-values, or type the pairs yourself, run it across or down, click any value to leave a blank, write the rule or a blank for it, and copy it into a worksheet or test.',
+    keywords: [
+      'table of values', 'tables of values', 'value table', 'x y table', 'xy table', 'x-y table', 'input output table', 'input-output table',
+      'in out table', 'in-out table', 'function table', 'function tables', 't-chart', 't chart', 'rule', 'function rule', 'find the rule',
+      'complete the table', 'linear function', 'linear equation', 'rate of change', 'slope', 'pattern', 'patterns', 'sequence',
+      'quadratic', 'ordered pairs', 'input', 'output', 'function', 'functions', 'algebra', 'pre-algebra', 'printable',
     ],
   },
   {

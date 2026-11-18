@@ -1882,6 +1882,73 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('table-of-values', [
+    {
+      slug: 'complete-the-table-of-values-for-y-equals-2x-plus-1',
+      title: 'Complete the table of values for y = 2x + 1',
+      alt: 'A table of values for y = 2x + 1 with x from −2 to 3 across the top and the y-values for x = 1 and x = 3 left blank',
+      caption:
+        'The rule y = 2x + 1 written above a table of values that runs across in two rows. The x row reads −2, −1, 0, 1, 2 and 3, and the y row reads −3, −1, 1, blank, 5 and blank, for students to fill in 3 and 7.',
+      settings: { rule: 'y=2x+1', to: '3', blanks: ['y3', 'y5'], showRule: 'text' },
+    },
+    {
+      slug: 'table-of-values-for-a-parabola-y-equals-x-squared-minus-3',
+      title: 'Table of values for the parabola y = x² − 3',
+      alt: 'A table of values for y = x² − 3 with x from −3 to 3 and y-values 6, 1, −2, −3, −2, 1 and 6',
+      caption:
+        'A table of values for the quadratic y = x² − 3, written above it, with x from −3 to 3 across the top and the y-values 6, 1, −2, −3, −2, 1 and 6 under them, ready to plot the parabola on a coordinate grid.',
+      settings: { rule: 'y=x^2-3', from: '-3', to: '3', showRule: 'text' },
+    },
+    {
+      slug: 'input-output-table-find-the-rule',
+      title: 'Input-output table: find the rule',
+      alt: 'An input-output table running down, with inputs 1, 2, 3, 5 and 10, outputs 1, 4 and 7 given and two left blank, under a blank line for the rule',
+      caption:
+        'An input-output table in two columns headed Input and Output, under a blank line after y = for the rule. The inputs are 1, 2, 3, 5 and 10; the outputs for 1, 2 and 3 are 1, 4 and 7, and the outputs for 5 and 10 are blank. The rule is y = 3x − 2.',
+      settings: {
+        rule: 'y=3x-2', xFrom: 'list', list: '1, 2, 3, 5, 10', xHeading: 'Input', yHeading: 'Output', direction: 'down',
+        showRule: 'blank', blanks: ['y3', 'y4'],
+      },
+    },
+    {
+      slug: 'table-of-values-with-fractions-y-equals-half-x-plus-1',
+      title: 'Table of values with fractions for y = x/2 + 1',
+      alt: 'A table of values for y = x/2 + 1 with x from 0 to 2 by halves and every y-value left blank',
+      caption:
+        'A table of values for y = x/2 + 1, written above it, with x counting from 0 to 2 by halves (0, 1/2, 1, 3/2 and 2) as stacked fractions, and every y-value left blank for students to work out: 1, 5/4, 3/2, 7/4 and 2.',
+      settings: { rule: 'y=x/2+1', from: '0', to: '2', step: '1/2', showRule: 'text', blanks: ['y0', 'y1', 'y2', 'y3', 'y4'] },
+    },
+    {
+      slug: 'pattern-table-figure-number-and-number-of-tiles',
+      title: 'Pattern table: figure number and number of tiles',
+      alt: 'A table with Figure number 1, 2, 3, 4 and 10 across the top and Number of tiles 5, 8 and 11, with the tiles for figures 4 and 10 left blank',
+      caption:
+        'A table for a growing pattern titled Tile pattern, with the headings Figure number and Number of tiles. Figures 1, 2 and 3 have 5, 8 and 11 tiles; the numbers of tiles for figures 4 and 10 are blank, for students to find 14 and 32 from the pattern of adding 3.',
+      settings: {
+        source: 'typed',
+        rows: [
+          { name: '1', cells: [{ value: '5' }] },
+          { name: '2', cells: [{ value: '8' }] },
+          { name: '3', cells: [{ value: '11' }] },
+          { name: '4', cells: [{ value: '' }] },
+          { name: '10', cells: [{ value: '' }] },
+        ],
+        xHeading: 'Figure number',
+        yHeading: 'Number of tiles',
+        title: 'Tile pattern',
+        titleMode: 'text',
+      },
+    },
+    {
+      slug: 'table-of-values-for-an-exponential-function-y-equals-2-to-the-x',
+      title: 'Table of values for the exponential function y = 2ˣ',
+      alt: 'A table of values for y = 2 to the x with x from −2 to 3 and y-values 1/4, 1/2, 1, 2, 4 and 8',
+      caption:
+        'A table of values for the exponential function y = 2ˣ, written above it, with x from −2 to 3 and the y-values 1/4, 1/2, 1, 2, 4 and 8, written as fractions where they are, so students see the values double each time.',
+      settings: { rule: 'y=2^x', to: '3', showRule: 'text' },
+    },
+  ]),
+
   ...examplesOf('length-reading', [
     {
       slug: 'inch-ruler-measuring-to-the-nearest-quarter-inch',
@@ -1924,6 +1991,69 @@ export const EXAMPLES: Example[] = [
       settings: { system: 'imperial', imperialMarks: '4', start: 1, length: 2.5 },
     },
   ]),
+  ...examplesOf('segment-addition', [
+    {
+      slug: 'segment-addition-postulate-solve-for-x',
+      title: 'Segment addition postulate: solve for x',
+      alt: 'Points A, B and C on a segment, with AB labeled 3x − 2, BC labeled 2x + 7 and a brace under AC labeled 45',
+      caption:
+        'A segment addition problem: B lies between A and C, AB is 3x − 2, BC is 2x + 7, and a brace under the whole segment gives AC = 45. Students write AB + BC = AC, solve 5x + 5 = 45 for x = 8, and find AB = 22 and BC = 23. The parts are drawn to those lengths.',
+      settings: { parts: [{ label: '3x-2' }, { label: '2x+7' }], spans: [{ from: 0, to: 2, label: '45' }] },
+    },
+    {
+      slug: 'midpoint-of-a-segment-with-expressions',
+      title: 'Midpoint of a segment with expressions',
+      alt: 'Points A, M and B on a segment, with AM labeled 5x − 8 and MB labeled 3x + 6, each with one congruence tick, and a blank line under a brace for AB',
+      caption:
+        'M is the midpoint of AB: the single tick on each half marks AM and MB congruent, with AM = 5x − 8 and MB = 3x + 6. Students set them equal to get x = 7, so AM = MB = 27, and write the length of AB, 54, on the blank line under the brace.',
+      settings: {
+        points: [{ name: 'A' }, { name: 'M' }, { name: 'B' }],
+        parts: [{ label: '5x-8', ticks: 1 }, { label: '3x+6', ticks: 1 }],
+        spans: [{ from: 0, to: 2, label: '', mode: 'blank' }],
+      },
+    },
+    {
+      slug: 'perpendicular-bisector-of-a-segment',
+      title: 'Perpendicular bisector of a segment',
+      alt: 'Segment AB with midpoint M, AM labeled 2x + 5 and MB labeled 4x − 7 with one tick each, and line ℓ crossing at M with a right-angle mark',
+      caption:
+        'Line ℓ is the perpendicular bisector of AB: it crosses at the midpoint M at a right angle, and the ticks mark AM and MB congruent. With AM = 2x + 5 and MB = 4x − 7, x = 6 and each half is 17, so AB is 34.',
+      settings: {
+        points: [{ name: 'A' }, { name: 'M' }, { name: 'B' }],
+        parts: [{ label: '2x+5', ticks: 1 }, { label: '4x-7', ticks: 1 }],
+        spans: [],
+        cross: 1,
+        crossName: 'ℓ',
+      },
+    },
+    {
+      slug: 'segment-addition-with-four-points-and-overlapping-segments',
+      title: 'Segment addition with four points and overlapping segments',
+      alt: 'Points P, Q, R and S on a segment, with PQ labeled 5, RS labeled 9, a blank line over QR, and braces for PR = 12, QS = 16 and PS left unlabeled',
+      caption:
+        'Four collinear points with overlapping segments: PQ = 5 and RS = 9 are given, and braces show PR = 12 and QS = 16. Students find QR = 7 from PR, check it against QS, and find the whole segment PS = 21.',
+      settings: {
+        points: [{ name: 'P' }, { name: 'Q' }, { name: 'R' }, { name: 'S' }],
+        parts: [{ label: '5' }, { label: '', mode: 'blank' }, { label: '9' }],
+        spans: [{ from: 0, to: 2, label: '12' }, { from: 1, to: 3, label: '16' }, { from: 0, to: 3, label: '' }],
+      },
+    },
+    {
+      slug: 'line-with-four-collinear-points',
+      title: 'Line with four collinear points',
+      alt: 'A line with arrows at both ends through four points A, B, C and D, with no lengths',
+      caption:
+        'A line through four collinear points A, B, C and D, with an arrow at each end. Use it to name the line, segments and rays (such as ray BD and ray BA, which are opposite rays), or to ask which point is between two others.',
+      settings: {
+        points: [{ name: 'A' }, { name: 'B' }, { name: 'C' }, { name: 'D' }],
+        parts: [{ label: '' }, { label: '' }, { label: '' }],
+        spans: [],
+        start: 'triangle',
+        end: 'triangle',
+      },
+    },
+  ]),
+
   ...examplesOf('circle', [
     {
       slug: 'central-angle-and-inscribed-angle-on-the-same-arc',

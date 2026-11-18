@@ -17,7 +17,9 @@ import type { Settings as NumberLineSettings } from '$lib/generators/number-line
 import type { Settings as PieChartSettings } from '$lib/generators/pie-chart/settings'
 import type { Settings as PolygonSettings } from '$lib/generators/regular-polygon/settings'
 import type { Settings as ScatterPlotSettings } from '$lib/generators/scatter-plot/settings'
+import type { Settings as SegmentAdditionSettings } from '$lib/generators/segment-addition/settings'
 import type { Settings as StemAndLeafSettings } from '$lib/generators/stem-and-leaf/settings'
+import type { Settings as TableOfValuesSettings } from '$lib/generators/table-of-values/settings'
 import type { Settings as TreeDiagramSettings } from '$lib/generators/tree-diagram/settings'
 import type { Settings as TriangleSettings } from '$lib/generators/triangle/settings'
 import type { Settings as TwoWayTableSettings } from '$lib/generators/two-way-table/settings'
@@ -42,6 +44,7 @@ export interface SettingsById {
   'box-plot': BoxPlotSettings
   'dot-plot': DotPlotSettings
   'scatter-plot': ScatterPlotSettings
+  'segment-addition': SegmentAdditionSettings
   'bar-graph': BarGraphSettings
   'stem-and-leaf': StemAndLeafSettings
   'cumulative-frequency': CumulativeSettings
@@ -52,6 +55,7 @@ export interface SettingsById {
   'tree-diagram': TreeDiagramSettings
   'pie-chart': PieChartSettings
   'mapping-diagram': MappingSettings
+  'table-of-values': TableOfValuesSettings
   'length-reading': LengthSettings
   'circle': CircleSettings
 }

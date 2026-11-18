@@ -28,11 +28,24 @@ and `docs/adr/` for decisions.
 - `/regular-polygon` **Regular Polygon Generator**: a regular polygon of 3 to
   20 sides, sized by its side, radius or apothem, with the apothem, a radius or
   all the radii drawn from its center, and marks on every side and angle.
+- `/segment-addition` **Segment Addition Generator**: two to seven points in
+  order on a segment, ray or line, each part between neighbours labeled above
+  the line with a length, an expression in one letter, a blank line or
+  nothing, with congruence ticks; up to three braces under the line for spans
+  like AC, and a named line crossing at any point (a bisector). Labels in one
+  letter are solved as a check, and the parts are drawn to the solved lengths
+  unless typed.
 - `/mapping-diagram` **Mapping Diagram Generator**: inputs and outputs typed or
   pasted as lists (or as ordered pairs), and arrows chosen per input, so it can
   show a function or a relation that isn't one; the panel says which, and why.
   Each side is titled (Input and Output, or text, a blank line or nothing) and
   drawn in an oval, a box or nothing.
+- `/table-of-values` **Table of Values Generator**: x-values (a range or a
+  list) and the y-value a rule gives for each, or pairs typed or pasted,
+  running across or down. Any value can be clicked into a blank; the panel
+  gives each blank's value and whether the pairs are linear. Values are
+  written as fractions or decimals, and the rule above the table, written or
+  as a blank line.
 - `/bar-graph` **Bar Graph Generator**: a table typed or pasted (a category on
   each row, a series in each column), drawn as upright columns or sideways
   bars, side by side or stacked, with values on the bars, ± error bars, a key,
