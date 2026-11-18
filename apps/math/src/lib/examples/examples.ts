@@ -757,7 +757,7 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'scatter-plot-of-hours-studied-and-test-scores-with-line-of-best-fit',
       title: 'Scatter plot of hours studied and test scores, with a line of best fit',
-      alt: 'A scatter plot of 12 students’ hours studied against their test scores, with the least-squares line y = 5.07x + 48.33 and r = 0.99 written in the top left, and a zig-zag break at the bottom of the score axis',
+      alt: 'A scatter plot of 12 students’ hours studied against their test scores, with the least-squares line y = 5.07x + 48.33 drawn, the equation and r = 0.99 written below the graph, and a zig-zag break at the bottom of the score axis',
       caption:
         'A scatter plot of hours studied (0 to 9) against test score for 12 students, with the score axis starting at 50 after a zig-zag break. The least-squares line of best fit, y = 5.07x + 48.33, runs through the points, and r = 0.99 shows a strong positive correlation. Use it to interpret the slope and intercept or to predict a score.',
       settings: {
@@ -824,7 +824,7 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'scatter-plot-with-no-correlation-shoe-size-and-quiz-score',
       title: 'Scatter plot with no correlation: shoe size and quiz score',
-      alt: 'A scatter plot of 12 students’ shoe sizes from 6 to 12 against quiz scores out of 10, scattered with no pattern, with r = −0.22 written in the corner',
+      alt: 'A scatter plot of 12 students’ shoe sizes from 6 to 12 against quiz scores out of 10, scattered with no pattern, with r = −0.22 written below the graph',
       caption:
         'A scatter plot of 12 students’ shoe sizes against their scores on a 10-point quiz, with the points spread with no clear pattern and r = −0.22, little or no correlation. Use it beside positive and negative examples to compare kinds of association.',
       settings: {
@@ -843,15 +843,14 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'find-the-equation-of-the-line-of-best-fit-arm-span-and-height',
       title: 'Find the equation of the line of best fit: arm span and height',
-      alt: 'A scatter plot of 11 students’ arm spans from 150 to 180 cm against their heights from 150 to 185 cm, with the line of best fit drawn and blank lines after y = and r = for students to fill in',
+      alt: 'A scatter plot of 11 students’ arm spans from 150 to 180 cm against their heights from 150 to 185 cm, with the line of best fit drawn and a blank line after y = below the graph for students to fill in',
       caption:
-        'A scatter plot of 11 students’ arm spans against their heights in centimeters, with the least-squares line drawn and blank lines after y = and r = for students to work out the equation and the correlation coefficient. The answer key gives y = x + 0.23 and r = 0.98: height is close to arm span.',
+        'A scatter plot of 11 students’ arm spans against their heights in centimeters, with the least-squares line drawn and a blank line after y = for students to work out its equation. The answer key gives y = x + 0.23 and r = 0.98: height is close to arm span.',
       settings: {
         input: 'list',
         data: '150, 152\n155, 154\n158, 160\n160, 159\n163, 165\n165, 163\n168, 170\n170, 172\n173, 171\n176, 178\n180, 181',
         fit: 'best',
         equation: 'blank',
-        r: 'blank',
         xTitle: 'Arm span (cm)',
         xTitleMode: 'text',
         yTitle: 'Height (cm)',

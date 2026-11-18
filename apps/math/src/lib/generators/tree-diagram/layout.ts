@@ -42,27 +42,32 @@ export function buildTree(s: Settings) {
   const pad = fs * 0.35
   const down = s.direction === 'down'
   const blanks = new Set(s.blanks)
-  // A blank line takes little height, so it sits close to its branch.
-  const blankSize = { w: fs * 1.8, asc: fs * 0.4, desc: fs * 0.1 }
+  // A blank line takes a line of writing room above it, as tall as a
+  // fraction, so a student's answer fits on it clear of the branches.
+  const blankSize = { w: fs * 2.4, asc: fs * 1.3, desc: fs * 0.15 }
+  // In a row of text (outcomes, path names and their probabilities) a blank
+  // line sits on the text's baseline, so it lines up with the words beside it.
+  const letter = word('H', fs)!
+  const rowBlank = { w: fs * 2.4, asc: letter.asc, desc: letter.desc }
 
   /**
    * A label's contents by what's typed and how its kind is shown: math, a
    * blank line, or nothing. `empty` labels (nothing typed) are always blanks.
    */
-  function content(show: Show, key: string, make: () => MathBox | null, empty: boolean): { box: MathBox | null; size: typeof blankSize; pick: boolean } | null {
+  function content(show: Show, key: string, make: () => MathBox | null, empty: boolean, blank = blankSize): { box: MathBox | null; size: typeof blankSize; pick: boolean } | null {
     if (show === 'hide') return null
-    if (show === 'blank' || empty || blanks.has(key)) return { box: null, size: blankSize, pick: show === 'show' && !empty }
+    if (show === 'blank' || empty || blanks.has(key)) return { box: null, size: blank, pick: show === 'show' && !empty }
     const box = make()
-    return box ? { box, size: box, pick: true } : { box: null, size: blankSize, pick: false }
+    return box ? { box, size: box, pick: true } : { box: null, size: blank, pick: false }
   }
 
   // Each node's outcome name and probability, and each path's name and probability.
-  const outcomeOf = (n: TreeNode) => content(s.showOutcomes, `o${n.id}`, () => word(n.outcome, fs), !n.outcome)
+  const outcomeOf = (n: TreeNode) => content(s.showOutcomes, `o${n.id}`, () => word(n.outcome, fs), !n.outcome, rowBlank)
   const probOf = (n: TreeNode) => content(s.showProbs, `p${n.id}`, () => layoutMath(n.prob, fs), !n.prob)
   const outcomes = read.nodes.map((stage) => stage.map(outcomeOf))
   const probs = read.nodes.map((stage) => stage.map(probOf))
-  const names = read.paths.map((p) => content(s.showNames, `n${p.id}`, () => word(p.name, fs), p.nameBlank))
-  const pathProbs = read.paths.map((p) => content(s.showPathProbs, `q${p.id}`, () => layoutMath(p.prob!.text, fs), !p.prob))
+  const names = read.paths.map((p) => content(s.showNames, `n${p.id}`, () => word(p.name, fs), p.nameBlank, rowBlank))
+  const pathProbs = read.paths.map((p) => content(s.showPathProbs, `q${p.id}`, () => layoutMath(p.prob!.text, fs), !p.prob, rowBlank))
   const column = names.some(Boolean) || pathProbs.some(Boolean)
   const start = s.start.trim() ? word(s.start.trim(), fs) : null
   const titles = s.stageTitles ? s.stages.map((st) => (st.title.trim() ? word(st.title.trim(), fs * 0.95) : null)) : []

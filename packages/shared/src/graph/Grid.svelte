@@ -79,7 +79,8 @@
       </g>
     {/if}
 
-    <g stroke={lines.block} stroke-width={lines.blockWidth} shape-rendering="crispEdges">
+    <!-- Square ends, so the grid's outer lines meet at its corners without a notch. -->
+    <g stroke={lines.block} stroke-width={lines.blockWidth} stroke-linecap="square" shape-rendering="crispEdges">
       {#each vLines as x}<line x1={x} y1={g.grid.y} x2={x} y2={g.grid.y + g.grid.h} />{/each}
       {#each hLines as y}<line x1={g.grid.x} y1={y} x2={g.grid.x + g.grid.w} y2={y} />{/each}
     </g>
@@ -95,6 +96,10 @@
       marker-start={cap(settings.yStartCap)} marker-end={cap(settings.yEndCap)}
     />
   </g>
+  <!-- Fills the corner where axes along the grid's edges meet, which their flat ends leave notched. -->
+  <rect
+    x={g.yAxis.x - lines.axisWidth / 2} y={g.xAxis.y - lines.axisWidth / 2} width={lines.axisWidth} height={lines.axisWidth} fill={INK}
+  />
 
   {@render children?.()}
 

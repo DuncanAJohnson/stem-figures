@@ -163,7 +163,8 @@
       {/if}
 
       {#each read.notes as note}<p class="help">{note}</p>{/each}
-      {#if read.pattern}<p class="help pattern">{read.pattern}</p>{/if}
+      <!-- A rule already says its pattern; only a typed table needs it worked out. -->
+      {#if read.pattern && clean.source !== 'rule'}<p class="help pattern">{read.pattern}</p>{/if}
 
       {#if read.n}
         <div class="blank-bar">

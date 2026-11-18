@@ -51,7 +51,7 @@
     return `${given ? pretty(given) : solvedText(k) || '?'}${unitText}`
   }
   const measureNote = (k: Part) =>
-    typed(k) && clean[k as Measure].trim() ? 'Its measure, as you typed it.' : `Its measure, worked out from the others and rounded to ${ROUND_NAMES[clean.round]}.`
+    typed(k) && clean[k as Measure].trim() ? 'Its measure, as you typed it.' : `Rounded to the nearest ${['whole number', 'tenth', 'hundredth'][clean.round]}.`
   const fieldProblem = $derived(form.inputs.map((k) => read.problems[k]).find(Boolean) ?? null)
 
   /** How to fill in the measures, for the help tip. */
@@ -147,7 +147,7 @@
 
       {#if form.shape === 'cube'}
         <div class="field">
-          <span id="cube-net">Net <span class="hint">all 11 nets of a cube</span></span>
+          <span id="cube-net">Net</span>
           <div class="nets" role="radiogroup" aria-labelledby="cube-net">
             {#each CUBE_NETS as _, i}
               {@const icon = netIcon(i)}
@@ -283,7 +283,7 @@
   .solved { flex: 1; min-width: 0; padding: 0.45rem 0.6rem; font-family: 'Times New Roman', Times, serif; font-size: 1.05rem; color: var(--muted); }
   .suffix { width: 1.6rem; flex: none; font-family: 'Times New Roman', Times, serif; font-size: 1.1rem; color: var(--muted); }
   .suffix.unit { font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .not-on { width: 2.4rem; flex: none; text-align: center; color: var(--muted); }
+  .not-on { width: 5.2rem; flex: none; text-align: center; color: var(--muted); }
 
   .help { margin: 0.2rem 0 0; font-size: 0.84rem; color: var(--muted); }
   .help.problem { color: var(--red); font-weight: 600; }

@@ -148,9 +148,7 @@
           <button type="button" role="radio" aria-checked={clean.fit === value} class:on={clean.fit === value} onclick={() => (s.fit = value as Fit)}>{title}</button>
         {/each}
       </div>
-      {#if clean.fit === 'best'}
-        <p class="hint">The least-squares line through every point, as LinReg on a calculator works it out.</p>
-      {:else if clean.fit === 'own'}
+      {#if clean.fit === 'own'}
         <label class="field">
           Line
           <input type="text" placeholder="y = 2x + 1" aria-invalid={!!read.problems.line} bind:value={s.line} />
@@ -203,7 +201,6 @@
           {@const key = `${axis}${k}` as RangeKey}
           {#if read.problems[key]}<p class="help problem">{read.problems[key]}</p>{/if}
         {/each}
-        <p class="hint range-hint">Leave these empty to fit the data. An axis starting past 0 gets a zig-zag break.</p>
         <label class="field">
           Numbers
           {#if axis === 'x'}
@@ -241,12 +238,10 @@
   textarea[aria-invalid='true'] { border-color: var(--red); }
   .help { margin: 0; font-size: 0.84rem; color: var(--muted); }
   .help.problem { color: var(--red); font-weight: 600; }
-  .hint { font-weight: 400; color: var(--muted); font-size: 0.84rem; margin: 0.5rem 0 0.75rem; }
 
   .range-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; margin-bottom: 0.5rem; }
   .range-field { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 600; font-size: 0.88rem; min-width: 0; }
   .range-fields ~ .help { margin: -0.1rem 0 0.5rem; }
-  .range-hint { margin-top: 0; }
   .field { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.88rem; margin: 0.75rem 0 0; }
   .field:first-child { margin-top: 0; }
   .field input { width: 100%; }

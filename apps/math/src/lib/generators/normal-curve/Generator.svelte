@@ -9,7 +9,6 @@
   import HelpTip from '$shared/HelpTip.svelte'
   import LabelField from '$shared/LabelField.svelte'
   import Section from '$shared/Section.svelte'
-  import MathInput from '$lib/shared/MathInput.svelte'
   import { FILLS } from '$lib/stats/fills'
   import NormalCurve from './NormalCurve.svelte'
   import {
@@ -101,11 +100,11 @@
       <div class="pair">
         <div class="range-field">
           <label for="mean">Mean (μ)</label>
-          <MathInput id="mean" placeholder="0" aria-invalid={!!read.problems.mean} bind:value={s.mean} />
+          <input type="text" id="mean" inputmode="decimal" placeholder="0" aria-invalid={!!read.problems.mean} bind:value={s.mean} />
         </div>
         <div class="range-field">
           <label for="sd">Standard deviation (σ)</label>
-          <MathInput id="sd" placeholder="1" aria-invalid={!!read.problems.sd} bind:value={s.sd} />
+          <input type="text" id="sd" inputmode="decimal" placeholder="1" aria-invalid={!!read.problems.sd} bind:value={s.sd} />
         </div>
       </div>
       {#if read.problems.mean}<p class="help problem">{read.problems.mean}</p>{/if}

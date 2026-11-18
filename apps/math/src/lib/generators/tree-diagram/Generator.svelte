@@ -60,6 +60,13 @@
   /** The nodes before stage k, named by their paths, for its rows when they differ by branch. */
   const rowNames = (k: number) => tuples(counts, k).map((t) => pathName(t.map((j, i) => clean.stages[i].outcomes[j] || '?'), 'comma'))
 
+  // The column at the end of the tree, its path names and their probabilities, on or off at once.
+  const pathsShown = $derived(clean.showNames !== 'hide' || clean.showPathProbs !== 'hide')
+  function showPaths(on: boolean) {
+    s.showNames = on ? 'show' : 'hide'
+    s.showPathProbs = on ? 'show' : 'hide'
+  }
+
   // Clicking a label on the figure makes it a blank, or gives it back.
   function toggle(part: Part) {
     s.blanks = clean.blanks.includes(part.key) ? clean.blanks.filter((k) => k !== part.key) : [...clean.blanks, part.key]
@@ -167,10 +174,10 @@
               {/each}
             </div>
             <div class="grid" style:--cols={stage.outcomes.length} role="group" aria-label="Probabilities of stage {k + 1} after each branch">
-              <span class="col-head">After</span>
-              {#each stage.outcomes as outcome, j (j)}<span class="col-head">{outcome || `Outcome ${j + 1}`}</span>{/each}
+              <span></span>
+              {#each stage.outcomes as outcome, j (j)}<span class="col-head">P({outcome || `outcome ${j + 1}`})</span>{/each}
               {#each rowNames(k) as after, r (r)}
-                <span class="row-name">{after}</span>
+                <span class="row-name">after {after}</span>
                 {#each stage.outcomes as outcome, j (j)}
                   <input type="text" class="prob" inputmode="decimal" aria-label="Probability of {outcome || `outcome ${j + 1}`} after {after}" placeholder="blank" value={rowOf(stage, r)[j]} oninput={(e) => setProb(k, r, j, e.currentTarget.value)} />
                 {/each}
@@ -203,6 +210,9 @@
       {#each [read.problems.sums, read.problems.overOne] as problem}
         {#if problem}<p class="help problem">{problem}</p>{/if}
       {/each}
+      <label class="check">
+        <input type="checkbox" checked={pathsShown} onchange={(e) => showPaths(e.currentTarget.checked)} /> Path names and probabilities
+      </label>
       <div class="blank-bar">
         <span>Click any label on the figure to make it a blank{clean.blanks.length ? `; ${clean.blanks.length} so far` : ''}.</span>
         {#if clean.blanks.length}

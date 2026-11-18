@@ -27,7 +27,7 @@ export const INPUTS = { table: 'Table', list: 'List of pairs' } as const
 export const MARKS = { dot: 'Dots', cross: 'Crosses' } as const
 export const FITS = { none: 'None', best: 'Least squares', own: 'My own line' } as const
 export const EQUATION_MODES = { text: 'Written', blank: 'Blank line', none: 'Hidden' } as const
-export const CORRELATIONS = { none: 'None', r: 'r', r2: 'r²', blank: 'r = blank line' } as const
+export const CORRELATIONS = { none: 'None', r: 'r', r2: 'r²' } as const
 export const PLACES = [0, 1, 2, 3, 4]
 
 export type Input = keyof typeof INPUTS
@@ -413,6 +413,6 @@ export function equationText(line: { slope: number; intercept: number }, places:
 
 /** r or r², as written on the graph, or null for none. */
 export function correlationText(s: Settings, r: number | null): string | null {
-  if (s.r === 'none' || s.r === 'blank' || r === null) return null
+  if (s.r === 'none' || r === null) return null
   return s.r === 'r' ? `r = ${rounded(r, s.places)}` : `r² = ${rounded(r * r, s.places)}`
 }

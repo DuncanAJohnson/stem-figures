@@ -1,6 +1,6 @@
 <script lang="ts">
   // The scatter plot itself: the grid and axes from $shared/graph, with any
-  // zig-zag breaks, the points, the line and its equation drawn on it.
+  // zig-zag breaks, the points, the line, and its equation and r written below.
   import Grid from '$shared/graph/Grid.svelte'
   import { INK, SANS } from '$shared/graph/grid'
   import { buildScatter } from './scatter.js'
@@ -17,7 +17,7 @@
   <!-- The breaks: a white cover over the axis, and the zig-zag on it. -->
   {#each g.zigs as z}
     <rect x={z.cover.x} y={z.cover.y} width={z.cover.w} height={z.cover.h} fill="#fff" />
-    <path d={z.path} fill="none" stroke={INK} stroke-width="2.4" stroke-linejoin="round" />
+    <path d={z.d} fill="none" stroke={INK} stroke-width={z.width} stroke-linejoin="round" />
   {/each}
 
   {#if g.fit}
@@ -36,7 +36,6 @@
     </g>
   {/if}
 
-  {#if g.panel}<rect x={g.panel.x} y={g.panel.y} width={g.panel.w} height={g.panel.h} fill="#fff" />{/if}
   <g font-family={SANS} font-size={g.fs} font-weight="bold" fill={INK} stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">
     {#each g.labels as l}<text x={l.x} y={l.y} text-anchor={l.anchor}>{l.text}</text>{/each}
   </g>

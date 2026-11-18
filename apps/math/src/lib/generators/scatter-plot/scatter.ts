@@ -3,12 +3,12 @@
 // edges, numbered here rather than by the grid, so an axis that starts past
 // 0 can begin with a block holding a zig-zag break, its first number after
 // it. The line of best fit (or the teacher's own) runs across the graph past
-// the breaks, with its equation and r placed where they touch no point.
+// the breaks, with its equation and r written below the graph.
 
 import { LABEL_SCALE } from '$shared/labelSize'
 import type { Axis, GridSettings } from '$shared/graph/axes'
-import { CELL, clipPath, layoutGrid, pathOf, round, type Point } from '$shared/graph/grid'
-import { placer, textWidth, type Box } from '$shared/graph/labels'
+import { CELL, GRIDLINE_STYLES, clipPath, layoutGrid, pathOf, round, type Point } from '$shared/graph/grid'
+import { textWidth } from '$shared/graph/labels'
 import { numberText } from '$shared/graph/numbering'
 import { describeCorrelation } from '$lib/stats/regression'
 import { correlationText, equationText, readScatter, type AxisRange, type Settings } from './settings'
@@ -33,19 +33,27 @@ function numbered(a: AxisRange, every: number): { i: number; text: string }[] {
   return out
 }
 
-/** A zig-zag across an axis, in the middle of its first block: a white cover over the axis, and the zig-zag on it. */
-function zigzag(c: number, at: number, across: 'x' | 'y') {
+/**
+ * A zig-zag across an axis, in the middle of its first block: a white cover
+ * over the axis, and the zig-zag on it. The zig-zag starts and ends with a
+ * short run along the axis itself, the axis's own width, so it joins the
+ * axis on either side without a step.
+ */
+function zigzag(c: number, at: number, across: 'x' | 'y', width: number) {
   const a = Math.min(9, CELL * 0.3)
+  const lead = 3 // the run along the axis at each end
   const flip = (p: Point): Point => (across === 'x' ? p : { x: p.y, y: p.x })
   const pts = [
+    { x: c - a - lead, y: at },
     { x: c - a, y: at },
     { x: c - a / 2, y: at - 6 },
-    { x: c, y: at + 6 },
-    { x: c + a / 2, y: at - 6 },
+    { x: c + a / 2, y: at + 6 },
     { x: c + a, y: at },
+    { x: c + a + lead, y: at },
   ].map(flip)
-  const cover = across === 'x' ? { x: round(c - a), y: round(at - 3), w: round(2 * a), h: 6 } : { x: round(at - 3), y: round(c - a), w: 6, h: round(2 * a) }
-  return { cover, path: pathOf(pts) }
+  const h = width + 2
+  const cover = across === 'x' ? { x: c - a, y: at - h / 2, w: 2 * a, h } : { x: at - h / 2, y: c - a, w: h, h: 2 * a }
+  return { cover, width, d: `M${pts.map((p) => `${p.x},${p.y}`).join('L')}` }
 }
 
 export function buildScatter(s: Settings) {
@@ -84,6 +92,7 @@ export function buildScatter(s: Settings) {
   const box = laid.grid
   const axisY = laid.xAxis.y
   const axisX = laid.yAxis.x
+  const axisWidth = GRIDLINE_STYLES[s.gridlines].axisWidth
 
   // The numbers: x under the x-axis, y left of the y-axis. Where both have a
   // number at the corner, the same one (0) is written once, tucked into the
@@ -106,8 +115,8 @@ export function buildScatter(s: Settings) {
   }
 
   const zigs = [
-    x.broken ? zigzag(px({ x: x.axisStart + x.step / 2, y: 0 }).x, axisY, 'x') : null,
-    y.broken ? zigzag(px({ x: 0, y: y.axisStart + y.step / 2 }).y, axisX, 'y') : null,
+    x.broken ? zigzag(px({ x: x.axisStart + x.step / 2, y: 0 }).x, axisY, 'x', axisWidth) : null,
+    y.broken ? zigzag(px({ x: 0, y: y.axisStart + y.step / 2 }).y, axisX, 'y', axisWidth) : null,
   ].filter((z) => z !== null)
 
   // The points, on the drawing.
@@ -129,12 +138,8 @@ export function buildScatter(s: Settings) {
     }
   }
 
-  // The equation and r, one under the other, placed inside the graph where
-  // they touch no point and keep off the line: the top corners first.
-  const place = placer({ x0: box.x + 2, y0: box.y + 2, x1: box.x + box.w - 2, y1: box.y + box.h - 2 })
-  if (fitPts.length) place.line(fitPts)
-  for (const p of points) place.box({ x0: p.x - DOT - 2, y0: p.y - DOT - 2, x1: p.x + DOT + 2, y1: p.y + DOT + 2 })
-
+  // The equation and r, one under the other below the graph, off the grid
+  // so they never cover a point, the line or a gridline.
   const BLANK_W = fs * 5
   type Line = { text: string; blank: boolean }
   const lines: Line[] = []
@@ -142,49 +147,28 @@ export function buildScatter(s: Settings) {
   if (read.line && s.equation === 'blank') lines.push({ text: 'y =', blank: true })
   const rText = correlationText(s, read.r)
   if (rText) lines.push({ text: rText, blank: false })
-  if (s.r === 'blank' && read.points.length > 1) lines.push({ text: 'r =', blank: true })
 
   const labels: Text[] = []
-  // A white panel behind them, so gridlines don't run through the text or the blank lines.
-  let panel: { x: number; y: number; w: number; h: number } | null = null
   const blanks: { x1: number; y1: number; x2: number; y2: number }[] = []
-  if (lines.length) {
-    const lineH = fs * 1.35
-    const widthOf = (l: Line) => textWidth(l.text, fs) + (l.blank ? fs * 0.4 + BLANK_W : 0)
-    const w = Math.max(...lines.map(widthOf))
-    const h = lineH * (lines.length - 1) + fs * 1.1
-    const m = fs * 0.6
-    const corners = [
-      { x: box.x + m, y: box.y + m },
-      { x: box.x + box.w - m - w, y: box.y + m },
-      { x: box.x + box.w - m - w, y: box.y + box.h - m - h },
-      { x: box.x + m, y: box.y + box.h - m - h },
-    ]
-    // Then beside the line's middle, above and below.
-    if (fitPts.length) {
-      const mid = { x: (fitPts[0].x + fitPts[1].x) / 2, y: (fitPts[0].y + fitPts[1].y) / 2 }
-      corners.push({ x: mid.x - w / 2, y: mid.y - h - fs }, { x: mid.x - w / 2, y: mid.y + fs })
+  const lineH = fs * 1.35
+  const below = lines.length ? lineH * (lines.length - 1) + fs * 1.0 : 0
+  lines.forEach((l, k) => {
+    const w = textWidth(l.text, fs) + (l.blank ? fs * 0.4 + BLANK_W : 0)
+    const x0 = box.x + box.w / 2 - w / 2
+    const baseline = laid.height + fs * 0.2 + k * lineH
+    labels.push({ x: round(x0), y: round(baseline), text: l.text, anchor: 'start' })
+    if (l.blank) {
+      const x1 = x0 + textWidth(l.text, fs) + fs * 0.4
+      blanks.push({ x1: round(x1), y1: round(baseline), x2: round(x1 + BLANK_W), y2: round(baseline) })
     }
-    const options = corners.map((c) => ({ ...c, box: { x0: c.x, y0: c.y, x1: c.x + w, y1: c.y + h } as Box }))
-    const at = place.choose(options)
-    const pad = fs * 0.3
-    panel = { x: round(at.x - pad), y: round(at.y - pad), w: round(w + 2 * pad), h: round(h + 2 * pad) }
-    lines.forEach((l, k) => {
-      const baseline = at.y + fs * 0.85 + k * lineH
-      labels.push({ x: round(at.x), y: round(baseline), text: l.text, anchor: 'start' })
-      if (l.blank) {
-        const x1 = at.x + textWidth(l.text, fs) + fs * 0.4
-        blanks.push({ x1: round(x1), y1: round(baseline), x2: round(x1 + BLANK_W), y2: round(baseline) })
-      }
-    })
-  }
+  })
 
   const description = [
     `Scatter plot of ${read.points.length} ${read.points.length === 1 ? 'point' : 'points'}`,
     `x from ${numberText(x.start, x.numbering)} to ${numberText(x.end, x.numbering)}`,
     `y from ${numberText(y.start, y.numbering)} to ${numberText(y.end, y.numbering)}`,
     read.line && (s.fit === 'best' ? `line of best fit ${equationText(read.line, s.places)}` : `line ${equationText(read.line, s.places)}`),
-    read.r !== null && read.points.length > 2 && s.r !== 'none' && s.r !== 'blank' ? describeCorrelation(read.r) : '',
+    read.r !== null && read.points.length > 2 && s.r !== 'none' ? describeCorrelation(read.r) : '',
   ].filter(Boolean).join(', ')
 
   // Wide enough for the last number under the axis.
@@ -194,7 +178,7 @@ export function buildScatter(s: Settings) {
   return {
     read,
     grid,
-    layout: { ...laid, numbers, width: round(width) },
+    layout: { ...laid, numbers, width: round(width), height: round(laid.height + below) },
     fs,
     points,
     dot: DOT,
@@ -203,7 +187,6 @@ export function buildScatter(s: Settings) {
     zigs,
     labels,
     blanks,
-    panel,
     description,
   }
 }

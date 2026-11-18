@@ -699,13 +699,13 @@ export const COPY: Record<string, GeneratorCopy> = {
     heading: 'Scatter plots with a line of best fit',
     intro: [
       'The Scatter Plot Generator draws a scatter plot from paired data you type or paste: an x and a y value for each point, such as hours studied and test score. The axes fit the data unless you set them, and an axis that starts well past 0 begins with a zig-zag break, so the points fill the graph.',
-      'Add the least-squares line of best fit, worked out as LinReg on a calculator, or draw your own line from its equation. Write the equation and the correlation coefficient r (or r²) on the graph, or leave blank lines for students to fill in, or show the points alone for students to draw a line by eye.',
+      'Add the least-squares line of best fit, worked out as LinReg on a calculator, or draw your own line from its equation. Write the equation and the correlation coefficient r (or r²) below the graph, or leave a blank line for students to fill in the equation, or show the points alone for students to draw a line by eye.',
     ],
     settings: [
       'The data, as a table of x and y values or a list of pairs pasted from a spreadsheet',
       'Dots or crosses for the points',
       'A line of best fit: none, least squares, or your own typed as y = mx + b',
-      'The line’s equation and r or r² on the graph, written, as a blank line or hidden, rounded to the places you choose',
+      'The line’s equation (written, as a blank line or hidden) and r or r² below the graph, rounded to the places you choose',
       'A chart title and axis titles, as text or a blank line for students',
       'Each axis’s range and count-by, worked out from the data unless you type them, and which lines are numbered',
       'Light, standard, bold or no gridlines, and minor gridlines',
