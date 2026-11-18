@@ -98,7 +98,7 @@
           <span class="point">
             <input type="text" aria-label="Name of point {k + 1}" placeholder="?" maxlength="4" value={p.name} oninput={(e) => setPoint(k, { name: e.currentTarget.value })} />
             {#if clean.points.length > MIN_POINTS}
-              <button type="button" class="btn-ghost icon remove" aria-label="Remove {pointName(k)}" onclick={() => change(removePoint(clean, k))}><X size={14} aria-hidden="true" /></button>
+              <button type="button" class="btn-ghost icon corner" aria-label="Remove {pointName(k)}" onclick={() => change(removePoint(clean, k))}><X size={11} strokeWidth={2.5} aria-hidden="true" /></button>
             {/if}
           </span>
         {/each}
@@ -253,8 +253,9 @@
   .hint:last-child { margin-bottom: 0; }
   input, select { min-width: 0; }
 
-  .points { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
-  .point { display: inline-flex; align-items: center; gap: 0.1rem; }
+  .points { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; padding-top: 0.4rem; }
+  .point { position: relative; display: inline-flex; }
+  .corner { position: absolute; top: -0.45rem; right: -0.45rem; width: 1.1rem; height: 1.1rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
   .point input { width: 3.2rem; text-align: center; font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 1.05rem; }
 
   .rows { display: flex; flex-direction: column; gap: 0.4rem; }
