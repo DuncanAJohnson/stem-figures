@@ -759,7 +759,7 @@ export const EXAMPLES: Example[] = [
       title: 'Scatter plot of hours studied and test scores, with a line of best fit',
       alt: 'A scatter plot of 12 students’ hours studied against their test scores, with the least-squares line y = 5.07x + 48.33 drawn, the equation and r = 0.99 written below the graph, and a zig-zag break at the bottom of the score axis',
       caption:
-        'A scatter plot of hours studied (0 to 9) against test score for 12 students, with the score axis starting at 50 after a zig-zag break. The least-squares line of best fit, y = 5.07x + 48.33, runs through the points, and r = 0.99 shows a strong positive correlation. Use it to interpret the slope and intercept or to predict a score.',
+        'A scatter plot of hours studied (0 to 10) against test score for 12 students, with the score axis running from 45 to 100 after a zig-zag break. The least-squares line of best fit, y = 5.07x + 48.33, runs through the points, and r = 0.99 shows a strong positive correlation. Use it to interpret the slope and intercept or to predict a score.',
       settings: {
         rows: [
           { name: '1', cells: [{ value: '52' }] },
@@ -788,9 +788,9 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'scatter-plot-of-temperature-and-ice-cream-sales',
       title: 'Scatter plot of temperature and ice cream sales',
-      alt: 'A scatter plot of 12 days’ high temperature from 60 to 95 °F against ice cream sales from 200 to 650 dollars, with zig-zag breaks on both axes and no line drawn',
+      alt: 'A scatter plot of 12 days’ high temperature on an axis from 55 to 100 °F against ice cream sales on an axis from 150 to 700 dollars, with zig-zag breaks on both axes and no line drawn',
       caption:
-        'A scatter plot of an ice cream stand’s sales against the day’s high temperature over 12 days, with temperature from 60 to 95 °F and sales from $200 to $650, both axes starting after a zig-zag break. No line is drawn, so students can describe the association and draw a line of best fit by eye.',
+        'A scatter plot of an ice cream stand’s sales against the day’s high temperature over 12 days, with temperature on an axis from 55 to 100 °F and sales from $150 to $700, both axes starting after a zig-zag break. No line is drawn, so students can describe the association and draw a line of best fit by eye.',
       settings: {
         input: 'list',
         data: '61, 215\n65, 325\n68, 332\n72, 406\n74, 418\n77, 422\n80, 445\n83, 512\n85, 544\n88, 614\n91, 621\n94, 650',
@@ -805,7 +805,7 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'scatter-plot-with-negative-correlation-car-age-and-value',
       title: 'Scatter plot with a negative correlation: car age and value',
-      alt: 'A scatter plot of 11 cars’ ages from 0 to 10 years against their values from 0 to 30 thousand dollars, falling from left to right, with the line y = −2.38x + 29.66 and r = −0.99',
+      alt: 'A scatter plot of 11 cars’ ages from 0 to 10 years, on an axis to 11, against their values from 0 to 30 thousand dollars, falling from left to right, with the line y = −2.38x + 29.66 and r = −0.99',
       caption:
         'A scatter plot of 11 used cars’ ages in years against their values in thousands of dollars, falling from left to right. The least-squares line y = −2.38x + 29.66 and r = −0.99 show a strong negative correlation: each extra year takes about $2,380 off a car’s value.',
       settings: {
@@ -824,7 +824,7 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'scatter-plot-with-no-correlation-shoe-size-and-quiz-score',
       title: 'Scatter plot with no correlation: shoe size and quiz score',
-      alt: 'A scatter plot of 12 students’ shoe sizes from 6 to 12 against quiz scores out of 10, scattered with no pattern, with r = −0.22 written below the graph',
+      alt: 'A scatter plot of 12 students’ shoe sizes from 6 to 12, on an axis from 5 to 13 after a zig-zag break, against quiz scores out of 10, scattered with no pattern, with r = −0.22 written below the graph',
       caption:
         'A scatter plot of 12 students’ shoe sizes against their scores on a 10-point quiz, with the points spread with no clear pattern and r = −0.22, little or no correlation. Use it beside positive and negative examples to compare kinds of association.',
       settings: {
@@ -843,7 +843,7 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'find-the-equation-of-the-line-of-best-fit-arm-span-and-height',
       title: 'Find the equation of the line of best fit: arm span and height',
-      alt: 'A scatter plot of 11 students’ arm spans from 150 to 180 cm against their heights from 150 to 185 cm, with the line of best fit drawn and a blank line after y = below the graph for students to fill in',
+      alt: 'A scatter plot of 11 students’ arm spans from 150 to 180 cm against their heights from 152 to 181 cm, on axes from 145 cm after zig-zag breaks, with the line of best fit drawn and a blank line after y = below the graph for students to fill in',
       caption:
         'A scatter plot of 11 students’ arm spans against their heights in centimeters, with the least-squares line drawn and a blank line after y = for students to work out its equation. The answer key gives y = x + 0.23 and r = 0.98: height is close to arm span.',
       settings: {

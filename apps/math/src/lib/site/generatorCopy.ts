@@ -698,7 +698,7 @@ export const COPY: Record<string, GeneratorCopy> = {
   'scatter-plot': {
     heading: 'Scatter plots with a line of best fit',
     intro: [
-      'The Scatter Plot Generator draws a scatter plot from paired data you type or paste: an x and a y value for each point, such as hours studied and test score. The axes fit the data unless you set them, and an axis that starts well past 0 begins with a zig-zag break, so the points fill the graph.',
+      'The Scatter Plot Generator draws a scatter plot from paired data you type or paste: an x and a y value for each point, such as hours studied and test score. The axes fit the data, with a step of room past it at each end, unless you set them, and an axis that starts well past 0 begins with a zig-zag break, so the points fill the graph.',
       'Add the least-squares line of best fit, worked out as LinReg on a calculator, or draw your own line from its equation. Write the equation and the correlation coefficient r (or r²) below the graph, or leave a blank line for students to fill in the equation, or show the points alone for students to draw a line by eye.',
     ],
     settings: [
@@ -721,7 +721,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'Why does an axis have a zig-zag?',
-        a: 'When the data starts far from 0, such as test scores from 55 to 95, the axis starts just below the data and the zig-zag shows that part of it has been left out. Type 0 in the axis’s From box to start it at 0 instead.',
+        a: 'When the data starts far from 0, such as test scores from 55 to 95, the axis starts a step below the data and the zig-zag shows that part of it has been left out. Type 0 in the axis’s From box to start it at 0 instead.',
       },
       {
         q: 'Can I paste data from a spreadsheet?',

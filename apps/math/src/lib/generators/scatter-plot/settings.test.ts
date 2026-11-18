@@ -87,23 +87,28 @@ describe('the equation as written', () => {
 })
 
 describe('axes fitted to the data', () => {
-  test('from 0 when the data starts near it', () => {
-    expect(autoAxis([1, 4, 9])).toEqual({ from: 0, to: 9, step: 1 })
+  test('from 0 when the data starts near it, a step past the data at the end', () => {
+    expect(autoAxis([1, 4, 9])).toEqual({ from: 0, to: 10, step: 1 })
+    expect(autoAxis([3, 4])).toEqual({ from: 0, to: 5, step: 1 })
   })
 
-  test('just below the data when it starts far from 0', () => {
-    expect(autoAxis([52, 60, 71, 95])).toEqual({ from: 50, to: 95, step: 5 })
+  test('a step of room each side of the data when it starts far from 0', () => {
+    expect(autoAxis([52, 60, 71, 95])).toEqual({ from: 45, to: 100, step: 5 })
+  })
+
+  test('never below 0 for data that isn’t, and a step of room below negative data', () => {
+    expect(autoAxis([-5, -3, 0, 4, 6])).toEqual({ from: -6, to: 7, step: 1 })
   })
 
   test('whole numbers count by whole numbers', () => {
-    expect(autoAxis([2, 3, 5, 8])).toEqual({ from: 0, to: 8, step: 1 })
-    expect(autoAxis([0.2, 0.9, 1.4])).toEqual({ from: 0, to: 1.4, step: 0.1 })
+    expect(autoAxis([2, 3, 5, 8])).toEqual({ from: 0, to: 9, step: 1 })
+    expect(autoAxis([0.2, 0.9, 1.4])).toEqual({ from: 0, to: 1.6, step: 0.2 })
   })
 
   test('an axis past 0 gets a break block before it', () => {
     const r = readScatter(list('1, 52\n2, 60\n3, 71\n4, 95'))
     expect(r.x).toMatchObject({ start: 0, broken: false })
-    expect(r.y).toMatchObject({ start: 50, axisStart: 45, broken: true, end: 95 })
+    expect(r.y).toMatchObject({ start: 45, axisStart: 40, broken: true, end: 100 })
   })
 
   test('no data: blank axes from 0 to 10', () => {

@@ -489,15 +489,15 @@ How many times a value appears, typed beside it in the table of values and count
 _Avoid_: Frequency (fine in teaching and as a search word), tally
 
 **Scatter Plot**:
-A figure of paired data as points on a graph, one for each pair, its x value across and its y value up, to show how two quantities go together. The teacher types the pairs as a table of x and y or pastes them as a list of pairs; both give the same figure. Its axes fit the data unless typed, and one that starts past 0 begins with a zig-zag break. Its generator is the Scatter Plot Generator.
+A figure of paired data as points on a graph, one for each pair, its x value across and its y value up, to show how two quantities go together. The teacher types the pairs as a table of x and y or pastes them as a list of pairs; both give the same figure. Its axes fit the data, with a step of room past it at each end, unless typed, and one that starts past 0 begins with a zig-zag break. Its generator is the Scatter Plot Generator.
 _Avoid_: Scatter graph, scatter diagram, scattergram (fine as search words, not as the name); coordinate grid (that graphs equations and points typed one by one, on axes the teacher sets)
 
 **Line of best fit**:
-The straight line drawn through a scatter plot's points: the least-squares line through every point (as LinReg on a calculator works it out), or the teacher's own typed as y = mx + b. Its equation can be written on the graph, left as a blank line for students, or hidden; it runs across the graph past any breaks.
+The straight line drawn through a scatter plot's points: the least-squares line through every point (as LinReg on a calculator works it out), or the teacher's own typed as y = mx + b. Its equation can be written below the graph, left as a blank line for students, or hidden; it runs across the graph past any breaks.
 _Avoid_: Trend line, regression line, LSRL (fine as search words and in teaching), fit
 
 **Correlation coefficient**:
-r, how closely a scatter plot's points follow a straight line, from −1 to 1, written on the graph as r or r², or as a blank line for students. It is worked out from every point typed, whether or not a line is drawn.
+r, how closely a scatter plot's points follow a straight line, from −1 to 1, written below the graph as r or r². It is worked out from every point typed, whether or not a line is drawn.
 _Avoid_: Correlation (alone, for the number), R, r value
 
 **Bar Graph**:

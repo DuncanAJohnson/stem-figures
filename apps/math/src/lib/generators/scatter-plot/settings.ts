@@ -276,9 +276,11 @@ export type RangeKey = 'xFrom' | 'xTo' | 'xStep' | 'yFrom' | 'yTo' | 'yStep'
 
 /**
  * A tidy axis to fit values when the teacher leaves it empty: counting by 1,
- * 2 or 5 times a power of ten, starting at 0 when the values start close to
- * it (within two steps, or a quarter of the axis), and otherwise just below
- * them, where the axis gets a zig-zag break.
+ * 2 or 5 times a power of ten, with a step of room past the values at each
+ * end (never below 0 for values that aren't). It starts at 0 when that's
+ * close (within two more steps, or a quarter of the axis), and otherwise
+ * where the room ends, where the axis gets a zig-zag break. So 3 and 4 run
+ * from 0 to 5.
  */
 export function autoAxis(values: number[]): { from: number; to: number; step: number } {
   if (!values.length) return { from: 0, to: 10, step: 1 }
@@ -287,11 +289,18 @@ export function autoAxis(values: number[]): { from: number; to: number; step: nu
   let r = niceRange(lo, hi)
   // Whole-number data counts by whole numbers, never by halves.
   if (r.step < 1 && values.every((v) => Number.isInteger(v))) r = { from: Math.floor(lo), to: Math.ceil(hi), step: 1 }
+  const room = (q: { from: number; to: number; step: number }) => ({
+    step: q.step,
+    from: lo >= 0 ? Math.max(0, clean(q.from - q.step)) : clean(q.from - q.step),
+    to: clean(q.to + q.step),
+  })
+  r = room(r)
   if (r.from > 0 && (r.from / r.step <= 2 + 1e-9 || r.from <= (r.to - r.from) / 4 + 1e-9)) {
     const steps = Math.round(r.to / r.step)
     // Starting at 0 may make too many steps; count by more then.
     if (steps <= 14) return { ...r, from: 0 }
-    return niceRange(0, hi)
+    const wide = niceRange(0, hi)
+    return { ...wide, to: clean(wide.to + wide.step) }
   }
   return r
 }
