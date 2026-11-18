@@ -35,6 +35,19 @@
 
   const lines = $derived(GRIDLINE_STYLES[gridlines])
   const TICK = 5 // how far a tick runs each side of an axis, when there are no gridlines
+  // How far the gridlines run past each edge of the grid: through the whole
+  // width of an axis that lies along that edge (less the half of a gridline's
+  // width its square end adds), so they meet the axis's far side flush.
+  const reach = $derived.by(() => {
+    const past = Math.max(0, (lines.axisWidth - lines.blockWidth) / 2)
+    const on = (a: number, b: number) => (Math.abs(a - b) < 0.5 ? past : 0)
+    return {
+      left: on(g.yAxis.x, g.grid.x),
+      right: on(g.yAxis.x, g.grid.x + g.grid.w),
+      top: on(g.xAxis.y, g.grid.y),
+      bottom: on(g.xAxis.y, g.grid.y + g.grid.h),
+    }
+  })
   const cap = (c: Cap) => (c === 'none' ? undefined : `url(#${id}-${c})`)
 </script>
 
@@ -79,10 +92,11 @@
       </g>
     {/if}
 
-    <!-- Square ends, so the grid's outer lines meet at its corners without a notch. -->
-    <g stroke={lines.block} stroke-width={lines.blockWidth} stroke-linecap="square" shape-rendering="crispEdges">
-      {#each vLines as x}<line x1={x} y1={g.grid.y} x2={x} y2={g.grid.y + g.grid.h} />{/each}
-      {#each hLines as y}<line x1={g.grid.x} y1={y} x2={g.grid.x + g.grid.w} y2={y} />{/each}
+    <!-- Square ends, so the grid's outer lines meet at its corners without a
+         notch, and run right through an axis along an edge to its far side. -->
+    <g stroke={lines.block} stroke-width={lines.blockWidth} stroke-linecap="square">
+      {#each vLines as x}<line x1={x} y1={g.grid.y - reach.top} x2={x} y2={g.grid.y + g.grid.h + reach.bottom} />{/each}
+      {#each hLines as y}<line x1={g.grid.x - reach.left} y1={y} x2={g.grid.x + g.grid.w + reach.right} y2={y} />{/each}
     </g>
   {/if}
 
