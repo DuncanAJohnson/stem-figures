@@ -618,6 +618,41 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school'],
   },
 
+  'dot-plot': {
+    heading: 'Dot plots and line plots from your data',
+    intro: [
+      'The Dot Plot Generator draws a dot plot, also called a line plot, from the values you type or paste: one dot or X for each value, stacked over its place on a number line. Or type each value once with how many of it there are, as a frequency table. The number line fits the data unless you set it, counting by 1 for whole numbers and by the data’s own step for halves, quarters or eighths, so every mark sits on a tick.',
+      'Teachers use it for questions on the mode, median and range, the shape of a data set (clusters, gaps, peaks and outliers), and for 4th and 5th grade line plots of measurements in fractions of a unit. Nothing on the figure gives the statistics away, so students work them out from the plot.',
+    ],
+    settings: [
+      'The data, as a list of values or as a table of values and counts, with fractions like 3/4 or 1 1/2',
+      'Dots or X’s as the marks',
+      'A chart title and an axis title, as text or a blank line for students',
+      'The number line’s range and count-by, worked out from the data unless you type them, and which ticks are numbered',
+      'How each end of the number line finishes: an arrow, a circle or nothing',
+    ],
+    faqs: [
+      {
+        q: 'What’s the difference between a dot plot and a line plot?',
+        a: 'They are the same kind of graph: a mark for each value, stacked over a number line. Many US curricula call it a line plot and draw X’s; others call it a dot plot and draw dots. Choose either mark under Marks.',
+      },
+      {
+        q: 'Can I make a dot plot from a frequency table?',
+        a: 'Yes. Choose Values and counts and type each value with how many times it appears, or paste the two columns from a spreadsheet. Switching from a list to a table, or back, fills in the other one from your data when it’s empty.',
+      },
+      {
+        q: 'Can I make a line plot with fractions?',
+        a: 'Yes. Type values like 1/8, 1/4 or 1 1/2 and the number line is numbered in fractions, counting by the smallest step your data uses, such as eighths of an inch.',
+      },
+      {
+        q: 'What if there are a lot of values?',
+        a: 'The marks get smaller as a column gets taller, so the figure stays a printable size. A single value can have up to 100 marks over it.',
+      },
+    ],
+    imageAlt: 'A printable dot plot of 20 students’ hours of sleep over a number line from 5 to 11, made with the Dot Plot Generator',
+    educationalLevel: ['Elementary school', 'Middle school'],
+  },
+
   'bar-graph': {
     heading: 'Bar graphs and column graphs from a table',
     intro: [

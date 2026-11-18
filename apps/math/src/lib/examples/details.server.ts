@@ -11,6 +11,7 @@ import { settingsFor as solidSettings } from '$lib/generators/3d-shape/settings'
 import { partName, radiusOf, readShape } from '$lib/generators/3d-shape/solve'
 import * as barGraph from '$lib/generators/bar-graph/settings'
 import * as boxPlot from '$lib/generators/box-plot/settings'
+import * as dotPlot from '$lib/generators/dot-plot/settings'
 import { circleAnswer } from '$lib/generators/circle/answer'
 import * as circle from '$lib/generators/circle/settings'
 import { buildCumulative } from '$lib/generators/cumulative-frequency/layout'
@@ -287,6 +288,24 @@ function boxPlotAnswer(s: SettingsById['box-plot']): ExampleDetails['answer'] {
   return { heading: 'Answer key', lines: out }
 }
 
+function dotPlotAnswer(s: SettingsById['dot-plot']): ExampleDetails['answer'] {
+  const read = dotPlot.readPlot(s)
+  const problem = Object.values(read.problems).find(Boolean)
+  if (problem) throw new Error(`The dot plot example can’t be drawn as written: ${problem}`)
+  const stats = dotPlot.statsOf(read.stacks)
+  if (!stats) throw new Error('The dot plot example has no data')
+  const n = (v: number) => niceText(v, read.numbering)
+  return {
+    heading: 'Answer key',
+    lines: [
+      `Number of values: ${stats.n}`,
+      `Mode: ${stats.modes.map(n).join(' and ')} (${stats.most} ${stats.modes.length > 1 ? 'times each' : 'times'})`,
+      `Median: ${n(stats.median)}`,
+      `Range: ${n(stats.max - stats.min)} (from ${n(stats.min)} to ${n(stats.max)})`,
+    ],
+  }
+}
+
 function barGraphAnswer(s: SettingsById['bar-graph']): ExampleDetails['answer'] {
   const read = barGraph.readGraph(s)
   const problem = read.problems.table ?? read.problems.from ?? read.problems.to ?? read.problems.step
@@ -390,6 +409,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'cone': { definition: definitionOf(solidSettings('cone')), answer: solidAnswer },
   'sphere': { definition: definitionOf(solidSettings('sphere')), answer: solidAnswer },
   'box-plot': { definition: definitionOf(boxPlot), answer: boxPlotAnswer },
+  'dot-plot': { definition: definitionOf(dotPlot), answer: dotPlotAnswer },
   'bar-graph': { definition: definitionOf(barGraph), answer: barGraphAnswer },
   'stem-and-leaf': { definition: definitionOf(stemAndLeaf), answer: stemAndLeafAnswer },
   'cumulative-frequency': { definition: definitionOf(cumulative), answer: cumulativeAnswer },

@@ -10,6 +10,8 @@ import { buildBarGraph } from './bar-graph/layout.js'
 import * as bar from './bar-graph/settings.js'
 import { buildPlot } from './box-plot/boxplot.js'
 import * as box from './box-plot/settings.js'
+import { buildPlot as buildDotPlot } from './dot-plot/dotplot.js'
+import * as dot from './dot-plot/settings.js'
 import { buildCumulative } from './cumulative-frequency/layout.js'
 import * as cumulative from './cumulative-frequency/settings.js'
 import { buildGraph } from './coordinate-grid/graph.js'
@@ -321,6 +323,19 @@ describe('coordinate grid', () => {
   })
 })
 
+const DOT = [
+  '',
+  'data=3%2C4%2C4%2C5%2C5%2C5%2C7',
+  'data=3%2C4%2C4%2C5&mark=x&title=Pets&titleMode=text&axisTitleMode=blank',
+  'input=table&row=0%7C4&row=1%7C6&row=2%7C5&row=3%7C2&row=4%7C0&row=5%7C1&mark=x',
+  'data=1%2F8%2C1%2F4%2C1%2F4%2C3%2F8%2C1%2F2%2C1+1%2F4&from=0',
+  'data=2.5%2C3%2C7.25&from=0&to=10&step=1&every=2&startCap=none&endCap=circle',
+  'data=1%2C2%2C12&from=0&to=10',
+  `data=${'4%2C'.repeat(60)}5&labelSize=large`,
+  'data=1%2Cx',
+  'input=table&row=1%7C2.5&row=%7C3',
+]
+
 describe('number line', () => {
   test.each(LINE)('%s', (q) => {
     const s = line.settingsFromParams(params(q))
@@ -334,6 +349,14 @@ describe('box plot', () => {
     const s = box.settingsFromParams(params(q))
     const { rows, problems } = box.readPlot(s)
     expect({ query: box.settingsToQuery(s), rows, problems, plot: buildPlot(s) }).toMatchSnapshot()
+  })
+})
+
+describe('dot plot', () => {
+  test.each(DOT)('%s', (q) => {
+    const s = dot.settingsFromParams(params(q))
+    const { stacks, problems } = dot.readPlot(s)
+    expect({ query: dot.settingsToQuery(s), stacks, problems, plot: buildDotPlot(s) }).toMatchSnapshot()
   })
 })
 

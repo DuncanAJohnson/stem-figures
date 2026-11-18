@@ -17,6 +17,7 @@ import TransformationsPreview from '$lib/editors/transformations/Preview.svelte'
 import ConePreview from './cone/Preview.svelte'
 import CoordinateGridPreview from './coordinate-grid/Preview.svelte'
 import CylinderPreview from './cylinder/Preview.svelte'
+import DotPlotPreview from './dot-plot/Preview.svelte'
 import HistogramPreview from './histogram/Preview.svelte'
 import KitePreview from './kite/Preview.svelte'
 import LengthReadingPreview from './length-reading/Preview.svelte'
@@ -54,6 +55,7 @@ export const PREVIEWS: Record<string, Component> = {
   'cone': ConePreview,
   'sphere': SpherePreview,
   'box-plot': BoxPlotPreview,
+  'dot-plot': DotPlotPreview,
   'bar-graph': BarGraphPreview,
   'stem-and-leaf': StemAndLeafPreview,
   'cumulative-frequency': CumulativeFrequencyPreview,

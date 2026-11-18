@@ -454,6 +454,18 @@ _Avoid_: Summary statistics, five statistics
 A value more than 1.5 times the box's width beyond either end of the box, drawn as its own point with the whisker stopping at the last value that isn't one. Outliers are only drawn when the teacher turns them on; otherwise whiskers reach the minimum and maximum.
 _Avoid_: Extreme value, anomaly
 
+**Dot Plot**:
+A figure of one data set as marks stacked over a number line, one mark for each value, so equal values make a column. The teacher types the values as a list or as a table of values and counts; both give the same figure. Its generator is the Dot Plot Generator.
+_Avoid_: Line plot, dot diagram (fine as search words, not as the name; many US curricula call it a line plot); line graph (that joins points with lines)
+
+**Mark** (on a dot plot):
+What stands for one value on a dot plot: a dot, or an X as many line plots draw them. Marks over the same value stack upward from the line, and get smaller as the tallest column grows so the figure stays a printable size.
+_Avoid_: Point, symbol, dot (when it may be an X)
+
+**Count** (on a dot plot):
+How many times a value appears, typed beside it in the table of values and counts, and the number of marks drawn over it. A value typed on two rows has its counts added together; a count of 0 draws no marks but still widens the line.
+_Avoid_: Frequency (fine in teaching and as a search word), tally
+
 **Bar Graph**:
 A figure of separate bars, one for each category (or one for each series in each category), whose lengths show values read off a numbered value axis. The bars stand up as columns or run sideways; a column graph is a bar graph with upright bars. Its generator is the Bar Graph Generator.
 _Avoid_: Bar chart, column graph, column chart (fine as search words, not as the name); histogram (its bars touch, over a numbered axis)

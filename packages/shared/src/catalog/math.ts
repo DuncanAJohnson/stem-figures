@@ -293,6 +293,20 @@ export const MATH: CatalogEntry[] = [
     ],
   },
   {
+    id: 'dot-plot',
+    site: 'math',
+    name: 'Dot Plot Generator',
+    path: '/dot-plot',
+    blurb: 'Dot plots and line plots from a list of values or a frequency table.',
+    description:
+      'Make a printable dot plot for your class. Type or paste the data, or each value with how many of it, draw dots or X’s over a number line, use fractions for line plots of measurements, and copy it into a worksheet or test.',
+    keywords: [
+      'dot plot', 'dot plots', 'dotplot', 'line plot', 'line plots', 'dot diagram', 'x plot', 'frequency', 'frequency table', 'tally',
+      'statistics', 'stats', 'data', 'data set', 'data display', 'distribution', 'shape of data', 'mode', 'median', 'range', 'cluster',
+      'gap', 'peak', 'outlier', 'skewed', 'symmetric', 'fractions', 'measurement', 'line plot with fractions', 'printable',
+    ],
+  },
+  {
     id: 'bar-graph',
     site: 'math',
     alsoOn: ['biology'],

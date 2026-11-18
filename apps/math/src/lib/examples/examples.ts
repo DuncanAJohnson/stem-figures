@@ -634,6 +634,58 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('dot-plot', [
+    {
+      slug: 'dot-plot-of-hours-of-sleep',
+      title: 'Dot plot of hours of sleep',
+      alt: 'A dot plot of 20 students’ hours of sleep, titled Hours of sleep last night, with dots stacked over a number line from 5 to 11',
+      caption:
+        'A dot plot of 20 students’ hours of sleep last night, with one dot per student stacked over a number line from 5 to 11 numbered every hour and titled Hours. The tallest column, over 8, has six dots. Students read the mode, median and range, or describe the shape of the data.',
+      settings: {
+        data: '5, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11',
+        title: 'Hours of sleep last night',
+        titleMode: 'text',
+        axisTitle: 'Hours',
+        axisTitleMode: 'text',
+      },
+    },
+    {
+      slug: 'line-plot-of-number-of-pets-from-a-frequency-table',
+      title: 'Line plot of number of pets, from a frequency table',
+      alt: 'A line plot with X’s stacked over 0 to 5 on a number line titled Number of pets: four over 0, six over 1, five over 2, two over 3, none over 4 and one over 5',
+      caption:
+        'A line plot of how many pets 18 students have, made from a frequency table, with an X for each student stacked over a number line from 0 to 5 titled Number of pets. There are four X’s over 0, six over 1, five over 2, two over 3, none over 4 and one over 5.',
+      settings: {
+        input: 'table',
+        rows: [
+          { name: '0', cells: [{ value: '4' }] },
+          { name: '1', cells: [{ value: '6' }] },
+          { name: '2', cells: [{ value: '5' }] },
+          { name: '3', cells: [{ value: '2' }] },
+          { name: '4', cells: [{ value: '0' }] },
+          { name: '5', cells: [{ value: '1' }] },
+        ],
+        mark: 'x',
+        axisTitle: 'Number of pets',
+        axisTitleMode: 'text',
+      },
+    },
+    {
+      slug: 'line-plot-with-fractions-rainfall-in-eighths-of-an-inch',
+      title: 'Line plot with fractions: rainfall in eighths of an inch',
+      alt: 'A line plot of daily rainfall with X’s over a number line from 0 to 1 inch marked in eighths, titled Rainfall (inches)',
+      caption:
+        'A line plot of 12 days’ rainfall measured to the nearest eighth of an inch, with an X for each day over a number line from 0 to 1 with a numbered tick every eighth of an inch, titled Rainfall (inches). Use it for 4th and 5th grade line plots of fractional measurements.',
+      settings: {
+        data: '1/8, 1/4, 1/4, 3/8, 1/2, 1/2, 1/2, 5/8, 3/4, 3/4, 7/8, 1',
+        from: '0',
+        mark: 'x',
+        axisTitle: 'Rainfall (inches)',
+        axisTitleMode: 'text',
+      },
+    },
+  ]),
+
   ...examplesOf('bar-graph', [
     {
       slug: 'bar-graph-of-favorite-sports',

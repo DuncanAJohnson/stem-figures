@@ -7,6 +7,7 @@ import type { Settings as BarGraphSettings } from '$lib/generators/bar-graph/set
 import type { Settings as BoxPlotSettings } from '$lib/generators/box-plot/settings'
 import type { Settings as CircleSettings } from '$lib/generators/circle/settings'
 import type { Settings as GridSettings } from '$lib/generators/coordinate-grid/settings'
+import type { Settings as DotPlotSettings } from '$lib/generators/dot-plot/settings'
 import type { Settings as CumulativeSettings } from '$lib/generators/cumulative-frequency/settings'
 import type { Settings as HistogramSettings } from '$lib/generators/histogram/settings'
 import type { LengthSettings } from '$lib/generators/length-reading/settings'
@@ -36,6 +37,7 @@ export interface SettingsById {
   'cone': ShapeSettings
   'sphere': ShapeSettings
   'box-plot': BoxPlotSettings
+  'dot-plot': DotPlotSettings
   'bar-graph': BarGraphSettings
   'stem-and-leaf': StemAndLeafSettings
   'cumulative-frequency': CumulativeSettings
