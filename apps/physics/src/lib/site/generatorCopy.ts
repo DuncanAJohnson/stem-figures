@@ -551,6 +551,42 @@ export const COPY: Record<string, GeneratorCopy> = {
     imageAlt: 'A printable ray diagram of a converging lens with the object beyond 2F, three principal rays and the real, inverted, smaller image, made with the Ray Diagram Generator',
     educationalLevel: ['Middle school', 'High school', 'AP Physics'],
   },
+
+  'electric-and-magnetic-fields': {
+    heading: 'Electric and magnetic field lines, drawn from the real field',
+    intro: [
+      'The Electric and Magnetic Field Generator draws the field lines of six setups textbooks use again and again: one point charge, a positive and a negative charge, two like charges, a pair of parallel plates, a bar magnet, and a straight wire seen end-on carrying a current into or out of the page. Pick one, and the field lines are drawn with arrows showing their direction.',
+      'Lines around charges are traced through the real field, so they curve the way they should and never cross: from a positive charge into the negative one, or bending away from each other between like charges. Turn the lines off to leave just the charges, plates, magnet or wire for students to draw the field themselves.',
+    ],
+    settings: [
+      'One point charge, positive or negative',
+      'A positive and a negative charge, or two positive or two negative charges, side by side',
+      'Two parallel plates, positive on top, with a uniform field between them',
+      'A bar magnet, with field lines from north round to south',
+      'A straight wire seen end-on, with its current out of the page (a dot) or into it (a cross), and circular field lines around it',
+      'Fewer, normal or more field lines, with or without arrows, or none at all, and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'Are the field lines accurate?',
+        a: 'Around charges, yes: each line is traced step by step through the combined field of the charges, each falling off with the square of the distance, so the lines bend the way the real field does and never cross. Lines start evenly spaced around each charge. The bar magnet’s lines are traced the same way, and the wire’s are circles, further apart further out, because the field weakens with distance from the wire.',
+      },
+      {
+        q: 'Which way do the arrows point?',
+        a: 'Electric field lines point away from positive charges and toward negative ones, and from the positive plate to the negative plate. Magnetic field lines run from the magnet’s north pole round to its south pole outside it. Around a wire with its current out of the page they run counterclockwise, and clockwise with the current into the page, as the right-hand rule says.',
+      },
+      {
+        q: 'Can students draw the field lines themselves?',
+        a: 'Yes. Turn off Draw the field lines to leave just the charges, plates, magnet or wire, or keep the lines and turn off the arrows, so students add the direction.',
+      },
+      {
+        q: 'Can I make the charges different sizes, add more charges or show equipotential lines?',
+        a: 'Not yet. The generator keeps to the setups teachers ask for most, with equal charges. If you need another setup, use Request a generator on the home page and tell us what it should draw.',
+      },
+    ],
+    imageAlt: 'A printable electric field diagram of a positive and a negative point charge side by side, with curved field lines running from the positive charge to the negative one, made with the Electric and Magnetic Field Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Physics'],
+  },
 }
 
 /** The copy for a generator; every generator on the site has some. */

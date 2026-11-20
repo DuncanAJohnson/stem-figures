@@ -808,6 +808,65 @@ export const EXAMPLES: Example[] = [
       settings: { distance: 15, shown: 'setup', scale: true },
     },
   ]),
+
+  ...examplesOf('electric-and-magnetic-fields', [
+    {
+      slug: 'electric-field-lines-of-a-positive-and-a-negative-charge',
+      title: 'Electric field lines of a positive and a negative charge',
+      alt: 'A positive and a negative point charge side by side, with curved electric field lines running from the positive charge to the negative one, and lines running off the figure from the positive charge and in from outside to the negative one, each with an arrowhead',
+      caption:
+        'A positive and a negative point charge of equal size side by side, an electric dipole. Twelve field lines leave the positive charge evenly spaced; those on the side facing the negative charge curve across and end on it, and the rest run off the figure. Lines come in to the negative charge from outside the same way. The lines never cross, and the arrows point from + to −.',
+      settings: {},
+    },
+    {
+      slug: 'electric-field-of-two-positive-charges',
+      title: 'Electric field of two positive charges',
+      alt: 'Two positive point charges side by side, with electric field lines pointing away from each, bending apart between them and leaving an empty space in the middle',
+      caption:
+        'Two equal positive point charges side by side. Their field lines point outward and bend away from each other, so none runs from one charge to the other, and the space midway between them, where the field is zero, has no lines through it.',
+      settings: { setup: 'like' },
+    },
+    {
+      slug: 'electric-field-lines-of-a-negative-point-charge',
+      title: 'Electric field lines of a negative point charge',
+      alt: 'A negative point charge with twelve straight electric field lines coming in to it from every direction, each with an arrowhead pointing toward the charge',
+      caption:
+        'One negative point charge with twelve straight field lines evenly spaced around it. The arrows point in, toward the charge, as the field of a negative charge always does.',
+      settings: { setup: 'charge', sign: '-' },
+    },
+    {
+      slug: 'uniform-electric-field-between-parallel-plates',
+      title: 'Uniform electric field between parallel plates',
+      alt: 'Two horizontal parallel plates, the top one marked with plus signs and the bottom one with minus signs, with seven evenly spaced straight field lines pointing down from the top plate to the bottom one',
+      caption:
+        'Two parallel plates, positive on top and negative below, with seven evenly spaced, straight field lines between them, each pointing down from the positive plate to the negative one: a uniform electric field, as between the plates of a capacitor.',
+      settings: { setup: 'plates' },
+    },
+    {
+      slug: 'magnetic-field-lines-of-a-bar-magnet',
+      title: 'Magnetic field lines of a bar magnet',
+      alt: 'A bar magnet with S on the left half and N on the right half, with nested field line loops above and below it running from the north end round to the south end, and a straight line out of each end along its axis',
+      caption:
+        'A bar magnet, south pole on the left and north pole on the right, with four nested field line loops above it and four below. Each runs out of the north end and round to the south end, and two straight lines run along the magnet’s axis, out of the north end and in to the south end.',
+      settings: { setup: 'magnet' },
+    },
+    {
+      slug: 'magnetic-field-around-a-wire-with-current-into-the-page',
+      title: 'Magnetic field around a wire with current into the page',
+      alt: 'A wire seen end-on, drawn as a circle with a cross in it, with four circular field lines around it, further apart further out, and arrowheads showing the field running clockwise',
+      caption:
+        'A straight wire seen end-on, its current flowing into the page, shown by the cross. Its magnetic field lines are circles around it, further apart further out as the field weakens, running clockwise, as the right-hand rule gives for a current into the page.',
+      settings: { setup: 'wire', current: 'in' },
+    },
+    {
+      slug: 'draw-the-electric-field-of-two-negative-charges',
+      title: 'Draw the electric field of two negative charges',
+      alt: 'Two negative point charges side by side with no field lines drawn, for students to draw the field',
+      caption:
+        'Two equal negative point charges side by side and nothing else, for students to sketch the electric field: lines coming in to each charge from all around and bending away from each other between them.',
+      settings: { setup: 'like', sign: '-', fieldLines: false },
+    },
+  ]),
 ]
 
 /** A generator's examples, in order; the first is its best. */

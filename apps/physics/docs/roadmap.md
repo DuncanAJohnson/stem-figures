@@ -59,14 +59,17 @@ one pivot, a spring scale holding the beam.
 ## Magnetic Field
 
 Field figures that don't belong to Coil and Magnet (ADR 0002 keeps that one to
-"a coil and what's next to it"). It can reuse the Coil and Magnet's field
-lines.
+"a coil and what's next to it"). The Electric and Magnetic Field Generator
+draws a bar magnet, a wire seen end-on, point charges and parallel plates,
+with the Coil and Magnet's magnet field lines. Left for it, or for later:
 
+- Equipotential lines, unequal charges (+2q and −q) and three or more charges
+- Charges with values and distances, for Coulomb's law problems
+- A uniform field into or out of the page, as dots and crosses
 - Two bar magnets attracting or repelling
 - A horseshoe magnet
 - Iron filings instead of field lines
-- A loop or wire seen end-on, with the field as dots and crosses (into and out
-  of the page)
+- A loop seen end-on
 
 ## Circuits
 

@@ -3,6 +3,7 @@
 // only, so the gallery on a generator page doesn't pull in every generator.
 
 import type { CircuitSettings } from '$lib/generators/circuit-diagram/settings'
+import type { FieldSettings } from '$lib/generators/fields/settings'
 import type { FbdSettings } from '$lib/generators/free-body-diagram/settings'
 import type { InclineSettings } from '$lib/generators/inclined-plane/settings'
 import type { LengthSettings } from '$lib/generators/length-reading/settings'
@@ -29,6 +30,7 @@ export interface SettingsById {
   'waves': WaveSettings
   'circuit-diagram': CircuitSettings
   'ray-diagram': RaySettings
+  'electric-and-magnetic-fields': FieldSettings
 }
 
 export type ExampleGeneratorId = keyof SettingsById

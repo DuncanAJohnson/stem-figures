@@ -11,6 +11,7 @@ import type { Component } from 'svelte'
 import { generatorsOn, matches } from '$shared/catalog/index'
 import { SITE_ID } from '$lib/site/config'
 import CircuitDiagramPreview from './circuit-diagram/Preview.svelte'
+import FieldsPreview from './fields/Preview.svelte'
 import FreeBodyPreview from './free-body-diagram/Preview.svelte'
 import InclinedPlanePreview from './inclined-plane/Preview.svelte'
 import LengthReadingPreview from './length-reading/Preview.svelte'
@@ -38,6 +39,7 @@ export const PREVIEWS: Record<string, Component> = {
   'waves': WavePreview,
   'circuit-diagram': CircuitDiagramPreview,
   'ray-diagram': RayDiagramPreview,
+  'electric-and-magnetic-fields': FieldsPreview,
 }
 
 /** Another way to start, under "Start from an example" in a generator's lead

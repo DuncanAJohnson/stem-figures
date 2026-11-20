@@ -182,4 +182,21 @@ export const PHYSICS: CatalogEntry[] = [
       'thin lens equation', 'lens equation', 'mirror equation', 'magnifying glass', 'reflection', 'refraction', 'printable',
     ],
   },
+  {
+    id: 'electric-and-magnetic-fields',
+    site: 'physics',
+    name: 'Electric and Magnetic Field Generator',
+    path: '/electric-and-magnetic-fields',
+    blurb: 'Field lines around charges, plates, a bar magnet or a wire.',
+    description:
+      'Make printable electric and magnetic field diagrams for physics tests. Draw the field lines of point charges, parallel plates, a bar magnet or a current-carrying wire, or leave them off for students.',
+    keywords: [
+      'field', 'fields', 'field lines', 'field diagram', 'electric field', 'electric field lines', 'e-field', 'magnetic field',
+      'magnetic field lines', 'b-field', 'electrostatics', 'charge', 'charges', 'point charge', 'positive charge',
+      'negative charge', 'dipole', 'electric dipole', 'opposite charges', 'like charges', 'attract', 'repel', 'coulomb',
+      "coulomb's law", 'parallel plates', 'capacitor', 'uniform field', 'magnet', 'bar magnet', 'north', 'south', 'poles',
+      'wire', 'current', 'straight wire', 'right hand rule', 'dot', 'cross', 'into the page', 'out of the page',
+      'non-contact forces', 'electromagnetism', 'e&m', 'printable',
+    ],
+  },
 ]

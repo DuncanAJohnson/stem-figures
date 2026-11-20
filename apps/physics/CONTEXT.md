@@ -57,7 +57,7 @@ A figure of a coil of wire seen from the side, with a bar magnet, a battery or n
 _Avoid_: Induction diagram, solenoid (fine as a search word)
 
 **Field line**:
-A curve showing the direction of a magnetic field, with arrowheads along it. Field lines follow the real shape of the field, so they never cross.
+A curve showing the direction of a magnetic or electric field, with arrowheads along it. Field lines follow the real shape of the field, so they never cross. The Electric and Magnetic Field figure uses the word too.
 _Avoid_: Flux line, field arrow
 
 **Meter**:
@@ -67,6 +67,24 @@ _Avoid_: Ammeter, gauge
 **Current arrow**:
 A small arrow on a coil's wire showing which way the current flows. It often gives away the answer, so it can be turned off.
 _Avoid_: Current direction, flow arrow
+
+### Electric and Magnetic Field
+
+**Electric and Magnetic Field**:
+A figure of the field lines around one of six setups: one point charge, opposite charges, like charges, parallel plates, a bar magnet, or a wire seen end-on. Its generator is the Electric and Magnetic Field Generator.
+_Avoid_: Field diagram (fine as a search word), E-field, B-field
+
+**Setup**:
+Which of the six things the Electric and Magnetic Field figure draws the field of. Charges are always equal in size; one sign switch makes a single charge, or both like charges, positive or negative.
+_Avoid_: Configuration, scenario, arrangement
+
+**Point charge**:
+A charge drawn as a circle with + or − in it. Its field lines start evenly spaced around it.
+_Avoid_: Particle, ion
+
+**Wire, end-on**:
+A straight wire carrying a current, seen from one end: a circle with a dot when the current flows out of the page, a cross when it flows into it. Its field lines are circles around it.
+_Avoid_: Conductor, current element
 
 ### Inclined Plane
 
