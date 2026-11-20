@@ -34,6 +34,16 @@ export const CHEMISTRY: CatalogEntry[] = [
     keywords: ['gas', 'syringe', 'plunger', 'collecting', 'collection', 'rate', 'reaction', 'volume', 'cm3', 'mL', 'conical', 'flask', 'delivery', 'tube', 'measurement', 'lab', 'apparatus'],
   },
   {
+    id: 'chromatography',
+    site: 'chemistry',
+    name: 'Chromatography',
+    path: '/chromatography',
+    blurb: 'Paper chromatography: inks separated up the paper, with Rf measurements.',
+    description:
+      'Make printable paper chromatography diagrams for chemistry tests. Type the inks and how far each color travels and get the chromatogram after the solvent has run, with the paper before it, the beaker setup and the distances from the origin line for working out Rf values, or any of those left off.',
+    keywords: ['chromatography', 'chromatogram', 'paper', 'ink', 'inks', 'dye', 'dyes', 'pigment', 'Rf', 'value', 'values', 'retention', 'factor', 'solvent', 'front', 'origin', 'baseline', 'pencil', 'line', 'separation', 'separating', 'mixture', 'mixtures', 'spot', 'spots', 'beaker', 'stationary', 'mobile', 'phase'],
+  },
+  {
     id: 'structure-editor',
     site: 'chemistry',
     kind: 'editor',

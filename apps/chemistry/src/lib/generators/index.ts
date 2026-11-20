@@ -9,6 +9,7 @@ import { generatorsOn, matches } from '$shared/catalog/index'
 import { SITE_ID } from '$lib/site/config'
 import BohrModelPreview from './bohr-model/Preview.svelte'
 import DotAndCrossPreview from './dot-and-cross/Preview.svelte'
+import ChromatographyPreview from './chromatography/Preview.svelte'
 import GasSyringePreview from './gas-syringe/Preview.svelte'
 import HalfLifeGraphPreview from './half-life-graph/Preview.svelte'
 import HeatingCoolingCurvePreview from './heating-cooling-curve/Preview.svelte'
@@ -52,6 +53,7 @@ export const PREVIEWS: Record<string, Component> = {
   'potential-energy-diagram': PotentialEnergyDiagramPreview,
   'volume-by-displacement': VolumeByDisplacementPreview,
   'gas-syringe': GasSyringePreview,
+  chromatography: ChromatographyPreview,
   'volume-reading': VolumeReadingPreview,
   'structure-editor': StructureEditorPreview,
 }

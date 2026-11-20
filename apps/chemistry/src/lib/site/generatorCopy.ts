@@ -145,6 +145,43 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school'],
   },
 
+  chromatography: {
+    heading: 'Paper chromatography diagrams with Rf measurements',
+    intro: [
+      'Chromatography draws a paper chromatogram: the inks you type spotted on a pencil origin line, each separated into its colored spots up the paper, with the solvent front dashed across the top. Type how far each color travels, in cm, and the spots are drawn to scale.',
+      'Show the paper hanging from a glass rod in a beaker of water, or the paper alone. Add the paper before the solvent ran beside it, with each ink still a single spot on the origin line, and mark the distance from the origin line to each spot and to the solvent front so students can work out Rf values. Teachers use it for questions on separating mixtures, identifying an unknown ink by comparing it with known dyes, and calculating Rf.',
+    ],
+    settings: [
+      'Up to 6 inks, each named and with up to 5 colors, and how far each color traveled from the origin line',
+      'How far the solvent front is above the origin line',
+      'The paper after the solvent has run, or before and after side by side',
+      'The beaker setup with a glass rod and solvent, or the paper alone',
+      'Measurements from the origin line to each spot and to the solvent front, in cm',
+      'Labels naming the glass rod, paper, solvent front, pencil line, solvent and beaker',
+      'A chart title, and an answer key with each spot’s Rf value',
+    ],
+    faqs: [
+      {
+        q: 'How do you calculate an Rf value?',
+        a: 'Divide the distance from the origin line to the middle of the spot by the distance from the origin line to the solvent front. A spot 5.6 cm up with the front at 8.0 cm has an Rf of 0.70. Turn on the answer key to print every spot’s Rf.',
+      },
+      {
+        q: 'Why is the origin line drawn in pencil, above the water?',
+        a: 'Pencil is graphite, which doesn’t dissolve and travel up the paper as ink would. The line sits above the solvent so the inks spread up the paper instead of dissolving into the solvent in the beaker, so the figure always draws the water below it.',
+      },
+      {
+        q: 'How do I show an ink that doesn’t move?',
+        a: 'Give its color a distance of 0 cm. It stays on the origin line, as an insoluble ink would, and gets no measurement arrow.',
+      },
+      {
+        q: 'Can I show the paper before the solvent runs?',
+        a: 'Yes: choose Before and after. The paper before shows each ink as one spot on the origin line, colored as its dyes mixed, beside the paper after.',
+      },
+    ],
+    imageAlt: 'A printable paper chromatography diagram of three inks separated up the paper in a beaker of water, made with Chromatography',
+    educationalLevel: ['Middle school', 'High school'],
+  },
+
   'length-reading': {
     heading: 'Ruler, caliper and micrometer figures for measuring length',
     intro: [

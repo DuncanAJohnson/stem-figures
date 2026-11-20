@@ -48,6 +48,11 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('vsepr-shapes')
   })
 
+  it('finds Chromatography the ways teachers ask for it', () => {
+    for (const query of ['chromatography', 'paper chromatography', 'chromatogram', 'rf value', 'solvent front', 'ink separation'])
+      expect(ids(query), query).toContain('chromatography')
+  })
+
   it('keeps "lewis dot" for Lewis Structures', () => {
     expect(ids('lewis dot')).toEqual(['lewis-structures'])
   })

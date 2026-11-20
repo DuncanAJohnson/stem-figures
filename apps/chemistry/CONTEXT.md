@@ -181,6 +181,28 @@ _Avoid_: Zoom, callout, inset
 An optional line printed under the instrument stating its reading, so one figure can serve as both question and key.
 _Avoid_: Solution, label
 
+### Chromatography
+
+**Chromatogram**:
+A strip of chromatography paper with samples spotted on its origin line, after the solvent has carried each sample's dyes up the paper to the solvent front. The generator is Chromatography; it draws paper chromatography only.
+_Avoid_: Chromatography paper (that's the paper itself), TLC plate
+
+**Sample**:
+One ink (or other mixture) spotted on the origin line, named in pencil under it, and the colored **spots** it separates into. Each spot is a color and how far its middle traveled from the origin line, in cm; a spot at 0 cm didn't dissolve.
+_Avoid_: Lane (fine in code), dye (one spot is one dye), track
+
+**Origin line** / **Solvent front**:
+The pencil line the samples start on, always drawn above the solvent's surface, and the dashed line the solvent reached. Measurements run from the origin line to the middle of each spot and to the solvent front; Rf is the first over the second.
+_Avoid_: Baseline (fine in search keywords), start line, finish line
+
+**Before** / **After**:
+The paper before the solvent runs (each sample one spot on the origin line, colored as its dyes mixed) and after. A figure shows after, or before and after side by side; never before alone.
+_Avoid_: Start, end, stage (fine in code)
+
+**Setup**:
+The paper hanging from a glass rod across a beaker, dipping into the solvent. Without it the figure is the paper alone.
+_Avoid_: Apparatus, tank, chamber
+
 ### Particle diagrams
 
 **Particle diagram**:
