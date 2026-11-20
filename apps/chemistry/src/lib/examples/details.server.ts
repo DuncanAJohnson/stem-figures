@@ -18,6 +18,7 @@ import { buildCurve, degrees, segmentName } from '$lib/generators/heating-coolin
 import { curveSettings, temperaturesOf, setupOf } from '$lib/generators/heating-cooling-curve/settings'
 import { lengthSettings, workingLines as lengthWorking } from '$lib/generators/length-reading/settings'
 import { chargeText } from '$lib/generators/lewis-structures/formula'
+import { angleLabels, findShape, vseprSettings } from '$lib/generators/vsepr-shapes/settings'
 import { electronGroups } from '$lib/generators/lewis-structures/layout'
 import { figureOf, lewisSettings } from '$lib/generators/lewis-structures/settings'
 import { formalCharge, valenceElectrons, type Structure } from '$lib/generators/lewis-structures/structure'
@@ -67,6 +68,21 @@ const lines = (line: string) => ({ heading: 'Answer key', lines: line.split(' ·
 
 const two = (v: number) => String(Math.round(v * 100) / 100)
 const signed = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '0')
+
+function vseprAnswer(s: SettingsById['vsepr-shapes']): ExampleDetails['answer'] {
+  const found = findShape(s.formula)
+  if (!found.ok) throw new Error(`VSEPR Shapes can't draw ${s.formula}: ${found.message}`)
+  const { shape } = found
+  const angles = angleLabels(shape, s.angles)
+  return {
+    heading: 'Answer key',
+    lines: [
+      `${found.name}: ${shape.name}`,
+      `Electron geometry: ${shape.electronGeometry}; ${shape.axe}`,
+      ...(angles.length ? [`Bond ${angles.length > 1 ? 'angles' : 'angle'}: ${angles.join(' and ')}`] : []),
+    ],
+  }
+}
 
 function lewisAnswer(s: SettingsById['lewis-structures']): ExampleDetails['answer'] {
   const figure = figureOf(s)
@@ -197,6 +213,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'bohr-model': { definition: bohrSettings, answer: bohrAnswer },
   'nuclide-notation': { definition: nuclideSettings, answer: (s) => ({ heading: 'Answer key', lines: nuclideAnswer(s) }) },
   'lewis-structures': { definition: lewisSettings, answer: lewisAnswer },
+  'vsepr-shapes': { definition: vseprSettings, answer: vseprAnswer },
   'dot-and-cross': { definition: dotCrossSettings, answer: dotCrossAnswerKey },
   'orbital-diagram': { definition: orbitalSettings, answer: (s) => ({ heading: 'Answer key', lines: orbitalAnswer(s) }) },
   'line-spectrum': { definition: spectrumSettings, answer: lineSpectrumAnswer },

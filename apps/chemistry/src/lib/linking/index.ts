@@ -23,6 +23,7 @@ import { temperatureLinking } from '$lib/generators/temperature-reading/linking'
 import { titrationLinking } from '$lib/generators/titration-curve/linking'
 import { displacementLinking } from '$lib/generators/volume-by-displacement/linking'
 import { volumeLinking } from '$lib/generators/volume-reading/linking'
+import { vseprLinking } from '$lib/generators/vsepr-shapes/linking'
 import type { GeneratorLinking } from './define'
 
 const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
@@ -41,6 +42,7 @@ const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
     bohrLinking,
     nuclideLinking,
     lewisLinking,
+    vseprLinking,
     dotCrossLinking,
     orbitalLinking,
     spectrumLinking,

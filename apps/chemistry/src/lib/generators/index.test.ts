@@ -43,6 +43,11 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('dot-and-cross')
   })
 
+  it('finds VSEPR Shapes the ways teachers ask for it', () => {
+    for (const query of ['vsepr', 'molecular geometry', 'molecular shape', 'electron geometry', 'bond angle', 'ball and stick', 'wedge dash', 'trigonal pyramidal', 'seesaw'])
+      expect(ids(query), query).toContain('vsepr-shapes')
+  })
+
   it('keeps "lewis dot" for Lewis Structures', () => {
     expect(ids('lewis dot')).toEqual(['lewis-structures'])
   })

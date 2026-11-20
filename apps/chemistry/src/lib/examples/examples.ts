@@ -844,6 +844,49 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('vsepr-shapes', [
+    {
+      slug: 'vsepr-shape-of-nh3-trigonal-pyramidal',
+      title: 'VSEPR shape of NH₃ (ammonia): trigonal pyramidal',
+      alt: 'Ammonia drawn wedge-and-dash: a nitrogen with a lone pair lobe on top and three hydrogens below, one on a wedge and one on a dashed bond',
+      caption:
+        'The VSEPR shape of ammonia, NH₃, drawn with wedges and dashes. Nitrogen has three bonded atoms and one lone pair, AX₃E, so its four electron groups point to the corners of a tetrahedron and the atoms make a trigonal pyramid, with the lone pair on top.',
+      settings: { formula: 'NH3', electronGeometry: true, axe: true },
+    },
+    {
+      slug: 'vsepr-shape-of-h2o-bent-with-bond-angle',
+      title: 'VSEPR shape of H₂O (water): bent, with its bond angle',
+      alt: 'Water drawn wedge-and-dash: an oxygen with two lone pair lobes and two hydrogens below it, with the H–O–H angle marked 104.5°',
+      caption:
+        'The VSEPR shape of water, H₂O: bent, with two lone pairs on the oxygen pointing toward and away from the viewer. The H–O–H angle is labeled 104.5°, less than the tetrahedral 109.5° because the lone pairs push the bonds closer.',
+      settings: { formula: 'H2O', bondAngles: true, angles: '104.5°' },
+    },
+    {
+      slug: 'ball-and-stick-model-of-sf6-octahedral',
+      title: 'Ball-and-stick model of SF₆ (sulfur hexafluoride): octahedral',
+      alt: 'A ball-and-stick model of sulfur hexafluoride: a yellow sulfur with six green fluorines, one above, one below and four around it',
+      caption:
+        'A ball-and-stick model of sulfur hexafluoride, SF₆: six fluorine atoms round a sulfur atom at the corners of an octahedron, every bond angle 90°. The nearer atoms are drawn in front of the farther ones.',
+      settings: { formula: 'SF6', style: 'ball-and-stick', bondAngles: true },
+    },
+    {
+      slug: 'vsepr-shape-of-sf4-seesaw-ball-and-stick',
+      title: 'VSEPR shape of SF₄: seesaw, ball-and-stick',
+      alt: 'A ball-and-stick model of sulfur tetrafluoride: two fluorines above and below the sulfur, two more to the right, and a lone pair lobe to the left',
+      caption:
+        'A ball-and-stick model of sulfur tetrafluoride, SF₄: a seesaw shape, AX₄E. The lone pair takes an equatorial position of the trigonal bipyramid, leaving two axial and two equatorial fluorines, with bond angles less than 90° and less than 120°.',
+      settings: { formula: 'SF4', style: 'ball-and-stick', bondAngles: true, axe: true },
+    },
+    {
+      slug: 'name-the-shape-xef4-square-planar',
+      title: 'Name the shape: XeF₄ (xenon tetrafluoride), with answer key',
+      alt: 'Xenon tetrafluoride drawn wedge-and-dash with blank lines for its shape and electron geometry, and the answers square planar and octahedral below',
+      caption:
+        'A “name the shape” question for xenon tetrafluoride, XeF₄: four fluorines round the xenon with two lone pairs above and below, and blank lines for the shape and electron geometry. The answer key gives square planar and octahedral.',
+      settings: { formula: 'XeF4', electronGeometry: true, question: true, answerKey: true },
+    },
+  ]),
+
   ...examplesOf('dot-and-cross', [
     {
       slug: 'dot-and-cross-diagram-of-water',

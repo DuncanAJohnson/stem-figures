@@ -164,6 +164,16 @@ export const CHEMISTRY: CatalogEntry[] = [
     keywords: ['lewis', 'dot', 'electron', 'structure', 'structures', 'diagram', 'lone', 'pair', 'pairs', 'bond', 'bonds', 'bonding', 'covalent', 'molecule', 'polyatomic', 'ion', 'octet', 'formal', 'charge', 'resonance', 'valence', 'VSEPR'],
   },
   {
+    id: 'vsepr-shapes',
+    site: 'chemistry',
+    name: 'VSEPR Shapes',
+    path: '/vsepr-shapes',
+    blurb: 'A molecule’s 3D shape, wedge-and-dash or ball-and-stick, with its shape name and bond angles.',
+    description:
+      'Make printable VSEPR shape diagrams for chemistry tests. Type a formula like NH3, SF4 or XeF4 and get its molecular geometry drawn wedge-and-dash or as a ball-and-stick model, turned any way, with lone pairs, the shape name, electron geometry, AXE notation and bond angles, or those left blank for students.',
+    keywords: ['VSEPR', 'molecular', 'geometry', 'shape', 'shapes', 'electron', 'domain', 'AXE', 'bond', 'angle', 'angles', 'lone', 'pair', 'pairs', 'wedge', 'dash', 'ball', 'stick', 'ball-and-stick', '3D', 'model', 'tetrahedral', 'trigonal', 'pyramidal', 'planar', 'bipyramidal', 'bent', 'linear', 'octahedral', 'seesaw', 'T-shaped', 'square', 'molecule'],
+  },
+  {
     id: 'dot-and-cross',
     site: 'chemistry',
     name: 'Dot-and-Cross Diagram',

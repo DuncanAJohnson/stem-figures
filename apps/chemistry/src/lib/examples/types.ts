@@ -22,6 +22,7 @@ import type { TemperatureSettings } from '$lib/generators/temperature-reading/se
 import type { TitrationSettings } from '$lib/generators/titration-curve/settings'
 import type { DisplacementSettings } from '$lib/generators/volume-by-displacement/settings'
 import type { VolumeSettings } from '$lib/generators/volume-reading/settings'
+import type { VseprSettings } from '$lib/generators/vsepr-shapes/settings'
 
 /** Each generator's settings, by generator id. */
 export interface SettingsById {
@@ -39,6 +40,7 @@ export interface SettingsById {
   'bohr-model': BohrSettings
   'nuclide-notation': NuclideSettings
   'lewis-structures': LewisSettings
+  'vsepr-shapes': VseprSettings
   'dot-and-cross': DotCrossSettings
   'orbital-diagram': OrbitalSettings
   'line-spectrum': SpectrumSettings

@@ -293,6 +293,42 @@ _Avoid_: Edit, modification, override, error
 One way a changed structure is wrong, written as a sentence ("O has 10 electrons around it", "Total is 18 valence electrons; should be 16", "C should be the central atom"). A change can leave a structure correct, such as another resonance structure, so mistakes come from checking the structure, not from listing changes. The answer key of a changed structure lists its mistakes.
 _Avoid_: Error, problem, issue
 
+### VSEPR shapes
+
+**VSEPR figure**:
+A figure of one molecule or polyatomic ion with a single central atom (two to six electron groups, linear through octahedral), drawn in its real 3D shape. It is built from the formula the same way as a Lewis structure's built structure (octet rule), with its double and triple bonds drawn as such and, for an ion like NO₃⁻, its first resonance structure; a polyatomic ion is in square brackets with its charge at the top right. Listed structures (several central atoms) and single atoms aren't drawn. The generator is VSEPR Shapes, not a shape of a Lewis structure.
+_Avoid_: Lewis structure (that's a flat drawing), 3D Lewis structure
+
+**Style**:
+How a VSEPR figure is drawn: wedge-and-dash (the default) or ball-and-stick.
+_Avoid_: Mode, model, shape (that's a Lewis structure's), view (that's which way it's turned)
+
+**Wedge-and-dash**:
+A VSEPR figure drawn as textbooks do: each atom a plain circle with its symbol, all the same size, bonds in the page as lines, a bond toward the viewer as a solid wedge and one away from the viewer as a hashed dash.
+_Avoid_: Flat (that's a Lewis structure's shape), 2D
+
+**Ball-and-stick**:
+A VSEPR figure drawn as a model: shaded spheres for atoms in their usual model colors (C dark gray, H white, O red, N blue), each with its symbol unless the teacher hides them, shaded sticks for bonds, nearer atoms in front of farther ones. It can be grayscale for printing.
+_Avoid_: 3D (fine in help text), space-filling (a different model), render
+
+**View**:
+Which way a VSEPR figure's molecule is turned. It starts at the textbook view for its shape (a tetrahedron with two bonds in the page, one wedge and one dash) and the teacher can turn it; Reset view returns to the textbook view.
+_Avoid_: Camera, rotation, orientation (fine in help text)
+
+**Lone pair lobe**:
+A central atom's lone pair drawn as a balloon pointing out from the atom, with two dots in it. The central atom's lone pairs can instead be drawn as two dots or left off; outer atoms' lone pairs are left off unless the teacher turns them on.
+_Avoid_: Orbital (that's an orbital diagram's), cloud
+
+**Shape name** / **Electron geometry**:
+The name of a VSEPR figure's shape by where its atoms are (trigonal pyramidal for NH₃), and by where all its electron groups are, lone pairs included (tetrahedral for NH₃). Either can be written under the figure, with its **AXE notation** (AX₃E).
+_Avoid_: Molecular geometry (fine in search keywords), VSEPR shape
+
+**Bond angle**:
+An arc between two bonds with the angle written beside it, one for each kind of angle the shape has (trigonal bipyramidal has a 90° and a 120°). The figure is always drawn at the ideal angles of its electron geometry, lone pairs or not, so only the label says an angle is smaller: it reads the ideal angle, with "<" when lone pairs squeeze it (<109.5° for H₂O), until the teacher types their own (104.5°). There's no table of measured angles.
+_Avoid_: Angle label, real angle
+
+In a "name the shape" question the shape name, electron geometry, AXE notation and bond angles that are on are left blank, and the answer key fills them in. Outer atoms of different elements go where the usual rule puts them (the more electronegative axial; lone pairs equatorial), and the teacher can't swap them. A figure is one molecule or ion.
+
 ### Bohr models
 
 **Bohr model**:

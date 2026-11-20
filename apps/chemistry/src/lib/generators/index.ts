@@ -27,6 +27,7 @@ import TitrationCurvePreview from './titration-curve/Preview.svelte'
 import TemperatureReadingPreview from './temperature-reading/Preview.svelte'
 import VolumeByDisplacementPreview from './volume-by-displacement/Preview.svelte'
 import VolumeReadingPreview from './volume-reading/Preview.svelte'
+import VseprShapesPreview from './vsepr-shapes/Preview.svelte'
 import StructureEditorPreview from '$lib/editors/structure-editor/Preview.svelte'
 
 /** Each generator's directory preview, by id. */
@@ -36,6 +37,7 @@ export const PREVIEWS: Record<string, Component> = {
   'dot-and-cross': DotAndCrossPreview,
   'length-reading': LengthReadingPreview,
   'lewis-structures': LewisStructuresPreview,
+  'vsepr-shapes': VseprShapesPreview,
   'line-spectrum': LineSpectrumPreview,
   'mass-reading': MassReadingPreview,
   'mass-spectrum': MassSpectrumPreview,

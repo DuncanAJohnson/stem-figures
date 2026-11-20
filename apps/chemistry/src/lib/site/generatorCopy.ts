@@ -602,6 +602,42 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['High school', 'AP Chemistry'],
   },
 
+  'vsepr-shapes': {
+    heading: 'VSEPR shapes in 3D, wedge-and-dash or ball-and-stick',
+    intro: [
+      'VSEPR Shapes draws the real 3D shape of a molecule or polyatomic ion with one central atom. Type NH3, SF4, XeF4 or SO4 2- and it builds the structure the way Lewis Structures does, counts the atoms and lone pairs around the central atom, and draws the shape: linear, bent, trigonal planar, trigonal pyramidal, tetrahedral, T-shaped, seesaw, trigonal bipyramidal, square planar, square pyramidal or octahedral.',
+      'Draw it wedge-and-dash, as textbooks and students do, or as a shaded ball-and-stick model, and drag it to turn it any way. Label the shape name, electron geometry, AXE notation and bond angles, or leave them blank for a “name the shape” question with an answer key.',
+    ],
+    settings: [
+      'The formula: main-group elements through period 5 with one central atom, molecules and polyatomic ions',
+      'Wedge-and-dash or ball-and-stick, the balls in color or grayscale, with or without their symbols',
+      'The view: the textbook view, or turned any way by dragging the figure',
+      'The central atom’s lone pairs as lobes, as dots or hidden, and the outer atoms’ lone pairs',
+      'The shape name, electron geometry, AXE notation and bond angles, with your own angle labels',
+      'A “name the shape” question with the labels blank, a chart title and an answer key',
+    ],
+    faqs: [
+      {
+        q: 'Why does water’s angle say <109.5° and not 104.5°?',
+        a: 'The figure is drawn at the ideal angles of the electron geometry, and lone pairs squeeze the bonds closer, so the label starts as less than the ideal angle. Type 104.5° in its box if your course teaches the measured angle.',
+      },
+      {
+        q: 'Which molecules can it draw?',
+        a: 'Any molecule or polyatomic ion with one central atom and two to six electron groups around it, from CO₂ and BF₃ to SF₆, ClF₃, XeF₄ and I₃⁻, as well as two-atom molecules like HCl. Molecules with more than one central atom, like ethanol, aren’t drawn: the Request it button asks us to add what you need.',
+      },
+      {
+        q: 'Where do the different atoms go in PCl₃F₂ or SF₄?',
+        a: 'Lone pairs go in the equatorial positions of a trigonal bipyramid, and the more electronegative outer atoms take the axial ones, as the usual VSEPR rules say.',
+      },
+      {
+        q: 'How do I turn the molecule?',
+        a: 'Drag the figure, or use the arrows under View to turn it 15° at a time. Reset view goes back to the textbook view, and the view is saved in the link with the other settings.',
+      },
+    ],
+    imageAlt: 'A printable VSEPR shape of a molecule drawn with wedges and dashes, made with VSEPR Shapes',
+    educationalLevel: ['High school', 'AP Chemistry'],
+  },
+
   'dot-and-cross': {
     heading: 'Dot-and-cross diagrams for covalent and ionic bonding',
     intro: [
