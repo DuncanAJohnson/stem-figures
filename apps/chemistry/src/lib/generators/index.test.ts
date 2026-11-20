@@ -53,6 +53,11 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('chromatography')
   })
 
+  it('finds Electrochemical Cells the ways teachers ask for it', () => {
+    for (const query of ['electrochemical cell', 'galvanic cell', 'voltaic cell', 'salt bridge', 'voltmeter', 'anode cathode', 'half-cell'])
+      expect(ids(query), query).toContain('electrochemical-cells')
+  })
+
   it('keeps "lewis dot" for Lewis Structures', () => {
     expect(ids('lewis dot')).toEqual(['lewis-structures'])
   })

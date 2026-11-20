@@ -25,6 +25,7 @@ import { titrationLinking } from '$lib/generators/titration-curve/linking'
 import { displacementLinking } from '$lib/generators/volume-by-displacement/linking'
 import { volumeLinking } from '$lib/generators/volume-reading/linking'
 import { vseprLinking } from '$lib/generators/vsepr-shapes/linking'
+import { cellLinking } from '$lib/generators/electrochemical-cells/linking'
 import type { GeneratorLinking } from './define'
 
 const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
@@ -51,6 +52,7 @@ const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
     pesLinking,
     massSpectrumLinking,
     halfLifeLinking,
+    cellLinking,
   ].map((l) => [l.id, l as GeneratorLinking]),
 )
 

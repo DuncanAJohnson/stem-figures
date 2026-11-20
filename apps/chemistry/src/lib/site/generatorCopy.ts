@@ -675,6 +675,33 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['High school', 'AP Chemistry'],
   },
 
+  'electrochemical-cells': {
+    heading: 'Galvanic cell diagrams with a salt bridge and voltmeter',
+    intro: [
+      'Electrochemical Cells draws a galvanic (voltaic) cell: two beakers, each a metal electrode standing in a 1 M solution of its own ion, joined by a salt bridge, with wires from the electrodes to a digital voltmeter, a dial voltmeter or a simple coil of wire. Pick two of magnesium, aluminum, zinc, iron, nickel, lead, copper and silver.',
+      'The metal with the lower standard reduction potential is the anode, and the voltmeter reads the standard cell potential, 1.10 V for zinc and copper. Label the anode, cathode and electron flow, or leave the names off for students to label.',
+    ],
+    settings: [
+      'Two metals, each in a solution of its own ion, on either side',
+      'A digital voltmeter, a dial voltmeter or a coil of wire between the electrodes',
+      'The names of the metals, solutions and salt bridge, or none for students to fill in',
+      'Anode and cathode with their signs, and electron flow arrows',
+      'A chart title and an answer key with the anode, cathode and E°cell',
+    ],
+    faqs: [
+      {
+        q: 'How does it decide which electrode is the anode?',
+        a: 'The metal with the lower (more negative) standard reduction potential is oxidized, so it is the anode, on whichever side you put it. Electrons flow through the wire from it to the cathode.',
+      },
+      {
+        q: 'What does the voltmeter read?',
+        a: 'The standard cell potential, E°cathode − E°anode, with 1 M solutions at 25 °C. Its + terminal is wired to the cathode, so the reading is always positive.',
+      },
+    ],
+    imageAlt: 'A printable galvanic cell of zinc and copper with a salt bridge and a digital voltmeter, made with Electrochemical Cells',
+    educationalLevel: ['High school', 'AP Chemistry'],
+  },
+
   'dot-and-cross': {
     heading: 'Dot-and-cross diagrams for covalent and ionic bonding',
     intro: [

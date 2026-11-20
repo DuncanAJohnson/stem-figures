@@ -1,0 +1,109 @@
+<script lang="ts">
+  // Electrochemical Cells: pick two metals and get a galvanic cell, each
+  // metal in a solution of its own ion, joined by a salt bridge and wired to
+  // a digital voltmeter, a dial voltmeter or a coil of wire.
+  import { FlaskConical, Gauge, Tags, Type } from '@lucide/svelte'
+  import FigureTextSettings from '$lib/shared/FigureTextSettings.svelte'
+  import GeneratorPage from '$shared/GeneratorPage.svelte'
+  import Section from '$lib/shared/Section.svelte'
+  import { generatorState } from '$shared/generatorState.svelte'
+  import CellFigure from './CellFigure.svelte'
+  import { METALS, METAL_INFO, cellOf, voltageText, type Metal, type Side } from './cell'
+  import { METERS, answerLine, cellSettings, type Meter } from './settings'
+
+  const gen = generatorState(cellSettings, 'electrochemical-cells')
+  const s = gen.s
+  let svg = $state<SVGSVGElement>()
+
+  const METER_NAMES: Record<Meter, string> = { digital: 'Digital voltmeter', dial: 'Dial voltmeter', coil: 'Coil of wire' }
+  const SIDE_NAMES: Record<Side, string> = { left: 'Left electrode', right: 'Right electrode' }
+  const cell = $derived(cellOf(s.left, s.right))
+
+  /** Picking the other side's metal swaps the two sides. */
+  function pick(side: Side, metal: Metal) {
+    const other: Side = side === 'left' ? 'right' : 'left'
+    if (s[other] === metal) s[other] = s[side]
+    s[side] = metal
+  }
+
+  const cellSummary = $derived(`${s.left} | ${s.right}, ${voltageText(cell.voltage)} V`)
+  const labelSummary = $derived(
+    [s.labels && 'names', s.electrodes && 'anode and cathode', s.electronFlow && 'electron flow'].filter(Boolean).join(', ') || 'None',
+  )
+  const textSummary = $derived(
+    [s.titleMode === 'text' && s.title ? `“${s.title}”` : 'No title', s.answerKey ? 'answer key' : 'no answer key'].join(', '),
+  )
+</script>
+
+<GeneratorPage name="Electrochemical Cells" filename="electrochemical-cell" settingsWidth={25} {gen} {svg}>
+  {#snippet settings()}
+    <Section title="Cell" summary={cellSummary} icon={FlaskConical} open>
+      {#each ['left', 'right'] as const as side (side)}
+        <p class="field-label">{SIDE_NAMES[side]}</p>
+        <div class="chips" role="radiogroup" aria-label={SIDE_NAMES[side]}>
+          {#each METALS as metal (metal)}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={s[side] === metal}
+              class="chip"
+              class:on={s[side] === metal}
+              title="{METAL_INFO[metal].name} in {METAL_INFO[metal].ion}"
+              onclick={() => pick(side, metal)}>{metal}</button
+            >
+          {/each}
+        </div>
+      {/each}
+      <p class="note">
+        {s[cell.anode]} is the anode and {s[cell.cathode]} the cathode: E°cell = {METAL_INFO[s[cell.cathode]].potential.toFixed(2)} − ({METAL_INFO[s[cell.anode]].potential.toFixed(2)}) = {voltageText(cell.voltage)} V.
+      </p>
+    </Section>
+
+    <Section title="Meter" summary={METER_NAMES[s.meter]} icon={Gauge} open>
+      <div class="segmented" role="radiogroup" aria-label="Between the electrodes">
+        {#each METERS as meter (meter)}
+          <button type="button" role="radio" aria-checked={s.meter === meter} class:on={s.meter === meter} onclick={() => (s.meter = meter)}>
+            {METER_NAMES[meter]}
+          </button>
+        {/each}
+      </div>
+      <p class="note">
+        {s.meter === 'coil' ? 'A plain wire with a coil in it, and no reading.' : 'Its + terminal is wired to the cathode, so it reads E°cell.'}
+      </p>
+    </Section>
+
+    <Section title="Labels" summary={labelSummary} icon={Tags}>
+      <label class="check first">
+        <input type="checkbox" bind:checked={s.labels} />
+        <span><strong>Names</strong><small>The metals, their solutions and the salt bridge. Off for students to label.</small></span>
+      </label>
+      <label class="check">
+        <input type="checkbox" bind:checked={s.electrodes} />
+        <span><strong>Anode and cathode</strong><small>Under each beaker, with its sign.</small></span>
+      </label>
+      <label class="check">
+        <input type="checkbox" bind:checked={s.electronFlow} />
+        <span><strong>Electron flow</strong><small>Arrows along the wire from the anode to the cathode.</small></span>
+      </label>
+    </Section>
+
+    <Section title="Title and answer key" summary={textSummary} icon={Type}>
+      <FigureTextSettings bind:titleMode={s.titleMode} bind:title={s.title} bind:answerKey={s.answerKey} answer={answerLine(s)} />
+    </Section>
+  {/snippet}
+  {#snippet figure()}
+    <CellFigure settings={s} bind:svg />
+  {/snippet}
+</GeneratorPage>
+
+<style>
+  .field-label { margin: 0.9rem 0 0.45rem; font-weight: 700; font-size: 0.9rem; }
+  .field-label:first-child { margin-top: 0; }
+  .note { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.82rem; }
+  .check { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 1rem; cursor: pointer; }
+  .check.first { margin-top: 0; }
+  .check input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; accent-color: var(--blue); }
+  .check span { display: flex; flex-direction: column; }
+  .check strong { font-size: 0.9rem; }
+  .check small { color: var(--muted); font-size: 0.82rem; }
+</style>

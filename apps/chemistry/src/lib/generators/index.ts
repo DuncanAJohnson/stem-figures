@@ -29,6 +29,7 @@ import TemperatureReadingPreview from './temperature-reading/Preview.svelte'
 import VolumeByDisplacementPreview from './volume-by-displacement/Preview.svelte'
 import VolumeReadingPreview from './volume-reading/Preview.svelte'
 import VseprShapesPreview from './vsepr-shapes/Preview.svelte'
+import ElectrochemicalCellsPreview from './electrochemical-cells/Preview.svelte'
 import StructureEditorPreview from '$lib/editors/structure-editor/Preview.svelte'
 
 /** Each generator's directory preview, by id. */
@@ -39,6 +40,7 @@ export const PREVIEWS: Record<string, Component> = {
   'length-reading': LengthReadingPreview,
   'lewis-structures': LewisStructuresPreview,
   'vsepr-shapes': VseprShapesPreview,
+  'electrochemical-cells': ElectrochemicalCellsPreview,
   'line-spectrum': LineSpectrumPreview,
   'mass-reading': MassReadingPreview,
   'mass-spectrum': MassSpectrumPreview,

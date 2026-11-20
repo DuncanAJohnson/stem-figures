@@ -244,4 +244,14 @@ export const CHEMISTRY: CatalogEntry[] = [
       'Make printable half-life graphs for chemistry and physics tests. Pick carbon-14, iodine-131, uranium-238 or another isotope, or type your own half-life, and get its decay curve as percent, mass, nuclei or activity remaining, with guide lines at each half-life, a stable daughter, or up to three isotopes with their names hidden for students.',
     keywords: ['half-life', 'half', 'life', 'decay', 'radioactive', 'radioactivity', 'exponential', 'nuclear', 'isotope', 'parent', 'daughter', 'carbon', 'dating', 'radiometric', 'activity', 'becquerel', 'Bq', 'count', 'rate', 'remaining', 'iodine', 'uranium', 'curve', 'graph'],
   },
+  {
+    id: 'electrochemical-cells',
+    site: 'chemistry',
+    name: 'Electrochemical Cells',
+    path: '/electrochemical-cells',
+    blurb: 'A galvanic cell of two metals and a salt bridge, with a digital or dial voltmeter or a coil of wire.',
+    description:
+      'Make printable electrochemical cell diagrams for chemistry tests. Pick two metals and get a galvanic (voltaic) cell, each electrode in a solution of its own ion, joined by a salt bridge and wired to a digital voltmeter, a dial voltmeter or a coil of wire, with the anode, cathode and electron flow labeled or left for students.',
+    keywords: ['electrochemical', 'electrochemistry', 'cell', 'cells', 'galvanic', 'voltaic', 'daniell', 'battery', 'salt', 'bridge', 'electrode', 'electrodes', 'anode', 'cathode', 'voltmeter', 'voltage', 'potential', 'E°cell', 'redox', 'oxidation', 'reduction', 'half-cell', 'electron', 'flow', 'zinc', 'copper'],
+  },
 ]

@@ -799,3 +799,13 @@ _Avoid_: Displayed formula, expanded structural formula, Lewis structure (that h
 **Carbon numbering**:
 Small numbers beside the carbons of one chain or ring in each organic structure, shown in every view. The editor numbers the ring if there is one, otherwise the chain through a C=O (then through a carbon bonded to O or N), longest first, from the end nearest the C=O, then an O or N, then a multiple bond, then a branch (so an acid's or ester's C=O carbon is 1); the teacher can flip it to run the other way. Branch carbons aren't numbered. It isn't IUPAC naming.
 _Avoid_: Locants (fine in help text), carbon labels
+
+### Electrochemical cells
+
+**Electrochemical cell**:
+A galvanic (voltaic) cell of two metals: each an electrode standing in a 1 M solution of its own ion, in its own beaker, the beakers joined by a salt bridge and the electrodes by a wire through a **meter**. The metal with the lower standard reduction potential is the anode, on whichever side the teacher puts it. Electrolytic cells, concentrations other than 1 M and cell notation aren't drawn.
+_Avoid_: Battery, voltaic pile, half-cell (one beaker of it)
+
+**Meter**:
+What the wire passes through between the electrodes: a digital voltmeter, a dial voltmeter (0–4 V) or a plain coil of wire with no reading. A voltmeter's + terminal is wired to the cathode, so it always reads E°cell as a positive number.
+_Avoid_: Galvanometer, load, resistor
