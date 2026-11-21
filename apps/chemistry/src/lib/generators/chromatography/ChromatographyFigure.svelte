@@ -11,7 +11,6 @@
   let { settings, svg = $bindable() }: { settings: ChromatographySettings; svg?: SVGSVGElement } = $props()
 
   const l = $derived(chromatogramLayout(settings))
-  const clipId = $props.id()
 
   const label = $derived.by(() => {
     const inks = settings.samples
@@ -89,10 +88,11 @@
   {@const b = p.beaker!}
   {@const r = 10}
   <!-- the solvent, over the paper's bottom edge so the paper shows through it -->
-  <clipPath id="{clipId}-{p.stage}">
-    <rect x={b.left} y={p.waterY} width={b.right - b.left} height={b.bottom - p.waterY!} rx={r} />
-  </clipPath>
-  <rect x={b.left} y={p.waterY} width={b.right - b.left} height={b.bottom - p.waterY!} fill="#bcd7f0" fill-opacity="0.55" clip-path="url(#{clipId}-{p.stage})" />
+  <path
+    d="M {b.left} {p.waterY} V {b.bottom - r} Q {b.left} {b.bottom} {b.left + r} {b.bottom} H {b.right - r} Q {b.right} {b.bottom} {b.right} {b.bottom - r} V {p.waterY} Z"
+    fill="#bcd7f0"
+    fill-opacity="0.55"
+  />
   <line x1={b.left} x2={b.right} y1={p.waterY} y2={p.waterY} stroke="#4a7fb5" stroke-width="1.4" />
   <!-- the beaker, with a lip at its rim -->
   <path

@@ -157,7 +157,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       'The paper after the solvent has run, or before and after side by side',
       'The beaker setup with a glass rod and solvent, or the paper alone',
       'Measurements from the origin line to each spot and to the solvent front, in cm',
-      'Labels naming the glass rod, paper, solvent front, pencil line, solvent and beaker',
+      'Labels naming the lid, paper, solvent front, pencil line, solvent and beaker',
       'A chart title, and an answer key with each spot’s Rf value',
     ],
     faqs: [

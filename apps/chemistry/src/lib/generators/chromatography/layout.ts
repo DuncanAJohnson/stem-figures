@@ -147,7 +147,7 @@ export function chromatogramLayout(s: ChromatographySettings): ChromatogramLayou
   const edge = last.paperX + paperW
   const wanted: Omit<PartLabel, 'textY'>[] = []
   if (s.labels) {
-    if (last.beaker) wanted.push({ text: 'Glass rod', x: last.beaker.right + WALL + ROD_OVERHANG / 2, y: last.rodY })
+    if (last.beaker) wanted.push({ text: 'Lid', x: last.beaker.right + WALL + ROD_OVERHANG / 2, y: last.rodY })
     wanted.push({ text: 'Chromatography paper', x: edge - 6, y: last.paperY + (frontY - 14) / 2 + 6 })
     if (last.stage === 'after') wanted.push({ text: 'Solvent front', x: edge - 4, y: last.paperY + frontY })
     wanted.push({ text: 'Pencil line (origin)', x: edge - 4, y: last.paperY + originY })

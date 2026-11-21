@@ -141,7 +141,6 @@
       {#if s.samples.length < MAX_SAMPLES}
         <button type="button" class="btn-ghost small" onclick={addSample}><Plus size={17} aria-hidden="true" /> Add an ink</button>
       {/if}
-      <p class="help">Each distance is from the origin line to the middle of the spot. A color that stays at 0 cm doesn’t dissolve.</p>
     </section>
   {/snippet}
 
@@ -195,7 +194,6 @@
   }
   .add-color:hover { background: var(--blue-soft); }
   .small { align-self: flex-start; padding: 0.5rem 0.85rem; font-size: 0.9rem; }
-  .help { margin: 0; font-size: 0.84rem; color: var(--muted); }
   .field { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.75rem; font-weight: 600; font-size: 0.88rem; }
   .field input { font-weight: 400; }
   .check { display: flex; align-items: flex-start; gap: 0.6rem; margin: 1rem 0 0.25rem; cursor: pointer; }
