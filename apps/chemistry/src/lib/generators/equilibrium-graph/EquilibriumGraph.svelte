@@ -124,7 +124,7 @@
           The page solves the chemistry, so the lines always move in the ratio of the coefficients and every level
           stretch gives the same K. Each stretch settles where Q = K. It gets there as an elementary reaction would:
           rate forward = k × the reactants’ concentrations, each to the power of its coefficient, and the same for the
-          reverse rate. Adding or removing a species makes its line jump; changing the volume makes every line jump
+          reverse rate. Adding or removing a reactant or product makes its line jump; changing the volume makes every line jump
           together; changing the temperature changes K with no jump, down on heating an exothermic reaction. Type a
           formula in a stress’s words as N_2 or Fe^{'{'}3+{'}'}.
         </HelpTip>
@@ -192,7 +192,7 @@
           <div class="fields">
             {#if kind === 'add' || kind === 'remove'}
               <label class="number-field">
-                <span>Species</span>
+                <span>Which one</span>
                 <select value={clean[key('Species', i)]} onchange={(e) => { s[key('Species', i)] = Number(e.currentTarget.value); reword() }}>
                   {#each reaction.species as sp, j (j)}<option value={j + 1}>{formulaText(sp.formula)}</option>{/each}
                 </select>

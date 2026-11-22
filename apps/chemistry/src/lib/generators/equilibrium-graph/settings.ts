@@ -19,8 +19,8 @@ export type Slot = (typeof SLOTS)[number]
 export const KINDS = ['add', 'remove', 'volume', 'raise', 'lower'] as const
 export type Kind = (typeof KINDS)[number]
 export const KIND_NAMES: Record<Kind, string> = {
-  add: 'Add a species',
-  remove: 'Remove a species',
+  add: 'Add a reactant or product',
+  remove: 'Remove a reactant or product',
   volume: 'Change the volume',
   raise: 'Raise the temperature',
   lower: 'Lower the temperature',

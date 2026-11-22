@@ -185,13 +185,6 @@
           <span>Axes</span>
           {@render segmented('Axes', AXES, (a) => AXES_NAMES[a], s.axes, chooseAxes)}
         </div>
-        <p class="help">
-          {numbered
-            ? 'Numbered axes and gridlines, to scale, for reading values off.'
-            : 'The textbook figure: no numbers along the axes, the values written at them.'}
-        </p>
-      {:else}
-        <p class="help">Drawn not to scale, with the real values written at the axes. Only your own substance goes on a grid.</p>
       {/if}
 
       {#if readout.length}
@@ -236,15 +229,13 @@
       <label class="check">
         <input type="checkbox" bind:checked={s.guides} />
         <span>
-          <strong>Dashed lines from the points</strong>
-          <small>From the triple and critical points to both axes.</small>
+          <strong>Dashed lines from the triple and critical points</strong>
         </span>
       </label>
       <label class="check">
         <input type="checkbox" bind:checked={s.isobar} />
         <span>
           <strong>{oneAtm} line</strong>
-          <small>A dashed line across the graph at {oneAtm}, with a dot where it crosses each boundary and a dashed line down from each.</small>
         </span>
       </label>
       {#if s.isobar}
@@ -258,8 +249,7 @@
       <label class="check">
         <input type="checkbox" bind:checked={s.supercritical} />
         <span>
-          <strong>Supercritical fluid</strong>
-          <small>Dashed lines up and right from the critical point, and the region past them labeled as the others are.</small>
+          <strong>Supercritical fluid region</strong>
         </span>
       </label>
       {#if letters.length > 1}
@@ -340,7 +330,6 @@
   .check input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; flex: none; accent-color: var(--blue); }
   .check span { display: flex; flex-direction: column; }
   .check strong { font-size: 0.9rem; }
-  .check small { color: var(--muted); font-size: 0.82rem; }
   :global(.section) .check + .check, :global(.section) .indent + .check { margin-top: 0.75rem; }
   .shuffle { display: flex; gap: 0.5rem; margin-top: 0.85rem; }
   .shuffle button { display: inline-flex; align-items: center; gap: 0.4rem; }
