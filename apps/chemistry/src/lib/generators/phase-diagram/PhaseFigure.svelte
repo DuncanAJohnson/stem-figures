@@ -49,6 +49,7 @@
     {/each}
     {#each g.words as l}
       {#if l.blank}<line x1={l.blank.x1} y1={l.blank.y1} x2={l.blank.x2} y2={l.blank.y2} />{/if}
+      {#if l.leader}<line x1={l.leader.x1} y1={l.leader.y1} x2={l.leader.x2} y2={l.leader.y2} stroke-width="1.2" />{/if}
     {/each}
     {#each g.marks as m}
       {#if m.blank}<line x1={m.blank.x1} y1={m.blank.y1} x2={m.blank.x2} y2={m.blank.y2} />{/if}

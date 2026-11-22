@@ -56,8 +56,10 @@
     [s.shapeName && 'shape', s.electronGeometry && 'electron geometry', s.axe && 'AXE', s.bondAngles && 'bond angles'].filter(Boolean).join(', ') || 'None',
   )
   const anyLabel = $derived(s.shapeName || s.electronGeometry || s.axe || s.bondAngles)
+  /** a question only while there's a label to leave blank */
+  const question = $derived(s.question && anyLabel)
   const keySummary = $derived(
-    [s.titleMode === 'text' && s.title ? `“${s.title}”` : 'No title', s.question ? 'name the shape' : '', s.question && s.answerKey ? 'answer key' : ''].filter(Boolean).join(', '),
+    [s.titleMode === 'text' && s.title ? `“${s.title}”` : 'No title', question ? 'name the shape' : '', question && s.answerKey ? 'answer key' : ''].filter(Boolean).join(', '),
   )
 </script>
 
@@ -171,13 +173,13 @@
 
     <Section title="Question and title" summary={keySummary} icon={Type}>
       <label class="check first" class:off={!anyLabel}>
-        <input type="checkbox" bind:checked={s.question} disabled={!anyLabel} />
+        <input type="checkbox" checked={question} disabled={!anyLabel} onchange={(e) => (s.question = e.currentTarget.checked)} />
         <span>
           <strong>Name the shape (labels left blank)</strong>
         </span>
       </label>
-      <label class="check" class:off={!s.question}>
-        <input type="checkbox" bind:checked={s.answerKey} disabled={!s.question} />
+      <label class="check" class:off={!question}>
+        <input type="checkbox" bind:checked={s.answerKey} disabled={!question} />
         <span><strong>Answer key</strong></span>
       </label>
       <p class="field-label spaced">Chart title</p>

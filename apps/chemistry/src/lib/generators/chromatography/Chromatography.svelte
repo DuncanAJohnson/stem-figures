@@ -9,7 +9,7 @@
   import Section from '$lib/shared/Section.svelte'
   import { generatorState } from '$shared/generatorState.svelte'
   import ChromatographyFigure from './ChromatographyFigure.svelte'
-  import { INK_COLORS, INK_HEX, MAX_FRONT, MAX_NAME, MAX_SAMPLES, MAX_SPOTS, MIN_FRONT, cleanName, roundCm, type InkColor } from './inks'
+  import { INK_COLORS, INK_HEX, MAX_FRONT, MAX_NAME, MAX_SAMPLES, MAX_SPOTS, MIN_FRONT, cleanName, nextSampleName, roundCm, typedFront, type InkColor } from './inks'
   import { MAX_SOLVENT, SHOWS, SHOW_NAMES, answerLines, chromatographySettings } from './settings'
 
   const gen = generatorState(chromatographySettings, 'chromatography')
@@ -22,8 +22,9 @@
   function setDistance(i: number, j: number, value: number) {
     if (Number.isFinite(value) && value >= 0) s.samples[i].spots[j].distance = Math.min(roundCm(value), clean.front)
   }
-  function setFront(value: number) {
-    if (Number.isFinite(value)) s.front = Math.min(MAX_FRONT, Math.max(MIN_FRONT, roundCm(value)))
+  function setFront(value: number, done = false) {
+    const front = typedFront(value, done)
+    if (front !== undefined) s.front = front
   }
   function addSpot(i: number) {
     const used = new Set(s.samples[i].spots.map((p) => p.color))
@@ -31,7 +32,7 @@
     s.samples[i].spots.push({ color, distance: roundCm(clean.front / 2) })
   }
   function addSample() {
-    const name = String.fromCharCode(65 + s.samples.length)
+    const name = nextSampleName(s.samples.map((sample) => sample.name))
     s.samples.push({ name, spots: [{ color: 'blue', distance: roundCm(clean.front / 2) }] })
   }
 
@@ -73,7 +74,10 @@
             step="0.1"
             value={s.front}
             oninput={(e) => setFront(e.currentTarget.valueAsNumber)}
-            onchange={(e) => (e.currentTarget.value = String(s.front))}
+            onchange={(e) => {
+              setFront(e.currentTarget.valueAsNumber, true)
+              e.currentTarget.value = String(s.front)
+            }}
           />
           cm
         </span>
@@ -114,9 +118,9 @@
                   max={clean.front}
                   step="0.1"
                   aria-label="Ink {sample.name || i + 1}, how far the {spot.color} traveled in cm"
-                  value={spot.distance}
+                  value={clean.samples[i]?.spots[j]?.distance ?? spot.distance}
                   oninput={(e) => setDistance(i, j, e.currentTarget.valueAsNumber)}
-                  onchange={(e) => (e.currentTarget.value = String(s.samples[i].spots[j].distance))}
+                  onchange={(e) => (e.currentTarget.value = String(clean.samples[i]?.spots[j]?.distance ?? spot.distance))}
                 />
                 cm
               </span>

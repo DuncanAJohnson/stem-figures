@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { CELL } from '$shared/graph/grid'
-import { answerLines, buildRateLaw, dataOf, dataText, fitExact, fitFrom0, fitNear, labelOf, scatterProblem, timeAxis, type Panel } from './figure'
+import { answerLines, buildRateLaw, dataOf, dataText, fitExact, fitFrom0, fitNear, labelOf, scatterProblem, timeAxis, timeProblem, type Panel } from './figure'
 import { concentration } from './kinetics'
-import { axisTitles, rateLawSettings } from './settings'
+import { axisTitles, kForOrder, rateLawSettings } from './settings'
 
 const settings = (query: string) => rateLawSettings.fromParams(new URLSearchParams(query))
 const build = (query: string) => buildRateLaw(settings(query))
@@ -129,9 +129,22 @@ describe('rate law graphs', () => {
         const axis = timeAxis(s)
         const until = axis.blocks * axis.step
         expect(concentration(Number(s.order) as 0 | 1 | 2, s.a0, s.k, until), query).toBeLessThanOrEqual(s.a0 * 0.1 * (1 + 1e-9))
-        expect(Object.values(buildRateLaw(s).problems).filter(Boolean), query).toEqual([])
+        // Only, at the far ends of k, a word about the long numbers along the time axis.
+        const { time, ...problems } = buildRateLaw(s).problems
+        expect(Object.values(problems).filter(Boolean), query).toEqual([])
+        expect(time === null || /long numbers/.test(time), query).toBe(true)
       }
     }
+  })
+
+  it('suggests another time unit or k when the time axis numbers are long', () => {
+    expect(timeProblem(settings(''))).toBeNull()
+    expect(timeProblem(settings('order=2&a0=0.001&k=1000000'))).toBeNull() // up to 0.009 s
+    // 2.3 × 10⁶ s for k = 10⁻⁶ s⁻¹: hours would do, or a larger k.
+    expect(timeProblem(settings('k=0.000001'))).toBe('The times along the axis are long numbers (up to 2500000 s). For tidier numbers, choose a longer time unit, or a larger k.')
+    expect(timeProblem(settings('k=0.000001&timeUnit=h'))).toMatch(/choose a larger k\.$/)
+    expect(timeProblem(settings('k=1000000'))).toMatch(/up to 0\.0000025 s\)\. For tidier numbers, choose a smaller k\.$/)
+    expect(timeProblem(settings('k=1000000&timeUnit=min'))).toMatch(/a shorter time unit, or a smaller k\.$/)
   })
 
   it('starts the [A] curve at [A]₀ on the y-axis and keeps every curve on its grid', () => {
@@ -194,7 +207,12 @@ describe('rate law graphs', () => {
     }
     expect(labelOf(settings(''))).toBe('Graphs of [A], ln[A] and 1/[A] against time')
     expect(labelOf(settings('graphs=inv&species=NO2'))).toBe('Graph of 1/[NO₂] against time')
-    expect(labelOf(settings('titleMode=text&title=Run 3'))).toBe('Run 3')
+    expect(labelOf(settings('titleMode=text&title=Run 3'))).toBe('Run 3: graphs of [A], ln[A] and 1/[A] against time')
+    // The data table, which can't be read from the picture, is read out.
+    expect(labelOf(settings('table=conc&count=5'))).toBe(
+      'Graphs of [A], ln[A] and 1/[A] against time. Data table. Time (s): 0, 30, 60, 90, 120. [A] (M): 1.00, 0.549, 0.301, 0.165, 0.0907',
+    )
+    expect(labelOf(settings('table=all&count=5&graphs=ln'))).toMatch(/^Graph of ln\[A\] against time\. Data table\. Time \(s\): .*\. ln\[A\]: 0\.000, −0\.600, .*\. 1\/\[A\] \(M⁻¹\): 1\.00, /)
   })
 })
 
@@ -297,7 +315,8 @@ describe('data points and the table', () => {
 
     const all = build('table=all&species=H2O2&count=5')
     expect(all.table!.rows.map((r) => r.head)).toEqual(['Time (s)', '[H₂O₂] (M)', 'ln[H₂O₂]', '1/[H₂O₂] (M⁻¹)'])
-    expect(all.table!.rows[2].cells[0]).toBe('0')
+    // ln[A] to three decimal places, as many as [A]'s significant figures.
+    expect(all.table!.rows[2].cells).toEqual(['0.000', '−0.600', '−1.201', '−1.802', '−2.400'])
     expect(all.table!.rows[3].cells[0]).toBe('1.00')
     for (const r of all.table!.rows) expect(r.cells).toHaveLength(5)
   })
@@ -310,12 +329,23 @@ describe('data points and the table', () => {
     expect(p.at.x + p.layout.width / 2).toBeCloseTo(g.width / 2, 0)
   })
 
-  it('writes – for ln[A] and 1/[A] when nothing is left', () => {
+  it('stops a zero-order reaction’s data when a tenth of [A]₀ is left, so none read [A] = 0', () => {
+    // [A]₀/k = 80 s on an axis to 80 s: the data stop by 72 s, 0.9[A]₀/k.
     const g = build('order=0&k=0.0125&table=all&count=5&graphs=conc')
-    expect(g.table!.rows[0].cells).toEqual(['0', '20', '40', '60', '80'])
-    expect(g.table!.rows[1].cells.at(-1)).toBe('0')
-    expect(g.table!.rows[2].cells.at(-1)).toBe('–')
-    expect(g.table!.rows[3].cells.at(-1)).toBe('–')
+    expect(g.table!.rows[0].cells).toEqual(['0', '18', '36', '54', '72'])
+    expect(g.table!.rows[1].cells.at(-1)).toBe('0.100')
+    expect(g.table!.rows.flatMap((r) => r.cells)).not.toContain('–')
+  })
+
+  it('keeps a zero-order reaction’s ln[A] and 1/[A] axes fitted to a tenth of [A]₀, with every point on them', () => {
+    // These once ran a point at [A] = 0.04 or 0.0101 M up to 1/[A] = 25 or 99.
+    for (const query of ['order=0&count=9', 'order=0&count=7', 'order=0&k=0.011&count=10&noise=5', 'order=0&k=0.011&count=10']) {
+      const g = build(`${query}&points=1&table=all`)
+      const [, ln, inv] = g.panels
+      expect(Math.max(...yNumbers(inv)), query).toBeLessThanOrEqual(12)
+      expect(Math.min(...yNumbers(ln)), query).toBeGreaterThanOrEqual(-3)
+      for (const p of g.panels) expect(p.points, `${query} ${p.plot}`).toHaveLength(g.data.length)
+    }
   })
 
   it('copies the same values as tab-separated text', () => {
@@ -389,7 +419,7 @@ describe('the answer key', () => {
       'First order: rate = k[A]',
       'Integrated rate law: ln[A] = ln[A]₀ − kt',
       'k = 0.02 s⁻¹',
-      'Straight graph: ln[A] against time, slope −k = −0.02 s⁻¹, y-intercept ln[A]₀ = 0',
+      'Straight graph: ln[A] against time, slope −k = −0.02 s⁻¹, y-intercept ln[A]₀ = 0.000',
       'Half-life: 34.7 s (the same every time)',
     ])
     expect(answerLines(settings('order=0&k=0.01&a0=0.8&timeUnit=min'))).toEqual([
@@ -464,5 +494,16 @@ describe('the settings', () => {
   it('keeps [A]₀, k, the count and the guide lines in range', () => {
     const s = settings('a0=5000&k=0&count=40&guides=9&order=3')
     expect([s.a0, s.k, s.count, s.guides, s.order]).toEqual([100, 1e-6, 10, 3, '1'])
+  })
+})
+
+describe('changing the order', () => {
+  it('sets k to keep the first half-life, and says when k’s range can’t', () => {
+    // 34.7 s: k = [A]₀/2t½ = 0.0144 M s⁻¹ for zero order, 1/(t½[A]₀) = 0.0289 M⁻¹ s⁻¹ for second.
+    expect(kForOrder(settings(''), 0)).toEqual({ k: 0.0144, kept: true })
+    expect(kForOrder(settings(''), 2)).toEqual({ k: 0.0289, kept: true })
+    // t½ = 1/(10⁻⁶ × 0.001) = 10⁹ s would need k = 5 × 10⁻¹³ M s⁻¹ for zero order.
+    expect(kForOrder(settings('order=2&a0=0.001&k=0.000001'), 0)).toEqual({ k: 1e-6, kept: false })
+    expect(kForOrder(settings('order=0&a0=0.001&k=1000000'), 2)).toEqual({ k: 1e6, kept: false })
   })
 })

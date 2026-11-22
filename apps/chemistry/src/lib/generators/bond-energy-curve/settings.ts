@@ -119,8 +119,11 @@ export function bondIn(s: BondSettings, i: Slot): Bond {
 /** The bonds drawn, first to last. */
 export const drawnBonds = (s: BondSettings): Bond[] => SLOTS.slice(0, s.count).map((i) => bondIn(s, i))
 
+/** Whether the names are hidden: only with more than one bond, where the setting is offered; one bond is always named. */
+export const namesHidden = (s: Pick<BondSettings, 'names' | 'count'>) => !s.names && s.count > 1
+
 /** What the figure calls a bond: its name, or Bond A, B or C when names are hidden. */
-export const shownName = (s: BondSettings, i: Slot) => (s.names ? bondIn(s, i).name : `Bond ${String.fromCharCode(65 + i)}`)
+export const shownName = (s: BondSettings, i: Slot) => (namesHidden(s) ? `Bond ${String.fromCharCode(65 + i)}` : bondIn(s, i).name)
 
 /** Whether "Repulsion" and "Attraction" are marked: on one curve only. */
 export const regionsShown = (s: Pick<BondSettings, 'count' | 'regions'>) => s.count === 1 && s.regions !== 'none'

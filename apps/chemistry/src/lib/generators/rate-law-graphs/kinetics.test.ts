@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  STRAIGHT, concentration, dataPoints, dataTimes, endTime, firstHalfLife, halfLifeTimes, kForHalfLife, kUnit, plotted, rSquared, sigText,
+  STRAIGHT, concentration, dataPoints, dataTimes, endTime, firstHalfLife, halfLifeTimes, kForHalfLife, kUnit, lnRound, lnText, plotted, rSquared, sigText,
   straightness, timeAtShare, type Order,
 } from './kinetics'
 
@@ -236,5 +236,24 @@ describe('numbers to three significant figures', () => {
     expect(sigText(1234)).toBe('1230')
     expect(sigText(0.9996)).toBe('1.00')
     expect(sigText(0)).toBe('0')
+  })
+})
+
+describe('ln[A] to three decimal places', () => {
+  it('has as many decimal places as [A] has significant figures, never −0', () => {
+    expect(lnText(Math.log(0.94))).toBe('−0.062')
+    expect(lnText(Math.log(1))).toBe('0.000')
+    expect(lnText(-0.0004)).toBe('0.000')
+    expect(lnText(Math.log(0.1))).toBe('−2.303')
+    expect(lnText(Math.log(2.7))).toBe('0.993')
+    expect(lnRound(Math.log(0.94))).toBe(-0.062)
+    expect(Object.is(lnRound(-0.0004), 0)).toBe(true)
+  })
+
+  it('is how the data give ln[A]', () => {
+    const data = dataPoints(1, 1, 0.003, [0, 20])
+    expect(data[1].conc).toBe(0.942)
+    expect(data[1].ln).toBe(-0.06) // ln 0.942 = −0.0598
+    expect(data[1].inv).toBe(1.06)
   })
 })

@@ -11,7 +11,7 @@ export const vseprLinking = describeLinking(vseprSettings, {
   notes: [
     'formula is a formula with one central atom, such as NH3, SF4, XeF4, I3- or SO4 2- (a charge of 2 or more needs a space, ^ or parentheses before it). URL-encode it: a space is + or %20 and a plus sign is %2B, so NH4+ is formula=NH4%2B and SO4 2- is formula=SO4+2-. Its structure is the one Lewis Structures builds under the octet rule; double and triple bonds are drawn as such, and an ion with resonance structures draws its first.',
     'Molecules with more than one central atom (ethanol, N2H4) and single atoms have no shape to draw.',
-    'The figure is always drawn at the ideal angles of its electron geometry. A bond angle label reads the ideal angle, with < when lone pairs squeeze it (<109.5° for H2O), unless angles gives the teacher’s own.',
+    'The figure is always drawn at the ideal angles of its electron geometry. A bond angle label reads the ideal angle, with < when lone pairs squeeze it (<109.5° for H2O), unless angles gives the teacher’s own. A radical’s lone electron squeezes nothing (NO2 reads 120°), and CH3 (the methyl radical) is trigonal planar.',
     'yaw and pitch turn the molecule from its textbook view; both 0 is the textbook view.',
     'question leaves the shape name, electron geometry, AXE notation and bond angles that are on blank, and answerKey prints them under the figure.',
   ],
@@ -33,7 +33,7 @@ export const vseprLinking = describeLinking(vseprSettings, {
       when: 'bondAngles=1',
       values: `Each up to ${MAX_ANGLE_TEXT} characters, e.g. 104.5° for H2O`,
     },
-    question: { what: 'Leaves the labels that are on blank, for a “name the shape” question.' },
+    question: { what: 'Leaves the labels that are on blank, for a “name the shape” question; ignored when no label is on.' },
     ...figureTextDocs('Shape: trigonal pyramidal'),
     answerKey: { what: 'Prints the answers under the figure: each label that is on, filled in.', when: 'question=1' },
   },

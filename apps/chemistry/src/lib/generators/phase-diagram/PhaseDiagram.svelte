@@ -110,12 +110,23 @@
   )
 
   type NumberKey = 'tripleT' | 'tripleP' | 'critT' | 'critP' | 'nmp' | 'nbp'
+  /** Each typed value's box, and its problem's id after it. */
+  const FIELD_IDS: Record<NumberKey, string> = { tripleT: 'triple-t', tripleP: 'triple-p', critT: 'crit-t', critP: 'crit-p', nmp: 'nmp', nbp: 'nbp' }
 </script>
 
 {#snippet numberField(id: string, name: string, unit: string, key: NumberKey)}
   <label class="number-field" for={id}>
     <span>{name}&nbsp;<span class="unit">({unit})</span></span>
-    <input {id} type="number" step="any" aria-invalid={!!g.problems[key]} bind:value={s[key]} />
+    <!-- An empty or half-typed box keeps the value before it, and shows it again once left. -->
+    <input
+      {id}
+      type="number"
+      step="any"
+      aria-invalid={!!g.problems[key]}
+      aria-describedby={g.problems[key] ? `${id}-problem` : undefined}
+      bind:value={() => s[key], (v) => { if (typeof v === 'number' && Number.isFinite(v)) s[key] = v }}
+      onchange={(e) => { if (!Number.isFinite(e.currentTarget.valueAsNumber)) e.currentTarget.value = String(clean[key]) }}
+    />
   </label>
 {/snippet}
 
@@ -145,14 +156,14 @@
           <input type="text" maxlength="40" placeholder="Substance X" bind:value={s.name} />
         </label>
         <div class="fields">
-          {@render numberField('triple-t', 'Triple point', tu, 'tripleT')}
-          {@render numberField('triple-p', 'Triple point', pu, 'tripleP')}
-          {@render numberField('crit-t', 'Critical point', tu, 'critT')}
-          {@render numberField('crit-p', 'Critical point', pu, 'critP')}
-          {@render numberField('nmp', 'Normal melting point', tu, 'nmp')}
-          {@render numberField('nbp', 'Normal boiling point', tu, 'nbp')}
+          {@render numberField(FIELD_IDS.tripleT, 'Triple point', tu, 'tripleT')}
+          {@render numberField(FIELD_IDS.tripleP, 'Triple point', pu, 'tripleP')}
+          {@render numberField(FIELD_IDS.critT, 'Critical point', tu, 'critT')}
+          {@render numberField(FIELD_IDS.critP, 'Critical point', pu, 'critP')}
+          {@render numberField(FIELD_IDS.nmp, 'Normal melting point', tu, 'nmp')}
+          {@render numberField(FIELD_IDS.nbp, 'Normal boiling point', tu, 'nbp')}
         </div>
-        {#each valueProblems as key}<p class="help problem">{g.problems[key]}</p>{/each}
+        {#each valueProblems as key}<p class="help problem" id="{FIELD_IDS[key]}-problem">{g.problems[key]}</p>{/each}
       {/if}
 
       <div class="pair">

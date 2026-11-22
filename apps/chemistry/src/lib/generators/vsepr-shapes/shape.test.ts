@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { layoutFigure, turn } from './layout'
-import { angleLabels, findShape, labelLines, vseprSettings, withAngleLabel } from './settings'
+import { textWidth } from '../lewis-structures/drawing'
+import { ANGLE_FONT, layoutFigure, turn } from './layout'
+import { angleLabels, asking, findShape, labelLines, vseprSettings, withAngleLabel } from './settings'
 import { defaultAngleText } from './shape'
 
 const shapeOf = (formula: string) => {
@@ -68,6 +69,27 @@ describe('the shape a formula makes', () => {
     }
   })
 
+  it('puts the odd atom out at a square pyramid’s apex, however the formula is typed', () => {
+    for (const formula of ['XeOF4', 'XeF4O']) {
+      const { shape, structure } = shapeOf(formula)
+      expect(shape.name).toBe('square pyramidal')
+      // the apex is opposite the lone pair
+      const apex = shape.atoms.find((g) => dot(g.dir, shape.lone[0].dir) < -0.99)!
+      expect(structure.atoms[apex.atom].element, formula).toBe('O')
+    }
+    const brf5 = shapeOf('BrF5').shape
+    expect(brf5.atoms.filter((g) => dot(g.dir, brf5.lone[0].dir) < -0.99)).toHaveLength(1)
+  })
+
+  it('draws the methyl radical planar, and other three-atom radicals and ions as usual', () => {
+    const methyl = shapeOf('CH3').shape
+    expect([methyl.name, methyl.electronGeometry]).toEqual(['trigonal planar', 'trigonal planar'])
+    expect(methyl.lone.map((g) => g.electrons)).toEqual([1])
+    for (const a of methyl.atoms) expect(Math.abs(dot(a.dir, methyl.lone[0].dir))).toBeLessThan(0.01)
+    expect(shapeOf('CH3-').shape.name).toBe('trigonal pyramidal')
+    expect(shapeOf('BH3').shape.name).toBe('trigonal planar')
+  })
+
   it('keeps like atoms together (CH₂Cl₂’s H atoms share a side)', () => {
     const { shape, structure } = shapeOf('CH2Cl2')
     expect(shape.atoms.map((g) => structure.atoms[g.atom].element)).toEqual(['H', 'H', 'Cl', 'Cl'])
@@ -87,6 +109,13 @@ describe('bond angle labels', () => {
     expect(defaultAngleText({ ideal: 180, squeezed: false, pairs: [] })).toBe('180°')
   })
 
+  it('doesn’t squeeze an angle with a lone electron (NO₂ is 134°, ClO₂ 117.6°)', () => {
+    expect(angleLabels(shapeOf('NO2').shape, '')).toEqual(['120°'])
+    expect(angleLabels(shapeOf('ClO2').shape, '')).toEqual(['109.5°'])
+    expect(angleLabels(shapeOf('CH3').shape, '')).toEqual(['120°'])
+    expect(angleLabels(shapeOf('NO2-').shape, '')).toEqual(['<120°'])
+  })
+
   it('takes the teacher’s own label for each kind of angle', () => {
     const { shape } = shapeOf('SF4')
     const typed = withAngleLabel(shape, '', 1, '102°')
@@ -101,6 +130,15 @@ describe('bond angle labels', () => {
     const { under, key } = labelLines(s, shape)
     expect(under.every((l) => l.endsWith('______________'))).toBe(true)
     expect(key).toEqual(['Answer key', 'Shape: square planar', 'Electron geometry: octahedral'])
+  })
+
+  it('isn’t a question with no label on to leave blank', () => {
+    const s = vseprSettings.tidy({ ...vseprSettings.defaults, shapeName: false, question: true, answerKey: true })
+    expect(s.question).toBe(false)
+    const raw = { ...vseprSettings.defaults, shapeName: false, question: true }
+    expect(asking(raw)).toBe(false)
+    expect(asking({ ...raw, axe: true })).toBe(true)
+    expect(vseprSettings.tidy({ ...vseprSettings.defaults, question: true }).question).toBe(true)
   })
 })
 
@@ -134,6 +172,26 @@ describe('the drawing', () => {
   it('draws one arc for each kind of bond angle', () => {
     expect(pieces('PCl5', { bondAngles: true }).arcs.map((a) => a.label)).toEqual(['90°', '120°'])
     expect(pieces('HCl', { bondAngles: true }).arcs).toEqual([])
+  })
+
+  it('keeps bond angle labels off the bonds', () => {
+    const crosses = (box: number[], [a, b]: number[][]) => {
+      for (let t = 0; t <= 40; t++) {
+        const [x, y] = [a[0] + ((b[0] - a[0]) * t) / 40, a[1] + ((b[1] - a[1]) * t) / 40]
+        if (x > box[0] && x < box[2] && y > box[1] && y < box[3]) return true
+      }
+      return false
+    }
+    for (const formula of ['CH4', 'NH3', 'H2O', 'SF4', 'ClF3', 'PCl5', 'SF6', 'BrF5', 'XeF4', 'BF3', 'CO2', 'XeF2'])
+      for (const style of ['wedge-and-dash', 'ball-and-stick'] as const) {
+        const l = pieces(formula, { style, bondAngles: true })
+        const bonds = l.pieces.flatMap((p) => (p.kind === 'bond' ? [[p.from, p.to]] : []))
+        for (const a of l.arcs) {
+          const w = textWidth(a.label, ANGLE_FONT) / 2
+          const box = [a.at[0] - w, a.at[1] - ANGLE_FONT * 0.75, a.at[0] + w, a.at[1]]
+          for (const bond of bonds) expect(crosses(box, bond), `${formula} ${style} ${a.label}`).toBe(false)
+        }
+      }
   })
 
   it('puts an ion in brackets with its charge', () => {

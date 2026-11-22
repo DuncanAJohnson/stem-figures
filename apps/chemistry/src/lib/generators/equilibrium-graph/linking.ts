@@ -23,7 +23,7 @@ const range = (axis: 'x' | 'y', end: string, unit: string): ParamDoc => ({
   about: SHARED_TEXT,
 })
 const cap = (axis: 'x' | 'y', end: string): ParamDoc => ({ what: `How the ${axis}-axis’s ${end} end is finished.`, about: caps })
-const setups = REACTIONS.map((x) => `${x.id}: ${equationText(x)} (${x.id === 'abc' ? 'made up' : x.heat}; example start ${x.start.join(', ')} mol/L and K ${x.k})`).join('; ')
+const setups = REACTIONS.map((x) => `${x.id}: ${equationText(x)} (${x.id === 'abc' ? 'made up' : `${x.heat}${'evidence' in x ? `, ${x.evidence}` : ''}`}; example start ${x.start.join(', ')} mol/L and K ${x.k})`).join('; ')
 const nth = ['first', 'second', 'third'] as const
 const start = (n: 1 | 2 | 3): ParamDoc => ({
   what: `The ${nth[n - 1]} species’ concentration at time 0, in mol/L, in the order of the equation (reactants, then products).`,

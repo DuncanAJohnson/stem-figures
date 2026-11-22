@@ -153,7 +153,7 @@
       {#if clean.reaction === MADE_UP}
         {@render segmented('The forward reaction is', HEATS, { exothermic: 'Exothermic', endothermic: 'Endothermic' }, s.heat, (v) => (s.heat = v))}
       {:else}
-        <p class="note">The forward reaction is {heat}.</p>
+        <p class="note">The forward reaction is {heat}{reaction.evidence ? `: ${reaction.evidence}` : ''}.</p>
       {/if}
 
       {#each SLOTS.slice(0, clean.count) as i (i)}
@@ -169,7 +169,7 @@
           <div class="fields wide">
             <label class="number-field">
               <span>What happens</span>
-              <select aria-label="Stress {i + 1}" value={kind} onchange={(e) => chooseKind(i, e.currentTarget.value as Kind)}>
+              <select aria-label="What happens in stress {i + 1}" value={kind} onchange={(e) => chooseKind(i, e.currentTarget.value as Kind)}>
                 {#each KINDS as k}<option value={k}>{k === 'volume' && reaction.phase === 'aqueous' ? 'Add or evaporate water' : KIND_NAMES[k]}</option>{/each}
               </select>
             </label>

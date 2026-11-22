@@ -6,7 +6,7 @@
   import FigureFrame from '$lib/shared/FigureFrame.svelte'
   import { segmentTextWidth, sevenSegment } from '$lib/shared/sevenSegment'
   import { METAL_INFO, cellOf, solutionLabel, voltageText, type Side } from './cell'
-  import { answerLine, cellVoltage, type CellSettings } from './settings'
+  import { answerLines, cellVoltage, type CellSettings } from './settings'
 
   let { settings, svg = $bindable() }: { settings: CellSettings; svg?: SVGSVGElement } = $props()
 
@@ -46,7 +46,7 @@
   const angleOf = (v: number) => ((150 - (v / DIAL.max) * 120) * Math.PI) / 180
   const on = (v: number, r: number) => ({ x: DIAL.cx + r * Math.cos(angleOf(v)), y: DIAL.cy - r * Math.sin(angleOf(v)) })
   const ticks = Array.from({ length: DIAL.max * 5 + 1 }, (_, i) => i / 5)
-  const needle = $derived(on(Math.min(voltage, DIAL.max), DIAL.r - 4))
+  const needle = $derived(on(Math.max(0, Math.min(voltage, DIAL.max)), DIAL.r - 4))
   const arc = (() => {
     const a = on(0, DIAL.r)
     const b = on(DIAL.max, DIAL.r)
@@ -101,7 +101,7 @@
   {height}
   {label}
   title={settings.titleMode === 'text' ? settings.title : ''}
-  answerKey={settings.answerKey ? answerLine(settings) : ''}
+  answerKey={settings.answerKey ? answerLines(settings).join('\n') : ''}
 >
   <!-- solutions -->
   {#each SIDES as side (side)}

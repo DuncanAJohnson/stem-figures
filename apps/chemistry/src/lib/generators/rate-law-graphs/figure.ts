@@ -15,7 +15,7 @@ import { fmt } from '$shared/graph/numbering'
 import { LABEL_SCALE } from '$shared/labelSize'
 import { concentrationOf } from '$lib/shared/concentration'
 import {
-  INVERSE_UNITS, STRAIGHT, concentration, dataPoints, dataTimes, endTime, firstHalfLife, halfLifeTimes, kUnit, plotted, sig, sigText,
+  INVERSE_UNITS, STRAIGHT, concentration, dataPoints, dataTimes, endTime, firstHalfLife, halfLifeTimes, kUnit, lnText, plotted, sig, sigText,
   straightness, timeAtShare, type DataPoint, type Order, type Plot,
 } from './kinetics'
 import { axisTitles, orderOf, plotsOf, quantityOf, speciesOf, type RateLawSettings } from './settings'
@@ -124,11 +124,22 @@ export const halvesText = (n: number) => `${n} half-li${n === 1 ? 'fe' : 'ves'}`
 /** A list in words: "a", "a and b", "a, b and c". */
 const listed = (words: string[]) => (words.length > 1 ? `${words.slice(0, -1).join(', ')} and ${words.at(-1)}` : words[0])
 
-/** What the figure shows, for screen readers: never the order. */
+/**
+ * What the figure shows, for screen readers: never the order. A typed chart
+ * title comes first, and the data table, when there is one, is read out row
+ * by row, as it can't be read from the picture.
+ */
 export function labelOf(s: RateLawSettings) {
-  if (s.titleMode === 'text' && s.title.trim()) return s.title.trim()
   const plots = plotsOf(s)
-  return `Graph${plots.length > 1 ? 's' : ''} of ${listed(plots.map((p) => quantityOf(s, p)))} against time`
+  const graphs = `Graph${plots.length > 1 ? 's' : ''} of ${listed(plots.map((p) => quantityOf(s, p)))} against time`
+  const title = s.titleMode === 'text' ? s.title.trim() : ''
+  const parts = [title ? `${title}: ${graphs.replace(/^G/, 'g')}` : graphs]
+  const data = s.table === 'none' ? [] : dataOf(s)
+  if (data.length) {
+    const rows = tableRows(s, data, s.table === 'all' ? 'all' : 'conc').map((r) => `${r.head}: ${r.cells.join(', ')}`)
+    parts.push(`Data table. ${rows.join('. ')}`)
+  }
+  return parts.join('. ')
 }
 
 /** The time axis: from 0 to when [A] has fallen to a tenth, rounded up to a round step. */
@@ -160,9 +171,31 @@ export function fitFrom0(high: number, fewest: number, most: number, target: num
   return best ?? fitNear(0, high, target)
 }
 
-/** The data points: `count` of them from 0 to the end of the time axis, scattered from the seed. */
+/**
+ * The data points: `count` of them from 0 to the end of the time axis,
+ * scattered from the seed. A zero-order reaction's stop when a tenth of [A]₀
+ * is left, where its ln[A] and 1/[A] axes are fitted to, so no point runs
+ * them off to near infinity or reads [A] = 0.
+ */
 export function dataOf(s: RateLawSettings): DataPoint[] {
-  return dataPoints(orderOf(s), s.a0, s.k, dataTimes(rangeEnd(timeAxis(s)), s.count), Number(s.noise), s.seed)
+  const order = orderOf(s)
+  const axisEnd = rangeEnd(timeAxis(s))
+  const until = order === 0 ? Math.min(axisEnd, timeAtShare(order, s.a0, s.k, SHARE_LEFT)) : axisEnd
+  return dataPoints(order, s.a0, s.k, dataTimes(until, s.count), Number(s.noise), s.seed)
+}
+
+/** Longest a time axis number may be before the page suggests another unit or k: "0.0025", "100000". */
+const LONGEST_TIME = 6
+
+/** Why the time axis is hard to read: its numbers are long strings of zeros, with what to change. */
+export function timeProblem(s: RateLawSettings): string | null {
+  const r = timeAxis(s)
+  const texts = Array.from({ length: r.blocks + 1 }, (_, i) => fmt(plain(r.start + i * r.step)))
+  if (Math.max(...texts.map((t) => t.length)) <= LONGEST_TIME) return null
+  const long = rangeEnd(r) >= 1
+  const unit = long ? s.timeUnit !== 'h' : s.timeUnit !== 's'
+  const fix = long ? (unit ? 'a longer time unit, or a larger k' : 'a larger k') : unit ? 'a shorter time unit, or a smaller k' : 'a smaller k'
+  return `The times along the axis are long numbers (up to ${texts.at(-1)} ${s.timeUnit}). For tidier numbers, choose ${fix}.`
 }
 
 /** Whether the data are on the figure at all: as points or in the table. */
@@ -195,7 +228,7 @@ export function answerLines(s: RateLawSettings): string[] {
   const integrated = [`${q} = ${q}₀ − kt`, `ln${q} = ln${q}₀ − kt`, `1/${q} = 1/${q}₀ + kt`][order]
   const intercept = [
     `${q}₀ = ${sigText(s.a0)} ${s.concUnit}`,
-    `ln${q}₀ = ${sigText(Math.log(s.a0))}`,
+    `ln${q}₀ = ${lnText(Math.log(s.a0))}`,
     `1/${q}₀ = ${sigText(1 / s.a0)} ${INVERSE_UNITS[s.concUnit]}`,
   ][order]
   const slope = order === 2 ? `k = ${k} ${unit}` : `−k = −${k} ${unit}`
@@ -227,12 +260,12 @@ export function dataText(s: RateLawSettings) {
 /** The table's rows: time across the top, then [A], and ln[A] and 1/[A] if wanted, their headings the axis titles. */
 function tableRows(s: RateLawSettings, data: DataPoint[], rows: 'conc' | 'all') {
   const titles = axisTitles(s)
-  const cell = (v: number | null) => (v === null ? '–' : sigText(v))
+  const cell = (v: number | null, text = sigText) => (v === null ? '–' : text(v))
   const out = [
     { head: titles.time, cells: data.map((p) => fmt(p.t)) },
     { head: titles.conc, cells: data.map((p) => cell(p.conc)) },
   ]
-  if (rows === 'all') out.push({ head: titles.ln, cells: data.map((p) => cell(p.ln)) }, { head: titles.inv, cells: data.map((p) => cell(p.inv)) })
+  if (rows === 'all') out.push({ head: titles.ln, cells: data.map((p) => cell(p.ln, lnText)) }, { head: titles.inv, cells: data.map((p) => cell(p.inv)) })
   return out
 }
 
@@ -253,6 +286,7 @@ export function buildRateLaw(s: RateLawSettings) {
   const drawTo = Math.min(until, end)
   const data = dataOf(s)
   problems.scatter = scatterProblem(s, data)
+  problems.time = timeProblem(s)
 
   // Each graph's y-axis, fitted to its curve and its data. A zero-order
   // reaction's ln[A] and 1/[A] run off to infinity as it ends, so they are

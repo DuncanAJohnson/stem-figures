@@ -53,7 +53,7 @@ export const phaseLinking = describeLinking(phaseSettings, {
     nmp: { what: 'The normal melting point (at 1 atm), in tUnit. The fusion line runs from the triple point through it.', when: OWN },
     nbp: { what: 'The normal boiling point (at 1 atm), in tUnit. On a grid the vaporization curve passes through it.', when: OWN },
     regions: { what: 'How the solid, liquid and gas regions are labeled.', values: LABEL_WORDS },
-    points: { what: 'How the triple and critical points are labeled; their dots are always drawn.', values: LABEL_WORDS },
+    points: { what: 'How the triple and critical points are labeled; their dots are always drawn, and a blank line is joined to its dot by a short line.', values: LABEL_WORDS },
     curves: {
       what: 'How the phase boundaries are labeled.',
       values: 'none: nothing; names: “Melting / freezing”, “Boiling / condensing” and “Sublimation / deposition” written along them; letters: a letter beside a small dot on each; blank: a blank line along each',
@@ -64,7 +64,7 @@ export const phaseLinking = describeLinking(phaseSettings, {
       when: 'axes=shape',
       values: 'values: the temperature and pressure (0.01 °C, 0.00604 atm); blank: a blank line for students; none: nothing',
     },
-    isobar: { what: 'Whether a dashed line crosses the graph at 1 atm (101.3 kPa), named at the pressure axis, with a dot where it crosses each boundary and a dashed line down from each.' },
+    isobar: { what: 'Whether a dashed line crosses the graph at 1 atm (101.3 kPa), named at the pressure axis (on a grid, on the graph), with a dot where it crosses each boundary and a dashed line down from each, except, not to scale, from a crossing with no value to write at its foot.' },
     normalPoints: {
       what: 'What marks each place the 1 atm line crosses a boundary: under the temperature axis not to scale, beside the dot on a grid.',
       when: 'isobar=1',

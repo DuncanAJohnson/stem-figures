@@ -46,6 +46,24 @@ export const cmText = (cm: number) => `${roundCm(cm).toFixed(1)} cm`
 export const rf = (distance: number, front: number) => (front > 0 ? distance / front : 0)
 export const rfText = (distance: number, front: number) => rf(distance, front).toFixed(2)
 
+/** The solvent front a teacher has typed: while typing (`done` false) only
+ *  a front in range, so the 1 of 12 isn't clamped to 4 before the 2 comes;
+ *  once they leave the box, clamped into range. Undefined keeps the front. */
+export function typedFront(value: number, done: boolean): number | undefined {
+  if (!Number.isFinite(value)) return undefined
+  if (done) return Math.min(MAX_FRONT, Math.max(MIN_FRONT, roundCm(value)))
+  return value >= MIN_FRONT && value <= MAX_FRONT ? roundCm(value) : undefined
+}
+
+/** A new ink's name: the first capital letter no ink has yet. */
+export function nextSampleName(names: string[]): string {
+  for (let i = 0; i < 26; i++) {
+    const letter = String.fromCharCode(65 + i)
+    if (!names.includes(letter)) return letter
+  }
+  return ''
+}
+
 /** Names can't hold the address format's separators (see settings). */
 export const cleanName = (name: string) => name.replace(/[:_,]/g, '').slice(0, MAX_NAME)
 

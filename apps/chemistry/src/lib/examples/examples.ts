@@ -1470,9 +1470,9 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'labeled-paper-chromatography-setup-before-and-after',
       title: 'Labeled paper chromatography setup, before and after',
-      alt: 'Two beakers of water side by side, each with chromatography paper hanging from a glass rod: before, three ink spots on the pencil line; after, the inks separated up the paper, with the lid, paper, solvent front, pencil line, water and beaker labeled',
+      alt: 'Two beakers of water side by side, each with chromatography paper hanging from a glass rod: before, three ink spots on the pencil line; after, the inks separated up the paper, with the glass rod, paper, solvent front, pencil line, water and beaker labeled',
       caption:
-        'A paper chromatography setup before and after the solvent runs. Before, inks A, B and C sit as single spots on the pencil origin line, above the water. After, water has risen up the paper to the solvent front and separated each ink into its dyes. The labels name the lid, the chromatography paper, the solvent front, the pencil line (origin), the water (solvent) and the beaker.',
+        'A paper chromatography setup before and after the solvent runs. Before, inks A, B and C sit as single spots on the pencil origin line, above the water. After, water has risen up the paper to the solvent front and separated each ink into its dyes. The labels name the glass rod, the chromatography paper, the solvent front, the pencil line (origin), the water (solvent) and the beaker.',
       settings: { show: 'both', labels: true },
     },
     {

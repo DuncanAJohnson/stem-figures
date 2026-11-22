@@ -36,11 +36,11 @@ export const sig = (v: number) => fmt(Number(v.toPrecision(3)))
 /** A list in words: "a", "a and b", "a, b and c". */
 const listed = (words: string[]) => (words.length > 1 ? `${words.slice(0, -1).join(', ')} and ${words.at(-1)}` : (words[0] ?? ''))
 
-/** What a stress does, in words, whatever the teacher wrote over its line. */
-function stressWords(rx: Reaction, d: Drawn) {
+/** What a stress does, in words, whatever the teacher wrote over its line; `short` is how much of a removal wasn't there to take. */
+function stressWords(rx: Reaction, d: Drawn, short = 0) {
   const formula = formulaText(rx.species[d.species].formula)
   if (d.kind === 'add') return `${formula} added (${sig(d.amount)} mol/L)`
-  if (d.kind === 'remove') return `${formula} removed (${sig(d.amount)} mol/L)`
+  if (d.kind === 'remove') return short > 1e-12 ? `all the ${formula} removed (${sig(d.amount - short)} mol/L)` : `${formula} removed (${sig(d.amount)} mol/L)`
   if (d.kind === 'volume') {
     const how = rx.phase === 'aqueous' ? (d.amount >= 1 ? 'water added, ' : 'water evaporated, ') : ''
     return `volume × ${sig(d.amount)} (${how}every concentration × ${sig(1 / d.amount)})`
@@ -90,11 +90,16 @@ export function answerLines(s: EquilibriumSettings): string[] {
   stresses.forEach((d, n) => {
     const stretch = stretches[n + 1]
     if (!stretch) return
+    // Two stresses at once: the system answers both together, under the later line.
+    if (stresses[n + 1]?.at === d.at) {
+      out.push(`At time ${fmt(d.at)}, ${stressWords(rx, d, stretch.short)}, at the same moment as the next stress.`)
+      return
+    }
     const temperature = d.kind === 'raise' || d.kind === 'lower'
     const kChange = temperature ? `K ${kFactorOf(heatOf(s), d) > 1 ? 'rises' : 'falls'} to ${sig(stretch.k)}, ` : ''
     const reason = d.kind === 'volume' ? volumeReason(rx, stretch) : ''
     const then = stretch.shift === 'none' ? `Concentrations stay at ${concentrations(rx, stretch.equilibrium)}` : `New equilibrium: ${concentrations(rx, stretch.equilibrium)}`
-    out.push(`At time ${fmt(d.at)}, ${stressWords(rx, d)}: ${kChange}${SHIFTS[stretch.shift]}${reason}. ${then}`)
+    out.push(`At time ${fmt(d.at)}, ${stressWords(rx, d, stretch.short)}: ${kChange}${SHIFTS[stretch.shift]}${reason}. ${then}`)
   })
   return out
 }
@@ -107,7 +112,8 @@ export function fittedAxes(s: EquilibriumSettings) {
   const { stretches } = run(spec, last + 40 * s.established)
   const final = stretches.at(-1)!
   const tail = final.settledAt === null ? 4 * s.established : final.settledAt - final.from
-  const top = Math.max(1e-6, ...stretches.flatMap((st) => [...st.start, ...st.end]))
+  // Nothing at all to draw still gets an axis to 1 mol/L.
+  const top = Math.max(0, ...stretches.flatMap((st) => [...st.start, ...st.end])) || 1
   const blocks = (a: number, b: number, step: number) => Math.round((b - a) / step)
   /** Numbered every other line past 10 blocks, with a block added if the top one would go unnumbered. */
   const fit = (to: number) => {
@@ -257,6 +263,8 @@ export function buildEquilibrium(s: EquilibriumSettings) {
       notes.push(`${name(before)} removes ${sig(before.amount)} mol/L of ${formulaText(rx.species[before.species].formula)}, but only ${sig(before.amount - st.short)} mol/L is there, so all of it goes.`)
     }
     if (st.shift === 'none' || (st.settledAt !== null && st.settledAt <= st.to + 1e-9)) return
+    // A stress at the same moment as the one before isn't early: the two act together.
+    if (next && before && next.at === before.at) return
     if (next) notes.push(`${name(next)} comes at time ${fmt(next.at)}, before the system has settled. Move it later, or make equilibrium establish sooner.`)
     else notes.push(`The time axis ends at ${fmt(box.x1)}, before the system has settled. Make it longer, or fit the axes.`)
   })

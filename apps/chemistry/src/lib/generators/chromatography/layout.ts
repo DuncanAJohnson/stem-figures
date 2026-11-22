@@ -3,7 +3,8 @@
 // samples' lanes across it, each spot's height, the measurement arrows and
 // the part labels. Kept apart from the drawing so it can be tested.
 
-import { sampleName, type ChromatographySettings } from './settings'
+import { textWidth } from '$shared/graph/labels'
+import { answerLines, sampleName, type ChromatographySettings } from './settings'
 import type { InkColor } from './inks'
 
 /** Pixels per centimeter of paper. */
@@ -24,8 +25,17 @@ const WALL = 2
 const PANEL_GAP = 56
 const CAPTION_H = 30
 const LABEL_GAP = 28 // between the figure and the part labels' words
-const LABEL_W = 150
+const LABEL_FONT = 13
 const LABEL_LINE = 19
+/** the samples' names under the origin line */
+export const NAME_FONT = 13
+const NAME_GAP = 8 // between two samples' names
+const NAME_EDGE = 8 // between a name and the paper's edge
+/** the answer key's size and the sheet's padding round the figure, as the figure frame draws them */
+const KEY_FONT = 18
+const FRAME_PAD = 16
+/** Text widths, measured as bold Arial so they're never short. */
+const widthOf = (text: string, size: number) => textWidth(text, size)
 
 export type Stage = 'before' | 'after'
 
@@ -106,12 +116,19 @@ export function chromatogramLayout(s: ChromatographySettings): ChromatogramLayou
 
   // Lanes across the paper. With measurements, each spot that moved has a
   // column of its own to the right of the spots, nearest first, so no two
-  // labels share a place.
+  // labels share a place. A lane is moved along if its name would run into
+  // the name before it, or off the paper.
   let x = measure ? FRONT_MARGIN : MARGIN
+  let lastName: { x: number; half: number } | undefined
   const lanes: Lane[] = s.samples.map((sample, i) => {
     const moved = [...sample.spots.keys()].filter((j) => sample.spots[j].distance > 0).sort((a, b) => sample.spots[a].distance - sample.spots[b].distance)
-    const width = measure ? Math.max(LANE, SPOT_X + 14 + moved.length * COLUMN) : LANE
-    const spotX = x + (measure ? SPOT_X : LANE / 2)
+    const half = widthOf(sampleName(sample, i), NAME_FONT) / 2
+    const offset = measure ? SPOT_X : Math.max(LANE, 2 * half + NAME_GAP) / 2
+    const need = lastName ? lastName.x + lastName.half + NAME_GAP + half : NAME_EDGE + half
+    x += Math.max(0, need - (x + offset))
+    const width = measure ? Math.max(LANE, SPOT_X + 14 + moved.length * COLUMN) : 2 * offset
+    const spotX = x + offset
+    lastName = { x: spotX, half }
     const lane: Lane = {
       name: sampleName(sample, i),
       x: spotX,
@@ -125,7 +142,7 @@ export function chromatogramLayout(s: ChromatographySettings): ChromatogramLayou
     x += width
     return lane
   })
-  const paperW = Math.max(x + MARGIN, 96)
+  const paperW = Math.max(x + MARGIN, lastName ? lastName.x + lastName.half + NAME_EDGE : 0, 96)
 
   // The papers, set up in beakers or alone, side by side.
   const stages: Stage[] = s.show === 'both' ? ['before', 'after'] : ['after']
@@ -147,7 +164,7 @@ export function chromatogramLayout(s: ChromatographySettings): ChromatogramLayou
   const edge = last.paperX + paperW
   const wanted: Omit<PartLabel, 'textY'>[] = []
   if (s.labels) {
-    if (last.beaker) wanted.push({ text: 'Lid', x: last.beaker.right + WALL + ROD_OVERHANG / 2, y: last.rodY })
+    if (last.beaker) wanted.push({ text: 'Glass rod', x: last.beaker.right + WALL + ROD_OVERHANG / 2, y: last.rodY })
     wanted.push({ text: 'Chromatography paper', x: edge - 6, y: last.paperY + (frontY - 14) / 2 + 6 })
     if (last.stage === 'after') wanted.push({ text: 'Solvent front', x: edge - 4, y: last.paperY + frontY })
     wanted.push({ text: 'Pencil line (origin)', x: edge - 4, y: last.paperY + originY })
@@ -160,8 +177,16 @@ export function chromatogramLayout(s: ChromatographySettings): ChromatogramLayou
   const textYs = spread(wanted.map((w) => w.y), LABEL_LINE)
   const labels = wanted.map((w, i) => ({ ...w, textY: textYs[i] }))
   const labelX = drawingW + LABEL_GAP
+  const labelW = Math.max(0, ...labels.map((l) => widthOf(l.text, LABEL_FONT))) + 4
   const top = Math.min(0, ...textYs.map((y) => y - 12))
   const bottom = Math.max(drawingH + (stages.length > 1 ? CAPTION_H : 0), ...textYs.map((y) => y + 6))
+
+  // Wide enough for the answer key under it (the frame adds its padding),
+  // with the drawing centered over it.
+  const drawnW = labels.length ? labelX + labelW : drawingW
+  const keyW = s.answerKey ? Math.max(0, ...answerLines(s).map((line) => widthOf(line, KEY_FONT))) - 2 * FRAME_PAD + 8 : 0
+  const width = Math.max(drawnW, keyW)
+  const dx = (width - drawnW) / 2
 
   return {
     paperW,
@@ -170,22 +195,25 @@ export function chromatogramLayout(s: ChromatographySettings): ChromatogramLayou
     frontY,
     frontArrowX: measure ? 18 : null,
     lanes,
-    panels: top < 0 ? panels.map((p) => shiftPanel(p, -top)) : panels,
-    labels: labels.map((l) => ({ ...l, y: l.y - top, textY: l.textY - top })),
-    labelX,
+    panels: panels.map((p) => shiftPanel(p, dx, -top)),
+    labels: labels.map((l) => ({ ...l, x: l.x + dx, y: l.y - top, textY: l.textY - top })),
+    labelX: labelX + dx,
     captions: stages.length > 1,
-    width: labels.length ? labelX + LABEL_W : drawingW,
+    width,
     height: bottom - top,
   }
 }
 
-function shiftPanel(p: Panel, dy: number): Panel {
+function shiftPanel(p: Panel, dx: number, dy: number): Panel {
   return {
     ...p,
+    paperX: p.paperX + dx,
+    left: p.left + dx,
+    right: p.right + dx,
     paperY: p.paperY + dy,
     rodY: p.rodY + dy,
     waterY: p.waterY === null ? null : p.waterY + dy,
-    beaker: p.beaker && { ...p.beaker, rim: p.beaker.rim + dy, bottom: p.beaker.bottom + dy },
+    beaker: p.beaker && { left: p.beaker.left + dx, right: p.beaker.right + dx, rim: p.beaker.rim + dy, bottom: p.beaker.bottom + dy },
   }
 }
 

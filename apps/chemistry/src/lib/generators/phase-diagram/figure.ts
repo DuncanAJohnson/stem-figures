@@ -254,7 +254,7 @@ export function shapeOf(s: PhaseSettings, v: Values, box: GraphBox): { shape: Sh
 // The drawing -----------------------------------------------------------------
 
 /** A label on the graph: its lines of text, or a write-on line where it would be. */
-export type Label = Spot & { rows: string[]; box: Box; blank?: Segment }
+export type Label = Spot & { rows: string[]; box: Box; blank?: Segment; leader?: Segment }
 /** A boundary's name written along it: its lines of text (or a write-on line) centered at a point and turned to run with the boundary. */
 export type Along = { x: number; y: number; angle: number; rows: string[]; blank?: Segment; corners: Point[] }
 /** A value at an axis, where a number would be: text, or a write-on line. */
@@ -383,7 +383,11 @@ export function buildDiagram(s: PhaseSettings) {
     dashed.push({ x1: area.x, y1: y, x2: area.x + area.w, y2: y })
     for (const c of atCrossings) {
       dots.push({ ...c.at, r: DOT })
-      dashed.push(...guidesFrom(c.at, axisX, axisY, { y: false }))
+      // Not to scale, a line down to the temperature axis with no value at its
+      // foot (a real substance's melting point, not known apart from its
+      // triple point's) would only ask what it marks: it's left off.
+      const unmarked = !numbered && s.normalPoints === 'values' && !crossingText(c.boundary)
+      if (!unmarked) dashed.push(...guidesFrom(c.at, axisX, axisY, { y: false }))
     }
   }
   const supercritical = s.supercritical && !!points.critical
@@ -439,6 +443,28 @@ export function buildDiagram(s: PhaseSettings) {
   }
   const textOf = (mode: LabelMode | 'values', name: string, key: string) => (mode === 'letters' ? (letterOf[key] ?? '') : name)
 
+  // The points' names beside their dots, first, so each is next to its own
+  // dot and no region's name (or blank line) takes that place and reads as
+  // the point's.
+  const twoLines = (name: string) => (s.points === 'names' ? name.split(' ') : undefined)
+  /** A point's blank line, joined to its dot by a short line so it can't be taken for a region's. */
+  const putPoint = (p: Point, spots: Spot[], key: PointKey) => {
+    const before = labels.length
+    put(spots, textOf(s.points, POINT_NAMES[key], key), s.points, twoLines(POINT_NAMES[key]))
+    const l = labels[before]
+    if (!l?.blank) return
+    const end = Math.abs(l.blank.x1 - p.x) < Math.abs(l.blank.x2 - p.x) ? { x: l.blank.x1, y: l.blank.y1 } : { x: l.blank.x2, y: l.blank.y2 }
+    const len = dist(p, end)
+    const from = DOT + 2
+    if (len > from + 2) l.leader = { x1: round(p.x + ((end.x - p.x) * from) / len), y1: round(p.y + ((end.y - p.y) * from) / len), x2: round(end.x), y2: round(end.y) }
+  }
+  if (points.triple) putPoint(points.triple, besidePoint(points.triple, LFS), 'triple')
+  if (points.critical) {
+    const c = points.critical
+    // Above left of the dot first: the curve arrives from below left, and the supercritical region's edges leave up and right.
+    putPoint(c, [{ x: c.x - 12, y: c.y - LFS * 0.85, anchor: 'end' }, ...besidePoint(c, LFS), { x: c.x, y: c.y - LFS * 1.1, anchor: 'middle' }], 'critical')
+  }
+
   // The regions' names, each at the first clear place in its region.
   if (drawable && s.regions !== 'none') {
     const [x0, x1] = [box.x0, box.x1]
@@ -485,16 +511,6 @@ export function buildDiagram(s: PhaseSettings) {
       const name = REGION_NAMES[region]
       put(spots, textOf(s.regions, name, region), s.regions, name.includes(' ') && s.regions === 'names' ? name.split(' ') : undefined)
     }
-  }
-
-  // The points' names beside their dots.
-  const twoLines = (name: string) => (s.points === 'names' ? name.split(' ') : undefined)
-  if (points.triple) put(besidePoint(points.triple, LFS), textOf(s.points, POINT_NAMES.triple, 'triple'), s.points, twoLines(POINT_NAMES.triple))
-  if (points.critical) {
-    const c = points.critical
-    // Above left of the dot first: the curve arrives from below left, and the supercritical region's edges leave up and right.
-    const spots: Spot[] = [{ x: c.x - 12, y: c.y - LFS * 0.85, anchor: 'end' }, ...besidePoint(c, LFS), { x: c.x, y: c.y - LFS * 1.1, anchor: 'middle' }]
-    put(spots, textOf(s.points, POINT_NAMES.critical, 'critical'), s.points, twoLines(POINT_NAMES.critical))
   }
 
   // The boundaries' names, written along them (all on one line, or all on
@@ -741,6 +757,8 @@ export function answerLines(s: PhaseSettings): string[] {
  */
 export function describe(s: PhaseSettings): string {
   const title = s.titleMode === 'text' && s.title.trim() ? s.title.trim() : `Phase diagram of ${substanceOf(s) ? substanceName(s).toLowerCase() : substanceName(s)}`
+  // Values typed that don't make a diagram leave the axes empty.
+  if (VALUE_KEYS.some((key) => checkDiagram(s)[key])) return `${title}: empty axes, pressure against temperature, with no diagram drawn (the values typed don’t make one)`
   const v = valuesOf(s)
   const parts = ['pressure against temperature']
   if (s.regions === 'names') parts.push(`the ${['solid', 'liquid', 'gas', ...(s.supercritical ? ['supercritical fluid'] : [])].join(', ')} regions named`)

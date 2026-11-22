@@ -28,6 +28,15 @@ describe('the reaction setups', () => {
     expect(reactionOf('ammonia').species.map(signed)).toEqual([-1, -3, 2])
   })
 
+  it('say what backs up each real reaction’s heat: its ΔH°, with the sign its heat says', () => {
+    for (const rx of REACTIONS.filter((x) => x.id !== 'abc' && x.id !== 'fescn')) {
+      const evidence = (rx as { evidence?: string }).evidence ?? ''
+      expect(evidence, rx.id).toMatch(rx.heat === 'exothermic' ? /^ΔH° = −/ : /^ΔH° = \+/)
+    }
+    expect((reactionOf('fescn') as { evidence?: string }).evidence).toBe('the red color fades on warming')
+    expect((reactionOf('hi') as { evidence?: string }).evidence).toContain('I₂ as a gas')
+  })
+
   it('have example values that give a clear graph: the lines level off well apart, none along the axis', () => {
     for (const rx of REACTIONS) {
       const { equilibrium } = settle(rx.start, rx.species.map(signed), rx.k)

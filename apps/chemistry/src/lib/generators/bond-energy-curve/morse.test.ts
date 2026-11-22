@@ -21,8 +21,8 @@ describe('the bond energy curve', () => {
 
   it('tends to 0 from below as the atoms separate', () => {
     for (const [r0, D] of BONDS) {
-      expect(energyAt(2 * r0, r0, D) / D).toBeCloseTo(-0.252, 3)
-      expect(energyAt(3 * r0, r0, D) / D).toBeCloseTo(-0.036, 3)
+      expect(energyAt(2 * r0, r0, D) / D).toBeCloseTo(-0.0971, 4)
+      expect(energyAt(3 * r0, r0, D) / D).toBeCloseTo(-0.00495, 5)
       expect(Math.abs(energyAt(10 * r0, r0, D) / D)).toBeLessThan(1e-7)
       expect(energyAt(10 * r0, r0, D)).toBeLessThan(0)
       expect(energyAt(20 * r0, r0, D)).toBeLessThanOrEqual(0)
@@ -41,11 +41,11 @@ describe('the bond energy curve', () => {
     }
   })
 
-  it('crosses 0 at about 0.65 of the bond length and climbs steeply inside it', () => {
+  it('crosses 0 at about 0.77 of the bond length and climbs steeply inside it', () => {
     for (const [r0, D] of BONDS) {
-      expect(zeroCrossing(r0) / r0).toBeCloseTo(0.653, 3)
+      expect(zeroCrossing(r0) / r0).toBeCloseTo(0.769, 3)
       expect(energyAt(zeroCrossing(r0), r0, D) / D).toBeCloseTo(0, 9)
-      expect(energyAt(0.4 * r0, r0, D) / D).toBeCloseTo(4.4, 1)
+      expect(energyAt(0.4 * r0, r0, D) / D).toBeCloseTo(24.5, 1)
       // Falling all the way down the wall to the minimum.
       let before = Infinity
       for (let k = 0; k <= 200; k++) {

@@ -13,10 +13,10 @@
   import Section from '$shared/Section.svelte'
   import { CONC_UNITS, TIME_UNITS, TIME_UNIT_NAMES, concentrationOf, timeTitle } from '$lib/shared/concentration'
   import { answerLines, buildRateLaw, dataText } from './figure'
-  import { firstHalfLife, kForHalfLife, kUnit, sig, type Order } from './kinetics'
+  import { kUnit, type Order } from './kinetics'
   import RateLawFigure from './RateLawFigure.svelte'
   import {
-    GRAPHS, GUIDE_LABELS, GUIDE_LABEL_NAMES, NOISES, ORDERS, ORDER_NAMES, TABLES, autoTitle, newSeed, orderOf, plotsOf, quantityOf,
+    GRAPHS, GUIDE_LABELS, GUIDE_LABEL_NAMES, NOISES, ORDERS, ORDER_NAMES, TABLES, autoTitle, kForOrder, newSeed, orderOf, plotsOf, quantityOf,
     rateLawSettings, speciesOf, type Graphs,
   } from './settings'
 
@@ -28,13 +28,22 @@
   const conc = $derived(concentrationOf(speciesOf(clean)))
   let svg = $state<SVGSVGElement>()
 
+  /** Where changing the order couldn't keep the first half-life: shown while that order and k stand. */
+  let unkept = $state<{ order: string; k: number } | null>(null)
+
   /** Changing the order keeps the first half-life, by setting k to match (to three significant figures). */
   function chooseOrder(next: (typeof ORDERS)[number]) {
     if (next === clean.order) return
-    const half = firstHalfLife(orderOf(clean), clean.a0, clean.k)
-    s.k = sig(kForHalfLife(Number(next) as Order, clean.a0, half))
+    const { k, kept } = kForOrder(clean, Number(next) as Order)
+    s.k = k
     s.order = next
+    unkept = kept ? null : { order: next, k }
   }
+  const orderNote = $derived(
+    unkept && unkept.order === clean.order && unkept.k === clean.k
+      ? 'The first half-life couldn’t be kept: the k it needs is outside 10⁻⁶ to 10⁶.'
+      : null,
+  )
 
   const graphName = (v: Graphs) => (v === 'all' ? 'All three, side by side' : `${quantityOf(clean, v)} against time`)
   const tableNames = $derived({
@@ -131,6 +140,9 @@
         </select>
       </label>
 
+      {#if orderNote}<p class="problem">{orderNote}</p>{/if}
+      {#if g.problems.time}<p class="problem">{g.problems.time}</p>{/if}
+
       <ul class="readout">{#each answer as line}<li>{line}</li>{/each}</ul>
       {#if g.problems.scatter}<p class="problem">{g.problems.scatter}</p>{/if}
     </section>
@@ -168,7 +180,6 @@
           {#if copied}<Check size={16} aria-hidden="true" /> Copied{:else}<Copy size={16} aria-hidden="true" /> Copy data{/if}
         </button>
       </div>
-      {#if g.problems.scatter}<p class="problem">{g.problems.scatter}</p>{/if}
       <div class="setting">{@render segmented('Lines', ['color', 'bw'] as const, { color: 'Color', bw: 'Black and white' }, s.color ? 'color' : 'bw', (v) => (s.color = v === 'color'))}</div>
     </Section>
 

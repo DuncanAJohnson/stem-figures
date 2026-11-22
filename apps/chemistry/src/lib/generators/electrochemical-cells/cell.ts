@@ -48,3 +48,41 @@ export const solutionLabel = (m: Metal) => `${METAL_INFO[m].ion}(aq)`
 
 /** The voltage as a meter shows it, e.g. "1.10". */
 export const voltageText = (v: number) => v.toFixed(2)
+
+/** A potential with a true minus sign, e.g. "−0.76". */
+export const potentialText = (v: number) => (v < 0 ? `−${(-v).toFixed(2)}` : v.toFixed(2))
+
+/** An ion's charge from its superscripts, e.g. 2 for "Cu²⁺". */
+export function ionCharge(ion: string) {
+  const digits = '⁰¹²³⁴⁵⁶⁷⁸⁹'
+  const n = [...ion].map((c) => digits.indexOf(c)).filter((d) => d >= 0)
+  return n.length ? Number(n.join('')) : 1
+}
+
+export interface Reactions {
+  /** e.g. "Zn(s) → Zn²⁺(aq) + 2e⁻" */
+  oxidation: string
+  /** e.g. "Cu²⁺(aq) + 2e⁻ → Cu(s)" */
+  reduction: string
+  /** each half-reaction scaled so the electrons cancel, e.g. "2Al(s) + 3Zn²⁺(aq) → 2Al³⁺(aq) + 3Zn(s)" */
+  overall: string
+}
+
+/** The half-reactions at the anode and cathode, and the overall reaction, balanced. */
+export function reactionsOf(left: Metal, right: Metal): Reactions {
+  const cell = cellOf(left, right)
+  const sides = { left, right }
+  const [anode, cathode] = [sides[cell.anode], sides[cell.cathode]]
+  const [a, c] = [METAL_INFO[anode], METAL_INFO[cathode]]
+  const [na, nc] = [ionCharge(a.ion), ionCharge(c.ion)]
+  const electrons = (n: number) => `${n === 1 ? '' : n}e⁻`
+  const gcd = (x: number, y: number): number => (y ? gcd(y, x % y) : x)
+  const lcm = (na * nc) / gcd(na, nc)
+  const times = (k: number, what: string) => `${k === 1 ? '' : k}${what}`
+  const [ka, kc] = [lcm / na, lcm / nc]
+  return {
+    oxidation: `${anode}(s) → ${a.ion}(aq) + ${electrons(na)}`,
+    reduction: `${c.ion}(aq) + ${electrons(nc)} → ${cathode}(s)`,
+    overall: `${times(ka, anode)}(s) + ${times(kc, c.ion)}(aq) → ${times(ka, a.ion)}(aq) + ${times(kc, cathode)}(s)`,
+  }
+}

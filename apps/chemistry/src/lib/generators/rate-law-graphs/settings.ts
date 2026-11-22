@@ -10,7 +10,7 @@ import { TITLE_MODES } from '$shared/graph/axes'
 import { LABEL_SIZES, type LabelSize } from '$shared/labelSize'
 import { CONC_UNITS, TIME_UNITS, concentrationOf, concentrationTitle, timeTitle } from '$lib/shared/concentration'
 import { bool, choice, defineSettings, number, text } from '$lib/shared/settings'
-import { INVERSE_UNITS, PLOTS, type Order, type Plot } from './kinetics'
+import { INVERSE_UNITS, PLOTS, firstHalfLife, kForHalfLife, sig, type Order, type Plot } from './kinetics'
 
 /** The order of the reaction in A, as the address writes it. */
 export const ORDERS = ['0', '1', '2'] as const
@@ -35,6 +35,10 @@ export const GUIDE_LABEL_NAMES: Record<(typeof GUIDE_LABELS)[number], string> = 
   none: 'None',
 }
 
+/** The smallest and largest k, in any order's unit. */
+export const K_MIN = 1e-6
+export const K_MAX = 1e6
+
 export const MAX_SEED = 999999
 /** A seed for new scatter. */
 export const newSeed = () => 1 + Math.floor(Math.random() * MAX_SEED)
@@ -45,7 +49,7 @@ export const rateLawSettings = defineSettings(
     /** [A]₀, in concUnit */
     a0: number({ min: 0.001, max: 100, fallback: 1 }),
     /** the rate constant, in the unit its order gives it */
-    k: number({ min: 1e-6, max: 1e6, fallback: 0.02 }),
+    k: number({ min: K_MIN, max: K_MAX, fallback: 0.02 }),
     graphs: choice(GRAPHS, 'all'),
     /** the model's curve on each graph */
     curve: bool(true),
@@ -88,6 +92,17 @@ export const rateLawSettings = defineSettings(
 export type RateLawSettings = typeof rateLawSettings.defaults
 
 export const orderOf = (s: Pick<RateLawSettings, 'order'>) => Number(s.order) as Order
+
+/**
+ * The k a new order takes so the first half-life stays the same, to three
+ * significant figures, and whether it could: k is kept within K_MIN..K_MAX,
+ * so at the far ends of the range the half-life changes.
+ */
+export function kForOrder(s: Pick<RateLawSettings, 'order' | 'a0' | 'k'>, next: Order) {
+  const wanted = sig(kForHalfLife(next, s.a0, firstHalfLife(orderOf(s), s.a0, s.k)))
+  const k = Math.min(K_MAX, Math.max(K_MIN, wanted))
+  return { k, kept: k === wanted }
+}
 
 /** The species as written, "A" when the box is empty. */
 export const speciesOf = (s: Pick<RateLawSettings, 'species'>) => s.species.trim() || 'A'

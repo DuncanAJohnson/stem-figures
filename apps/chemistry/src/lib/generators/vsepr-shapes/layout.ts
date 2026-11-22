@@ -8,7 +8,7 @@ import { textWidth } from '../lewis-structures/drawing'
 import { chargeText } from '../lewis-structures/formula'
 import type { Structure } from '../lewis-structures/structure'
 import type { Vec, VseprShape } from './shape'
-import { angleLabels, labelLines, type VseprSettings } from './settings'
+import { angleLabels, asking, labelLines, type VseprSettings } from './settings'
 
 export const SYMBOL_FONT = 18
 export const ANGLE_FONT = 15
@@ -246,20 +246,38 @@ export function layoutFigure(s: VseprSettings, structure: Structure, shape: Vsep
   // lone pairs and the other labels.
   const arcs: Arc[] = []
   if (s.bondAngles) {
-    const labels = angleLabels(shape, s.angles).map((l) => (s.question ? '____' : l))
+    const labels = angleLabels(shape, s.angles).map((l) => (asking(s) ? '____' : l))
     const radius = rc + look.bond * 0.28
-    /** What a label mustn't sit on: atoms other than the central one, and lone pairs, as circles. */
+    /** What a label mustn't sit on: atoms other than the central one, lone
+     *  pairs and their dots, as circles, and bonds, as lines with a half-width. */
     const blockers = pieces.flatMap((p): [number, number, number][] =>
-      p.kind === 'atom' && !p.central ? [[p.x, p.y, p.r]] : p.kind === 'lobe' ? [[p.x, p.y, (p.rx + p.ry) / 2]] : [],
+      p.kind === 'atom' && !p.central
+        ? [[p.x, p.y, p.r]]
+        : p.kind === 'lobe'
+          ? [[p.x, p.y, (p.rx + p.ry) / 2]]
+          : p.kind === 'dots'
+            ? p.dots.map(([x, y]): [number, number, number] => [x, y, 4])
+            : [],
     )
+    const bondHalf = s.style === 'ball-and-stick' ? 7 : 6
+    const bonds = pieces.flatMap((p): [Point, Point][] => (p.kind === 'bond' ? [[p.from, p.to]] : []))
     const taken: [number, number, number, number][] = []
     const hits = (box: [number, number, number, number]) => {
       const [x0, y0, x1, y1] = box
-      let n = 0
-      for (const [cx, cy, r] of blockers) {
+      const near = (cx: number, cy: number, r: number) => {
         const dx = Math.max(x0 - cx, 0, cx - x1)
         const dy = Math.max(y0 - cy, 0, cy - y1)
-        if (dx * dx + dy * dy < r * r) n++
+        return dx * dx + dy * dy < r * r
+      }
+      let n = 0
+      for (const [cx, cy, r] of blockers) if (near(cx, cy, r)) n++
+      for (const [a, b] of bonds) {
+        const steps = Math.max(2, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 3))
+        for (let t = 0; t <= steps; t++)
+          if (near(a[0] + ((b[0] - a[0]) * t) / steps, a[1] + ((b[1] - a[1]) * t) / steps, bondHalf)) {
+            n++
+            break
+          }
       }
       for (const [a0, b0, a1, b1] of taken) if (x0 < a1 && a0 < x1 && y0 < b1 && b0 < y1) n++
       return n
@@ -293,14 +311,19 @@ export function layoutFigure(s: VseprSettings, structure: Structure, shape: Vsep
           const labelDir = project(scale(mid, 1))
           const ml = Math.hypot(...labelDir) || 1
           const [lx, ly] = [labelDir[0] / ml, labelDir[1] / ml]
-          // out past the arc by half the label's width or height, whichever it points along
-          const out = Math.hypot(...project(scale(mid, radius))) + 7 + Math.abs(lx) * (labelW / 2) + Math.abs(ly) * (ANGLE_FONT / 2)
-          const at: Point = [lx * out, ly * out + ANGLE_FONT * 0.35]
-          const box: [number, number, number, number] = [at[0] - labelW / 2, at[1] - ANGLE_FONT * 0.8, at[0] + labelW / 2, at[1] + 2]
-          // face-on arcs are clearest; a label on an atom or lone pair is worst
-          const score = seen / (radius * angle) - hits(box)
-          const arc = { path: 'M' + pts.map((p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' L'), label: labels[i], at }
-          if (!best || score > best.score + 1e-6) best = { score, arc, box }
+          const path = 'M' + pts.map((p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' L')
+          // out past the arc by half the label's width or height, whichever
+          // it points along, and further out if that's on something
+          const edge = Math.hypot(...project(scale(mid, radius))) + 7 + Math.abs(lx) * (labelW / 2) + Math.abs(ly) * (ANGLE_FONT / 2)
+          for (const [k, extra] of [0, 10, 20, 32].entries()) {
+            const out = edge + extra
+            const at: Point = [lx * out, ly * out + ANGLE_FONT * 0.35]
+            const box: [number, number, number, number] = [at[0] - labelW / 2, at[1] - ANGLE_FONT * 0.8, at[0] + labelW / 2, at[1] + 2]
+            // face-on arcs are clearest; a label on an atom, lone pair or
+            // bond is worst; a label close to its arc is better than far
+            const score = seen / (radius * angle) - hits(box) - k * 0.2
+            if (!best || score > best.score + 1e-6) best = { score, arc: { path, label: labels[i], at }, box }
+          }
         }
       }
       if (best) {

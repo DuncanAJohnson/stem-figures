@@ -26,6 +26,7 @@ export const cellLinking = describeLinking(cellSettings, {
     electrodes: { what: 'Writes “Anode (−)” and “Cathode (+)” under the beakers.' },
     electronFlow: { what: 'Draws arrows marked e⁻ along the wire, from the anode to the cathode.' },
     ...figureTextDocs('Anode: Zn (−) · Cathode: Cu (+) · E°cell = 1.10 V'),
+    answerKey: { what: 'Prints the answer key under the figure: “Anode: Zn (−) · Cathode: Cu (+) · E°cell = 1.10 V”, then the half-reaction at each electrode and the balanced overall reaction, e.g. “Overall: Zn(s) + Cu²⁺(aq) → Zn²⁺(aq) + Cu(s)”.' },
   },
   examples: [
     { shows: 'A zinc–copper cell with a digital voltmeter reading 1.10 V, its anode, cathode and electron flow labeled.', settings: { electrodes: true, electronFlow: true } },

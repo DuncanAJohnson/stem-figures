@@ -5,7 +5,7 @@
   import FigureFrame from '$lib/shared/FigureFrame.svelte'
   import { atomColor, lightness, shade } from './colors'
   import { ANGLE_FONT, LINE_FONT, SYMBOL_FONT, layoutFigure, type Piece, type Point } from './layout'
-  import type { Found, VseprSettings } from './settings'
+  import { asking, type Found, type VseprSettings } from './settings'
 
   interface Props {
     settings: VseprSettings
@@ -40,7 +40,7 @@
     const sh = found.shape
     const how = ball ? 'ball-and-stick model' : 'wedge-and-dash drawing'
     const words = [`A ${how} of ${found.name}`]
-    if (s.question) words.push('with its shape to name')
+    if (asking(s)) words.push('with its shape to name')
     else words.push(`${sh.name}${sh.electronGeometry !== sh.name ? `, with ${sh.electronGeometry} electron geometry` : ''}`)
     if (s.lonePairs !== 'none' && sh.e) words.push(`${sh.e} lone ${sh.e === 1 ? 'pair' : 'pairs'} on the central atom`)
     return words.join(', ')

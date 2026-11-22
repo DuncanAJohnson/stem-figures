@@ -23,7 +23,7 @@ export const chromatographyLinking = describeLinking(chromatographySettings, {
     show: { what: 'Which papers the figure shows.', values: 'after: the paper after the solvent has run; both: the paper before it (each ink a single spot on the origin line) beside the paper after' },
     setup: { what: 'Hangs the paper from a glass rod in a beaker, dipping into the solvent below the origin line; 0 draws the paper alone.' },
     measurements: { what: 'Draws an arrow from the origin line to the middle of each spot that moved, and one to the solvent front, each labeled in cm.' },
-    labels: { what: 'Names the parts to the right of the figure: the lid, paper, solvent front, pencil line (origin), solvent and beaker.' },
+    labels: { what: 'Names the parts to the right of the figure: the glass rod, paper, solvent front, pencil line (origin), solvent and beaker.' },
     solvent: { what: 'What the solvent’s label calls it.', when: 'labels=1 and setup=1', values: `Up to ${MAX_SOLVENT} characters` },
     ...figureTextDocs('A: blue Rf = 0.70, yellow Rf = 0.30'),
   },

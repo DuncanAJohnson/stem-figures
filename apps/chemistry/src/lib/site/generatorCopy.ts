@@ -157,7 +157,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       'The paper after the solvent has run, or before and after side by side',
       'The beaker setup with a glass rod and solvent, or the paper alone',
       'Measurements from the origin line to each spot and to the solvent front, in cm',
-      'Labels naming the lid, paper, solvent front, pencil line, solvent and beaker',
+      'Labels naming the glass rod, paper, solvent front, pencil line, solvent and beaker',
       'A chart title, and an answer key with each spot’s Rf value',
     ],
     faqs: [
@@ -749,8 +749,8 @@ export const COPY: Record<string, GeneratorCopy> = {
         a: 'Any molecule or polyatomic ion with one central atom and two to six electron groups around it, from CO₂ and BF₃ to SF₆, ClF₃, XeF₄ and I₃⁻, as well as two-atom molecules like HCl. Molecules with more than one central atom, like ethanol, aren’t drawn: the Request it button asks us to add what you need.',
       },
       {
-        q: 'Where do the different atoms go in PCl₃F₂ or SF₄?',
-        a: 'Lone pairs go in the equatorial positions of a trigonal bipyramid, and the more electronegative outer atoms take the axial ones, as the usual VSEPR rules say.',
+        q: 'Where do the different atoms go in PCl₃F₂ or XeOF₄?',
+        a: 'Lone pairs go in the equatorial positions of a trigonal bipyramid, and the more electronegative outer atoms take the axial ones, as the usual VSEPR rules say. In a square pyramid like XeOF₄ the odd atom out, O, sits at the top, opposite the lone pair, whichever order you type the formula in.',
       },
       {
         q: 'How do I turn the molecule?',
@@ -772,7 +772,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       'A digital voltmeter, a dial voltmeter or a coil of wire between the electrodes',
       'The names of the metals, solutions and salt bridge, or none for students to fill in',
       'Anode and cathode with their signs, and electron flow arrows',
-      'A chart title and an answer key with the anode, cathode and E°cell',
+      'A chart title and an answer key with the anode, cathode and E°cell, the half-reactions and the balanced overall reaction',
     ],
     faqs: [
       {
@@ -1014,7 +1014,7 @@ export const COPY: Record<string, GeneratorCopy> = {
     faqs: [
       {
         q: 'Are the K values real?',
-        a: 'No. Each reaction starts with an example K and example starting concentrations, chosen to give a clear graph with the lines well apart. They are not the reactions’ measured equilibrium constants. Type your own K and concentrations to match your textbook or a problem; the page says the same under the K box and in the answer key. Whether each reaction is exothermic or endothermic is real.',
+        a: 'No. Each reaction starts with an example K and example starting concentrations, chosen to give a clear graph with the lines well apart. They are not the reactions’ measured equilibrium constants. Type your own K and concentrations to match your textbook or a problem; the page says the same under the K box and in the answer key. Whether each reaction is exothermic or endothermic is real, and the page backs it up under the K box with its ΔH°, or for Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺ with the red color fading on warming.',
       },
       {
         q: 'How does the graph show Le Châtelier’s principle?',
@@ -1117,7 +1117,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'Can students plot the data themselves?',
-        a: 'Yes. Turn off the curve and the data points and add the data table: the grids are left empty for students to work out ln[A] and 1/[A] from the table and plot them. Each [A] in the table is rounded to three significant figures, and the ln[A] and 1/[A] rows, if shown, are worked out from those rounded values, as a student would.',
+        a: 'Yes. Turn off the curve and the data points and add the data table: the grids are left empty for students to work out ln[A] and 1/[A] from the table and plot them. Each [A] in the table is rounded to three significant figures, and the ln[A] and 1/[A] rows, if shown, are worked out from those rounded values, as a student would: ln[A] to three decimal places, as a log of a three-significant-figure number takes, and 1/[A] to three significant figures.',
       },
       {
         q: 'Why does the zero-order line stop?',

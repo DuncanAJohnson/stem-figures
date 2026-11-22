@@ -38,10 +38,26 @@ export const vseprSettings = defineSettings(
     question: bool(false),
     ...figureTextFields(),
   },
-  (s) => ({ ...s, yaw: Math.round(s.yaw), pitch: Math.round(s.pitch) }),
+  (s) => ({
+    ...s,
+    yaw: Math.round(s.yaw),
+    pitch: Math.round(s.pitch),
+    // a question needs a label to leave blank
+    question: s.question && anyLabel(s),
+  }),
 )
 
 export type VseprSettings = typeof vseprSettings.defaults
+
+type Labels = { shapeName: boolean; electronGeometry: boolean; axe: boolean; bondAngles: boolean }
+
+/** Whether any label is on that a "name the shape" question could leave blank. */
+export function anyLabel(s: Labels): boolean {
+  return s.shapeName || s.electronGeometry || s.axe || s.bondAngles
+}
+
+/** Whether the figure is a "name the shape" question: asked for, with a label to leave blank. */
+export const asking = (s: Labels & { question: boolean }): boolean => s.question && anyLabel(s)
 
 export type Found =
   | { ok: true; name: string; structure: Structure; shape: VseprShape }
@@ -93,7 +109,7 @@ export function labelLines(s: VseprSettings, shape: VseprShape) {
   if (s.bondAngles && angles.length) answers.push([angles.length > 1 ? 'Bond angles' : 'Bond angle', angles.join(' and ')])
   const blank = '______________'
   // The bond angles have their own labels in the figure.
-  const under = answers.filter(([what]) => !what.startsWith('Bond')).map(([what, answer]) => `${what}: ${s.question ? blank : answer}`)
-  const key = s.question && s.answerKey && answers.length ? ['Answer key', ...answers.map(([what, answer]) => `${what}: ${answer}`)] : []
+  const under = answers.filter(([what]) => !what.startsWith('Bond')).map(([what, answer]) => `${what}: ${asking(s) ? blank : answer}`)
+  const key = asking(s) && s.answerKey && answers.length ? ['Answer key', ...answers.map(([what, answer]) => `${what}: ${answer}`)] : []
   return { under, key }
 }

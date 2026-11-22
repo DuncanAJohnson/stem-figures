@@ -29,6 +29,8 @@ export interface Reaction {
   phase: Phase
   /** the forward reaction's heat; the made-up reaction's is the teacher's to choose */
   heat: Heat
+  /** what the page says backs `heat` up: the forward reaction's ΔH°, or what's seen, as plain text */
+  evidence?: string
   /** an example K, chosen for the picture, not measured */
   k: number
   /** example starting concentrations in mol/L, one per species */
@@ -46,6 +48,7 @@ export const REACTIONS = [
     phase: 'gas',
     // ΔH° = −92 kJ/mol (2 × ΔHf° of NH₃(g), −46.1 kJ/mol; NIST Chemistry WebBook)
     heat: 'exothermic',
+    evidence: 'ΔH° = −92 kJ/mol',
     k: 0.5,
     start: [1, 3, 0],
   },
@@ -56,6 +59,7 @@ export const REACTIONS = [
     phase: 'gas',
     // ΔH° = −9.5 kJ/mol with I₂ as a gas (2 × 26.5 − 62.4; NIST Chemistry WebBook)
     heat: 'exothermic',
+    evidence: 'ΔH° = −9.5 kJ/mol, with I₂ as a gas',
     k: 10,
     start: [1, 0.8, 0],
   },
@@ -66,6 +70,7 @@ export const REACTIONS = [
     phase: 'gas',
     // ΔH° = +57 kJ/mol (2 × 33.2 − 9.2; NIST Chemistry WebBook)
     heat: 'endothermic',
+    evidence: 'ΔH° = +57 kJ/mol',
     k: 0.2,
     start: [1, 0],
   },
@@ -76,6 +81,7 @@ export const REACTIONS = [
     phase: 'gas',
     // ΔH° = −198 kJ/mol (2 × (−395.7 + 296.8); NIST Chemistry WebBook)
     heat: 'exothermic',
+    evidence: 'ΔH° = −198 kJ/mol',
     k: 10,
     start: [1, 0.8, 0],
   },
@@ -86,6 +92,7 @@ export const REACTIONS = [
     phase: 'gas',
     // ΔH° = +88 kJ/mol (−287.0 + 374.9; NIST Chemistry WebBook)
     heat: 'endothermic',
+    evidence: 'ΔH° = +88 kJ/mol',
     k: 0.5,
     start: [1, 0, 0.3],
   },
@@ -98,6 +105,7 @@ export const REACTIONS = [
     // demonstration (e.g. Flinn Scientific, "Le Châtelier's Principle and the
     // Iron(III) Thiocyanate Equilibrium").
     heat: 'exothermic',
+    evidence: 'the red color fades on warming',
     k: 5,
     start: [1, 0.6, 0],
   },

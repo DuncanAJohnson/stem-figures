@@ -23,7 +23,7 @@
   import { LENGTH_UNITS, LENGTH_UNIT_TEXT, fromPm, toPm, type LengthUnit } from './morse'
   import {
     AXES, BOND_NAMES, GUIDE_LABELS, GUIDE_LABEL_NAMES, MAX_BONDS, REGIONS, REGION_NAMES, SLOTS, UNITS, UNIT_TEXT, bondSettings, drawnBonds,
-    field, shownName, xTitleFor, yTitleFor, type AxesMode, type Slot, type Unit,
+    field, namesHidden, shownName, xTitleFor, yTitleFor, type AxesMode, type Slot, type Unit,
   } from './settings'
 
   const gen = generatorState(bondSettings, 'bond-energy-curve')
@@ -111,7 +111,7 @@
     [
       clean.dots ? 'Dots on the minimums' : '',
       clean.count === 1 && clean.regions !== 'none' ? (clean.regions === 'words' ? 'Repulsion and attraction' : 'Blank region labels') : '',
-      clean.count > 1 && !clean.names ? 'Names hidden' : '',
+      namesHidden(clean) ? 'Names hidden' : '',
       clean.color ? 'Color' : 'Black and white',
     ].filter(Boolean).join(' · '),
   )

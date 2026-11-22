@@ -82,6 +82,18 @@ export function sigText(v: number, figures = 3) {
   return r.toFixed(Math.min(decimals, 12)).replace('-', '−')
 }
 
+/**
+ * A natural log to the decimal places the rule for logarithms gives it: as
+ * many as the significant figures of the concentration it's taken of, three.
+ */
+export const LN_DECIMALS = 3
+
+/** ln[A] rounded to LN_DECIMALS places, never −0. */
+export const lnRound = (v: number) => Number(v.toFixed(LN_DECIMALS)) || 0
+
+/** ln[A] written to LN_DECIMALS places with a true minus sign: "0.000", "−0.062", "−2.303". */
+export const lnText = (v: number) => lnRound(v).toFixed(LN_DECIMALS).replace('-', '−')
+
 /** One data point: its time, [A] as measured (rounded), and ln[A] and 1/[A] worked out from that. */
 export type DataPoint = { t: number; conc: number; ln: number | null; inv: number | null }
 
@@ -114,7 +126,8 @@ function normal(random: () => number) {
  * The data a student is given: at each time, the model's [A] scattered by
  * `noise` percent of itself (normally, from the seed) and rounded to three
  * significant figures, with ln[A] and 1/[A] worked out from that rounded
- * [A], to three significant figures, as the student would. The first is
+ * [A] as the student would: ln[A] to three decimal places (the rule for
+ * logs) and 1/[A] to three significant figures. The first is
  * [A]₀ exactly, and none are made after a zero-order reaction has ended.
  */
 export function dataPoints(order: Order, a0: number, k: number, times: number[], noise = 0, seed = 1): DataPoint[] {
@@ -129,7 +142,7 @@ export function dataPoints(order: Order, a0: number, k: number, times: number[],
     const conc = sig(i === 0 ? a0 : Math.max(0, model * (1 + (noise / 100) * z)))
     const of = (plot: Plot) => {
       const v = plotted(plot, conc)
-      return v === null ? null : sig(v)
+      return v === null ? null : plot === 'ln' ? lnRound(v) : sig(v)
     }
     out.push({ t, conc, ln: of('ln'), inv: of('inv') })
   })

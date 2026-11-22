@@ -272,4 +272,54 @@ describe('the answer key and description', () => {
     const blank = describeFigure(settingsOf('regions=letters&points=blank&axisValues=blank'))
     expect(blank).not.toMatch(/°C|atm/)
   })
+
+  it('says no diagram is drawn when the values typed don’t make one', () => {
+    const text = describeFigure(settingsOf('substance=custom&tripleT=0&tripleP=0&critT=0&critP=0&nmp=0&nbp=0'))
+    expect(text).toBe('Phase diagram of Substance X: empty axes, pressure against temperature, with no diagram drawn (the values typed don’t make one)')
+  })
+})
+
+describe('the 1 atm crossings and the points, not to scale', () => {
+  const dropsTo = (g: Layout, x: number) => g.dashed.some((l) => Math.abs(l.x1 - x) < 0.5 && Math.abs(l.x2 - x) < 0.5 && l.y1 !== l.y2)
+  const crossingDots = (g: Layout) => g.dots.filter((p) => Math.abs(p.y - g.dots[2]?.y) < 0.5)
+
+  it('leaves off the line down from a crossing with no value to write at its foot', () => {
+    const g = build('substance=nitrogen&isobar=1')
+    const [melts, boils] = crossingDots(g)
+    expect(dropsTo(g, melts.x)).toBe(false)
+    expect(dropsTo(g, boils.x)).toBe(true)
+    // Named, lettered or blank, the melting point has its line down.
+    for (const mode of ['names', 'letters', 'blank']) {
+      const h = build(`substance=nitrogen&isobar=1&normalPoints=${mode}`)
+      expect(dropsTo(h, crossingDots(h)[0].x)).toBe(true)
+    }
+    // Water's melting point has a value, so its line down stays.
+    const w = build('isobar=1')
+    expect(dropsTo(w, crossingDots(w)[0].x)).toBe(true)
+  })
+
+  it('puts each point’s name or blank line next to its own dot, before the regions take the places there', () => {
+    for (const query of ['', 'regions=blank&points=blank&axisValues=blank&isobar=1&normalPoints=blank', 'substance=co2&regions=blank&points=blank']) {
+      const g = build(query)
+      const [triple] = g.dots
+      // The first place beside the triple point: below right of it.
+      const label = g.words.find((l) => l.box.x0 > triple.x && l.box.x0 < triple.x + 20 && l.box.y0 > triple.y - 2 && l.box.y0 < triple.y + 25)
+      expect(label, query).toBeTruthy()
+    }
+  })
+
+  it('joins each point’s blank line to its dot, so it isn’t taken for a region’s', () => {
+    const g = build('regions=blank&points=blank&axisValues=blank&isobar=1&normalPoints=blank')
+    const [triple, critical] = g.dots
+    const leaders = g.words.filter((l) => l.leader).map((l) => l.leader!)
+    expect(leaders).toHaveLength(2)
+    for (const p of [triple, critical]) {
+      const leader = leaders.find((l) => Math.hypot(l.x1 - p.x, l.y1 - p.y) < 10)
+      expect(leader).toBeTruthy()
+      // It ends at one end of a blank line.
+      expect(g.words.some((w) => w.blank && [w.blank.x1, w.blank.x2].some((x) => Math.abs(x - leader!.x2) < 0.5) && Math.abs(w.blank.y1 - leader!.y2) < 0.5)).toBe(true)
+    }
+    // Named points need none, nor do the regions' blank lines.
+    expect(build('').words.some((l) => l.leader)).toBe(false)
+  })
 })

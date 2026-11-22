@@ -97,11 +97,12 @@ group('a bond energy curve', () => {
         }
         // It comes in through the top edge, cut there, not short of it.
         expect(pts[0][1]).toBeCloseTo(g.grid.y, 2)
-        // And ends at the right edge, under the zero line, at the curve's own height.
+        // And ends at the right edge, at the curve's own height, all but on the zero line and never above it.
         const end = pts.at(-1)!
         expect(end[0]).toBeCloseTo(g.grid.x + g.grid.w, 2)
         expect(end[1]).toBeCloseTo(at(right, energyAt(right, b.length, b.energy)).y, 2)
-        expect(end[1]).toBeGreaterThan(g.zero!.y1)
+        expect(end[1]).toBeGreaterThanOrEqual(g.zero!.y1)
+        expect(energyAt(right, b.length, b.energy)).toBeLessThan(0)
         expect(y.start).toBeLessThan(-b.energy)
       }
     }
@@ -297,7 +298,9 @@ group('a bond energy curve', () => {
       'Bond B is O=O: bond length 120 pm, bond energy 500 kJ/mol',
       'Bond C is N≡N: bond length 200 pm, bond energy 200 kJ/mol',
     ])
-    expect(describe(settings('names=0&name1=H–H'))).toBe('Potential energy against internuclear distance for Bond A')
+    // One bond is always named: hiding names is offered only with more than one.
+    expect(describe(settings('names=0&name1=H–H'))).toBe('Potential energy against internuclear distance for H–H')
+    expect(answerLines(settings('names=0&name1=H–H'))).toEqual(['H–H: bond length 150 pm, bond energy 300 kJ/mol'])
   })
 
   it('gives each bond’s length and energy in the answer key, in the units shown', () => {
@@ -306,7 +309,7 @@ group('a bond energy curve', () => {
       'Bond X: bond length 1.5 Å, bond energy 300 kJ mol⁻¹',
       'Bond Y: bond length 1.2 Å, bond energy 500 kJ mol⁻¹',
     ])
-    expect(answerLines(settings('names=0&lengthUnit=nm&length1=74&energy1=436'))).toEqual(['Bond A is Bond X: bond length 0.074 nm, bond energy 436 kJ/mol'])
+    expect(answerLines(settings('lengthUnit=nm&length1=74&energy1=436'))).toEqual(['Bond X: bond length 0.074 nm, bond energy 436 kJ/mol'])
   })
 
   it('writes Repulsion beside the wall and Attraction along the rise, for one curve only', () => {

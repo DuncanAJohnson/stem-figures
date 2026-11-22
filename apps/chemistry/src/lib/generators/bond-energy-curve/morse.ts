@@ -2,15 +2,20 @@
 // atoms against the distance between their nuclei, as a Morse curve set by
 // the two numbers a student reads back from it,
 //
-//   E(r) = D · [(1 − e^(−a(r − r₀)))² − 1],   a = 2 / r₀
+//   E(r) = D · [(1 − e^(−a(r − r₀)))² − 1],   a = 3 / r₀
 //
 // r₀ is the bond length and D the bond energy. Its lowest point is exactly
 // at r₀, where E = −D; it rises to 0 from below as the atoms separate, and
 // climbs steeply through 0 when they are pushed together. Every curve has
 // the same shape, stretched to its own r₀ and D.
 
-/** a · r₀: how wide the well is for its bond length, the same for every curve. */
-export const SHAPE = 2
+/**
+ * a · r₀: how wide the well is for its bond length, the same for every curve.
+ * Real diatomic bonds run from about 1.4 (H₂) to 4 (Cl₂), most near 3 (HCl
+ * 2.4, N₂ 3.0, O₂ 3.2): 3 gives the steep wall and fairly narrow well of a
+ * typical bond.
+ */
+export const SHAPE = 3
 
 /** The potential energy at distance r, for bond length r0 and bond energy D (r and r0 in the same unit). */
 export function energyAt(r: number, r0: number, D: number) {
@@ -23,7 +28,7 @@ export function wallAt(energy: number, r0: number, D: number) {
   return r0 * (1 - Math.log(1 + Math.sqrt(Math.max(0, 1 + energy / D))) / SHAPE)
 }
 
-/** Where the curve crosses 0 on its way up the wall: about 0.65 of the bond length. */
+/** Where the curve crosses 0 on its way up the wall: about 0.77 of the bond length. */
 export const zeroCrossing = (r0: number) => r0 * (1 - Math.LN2 / SHAPE)
 
 /**

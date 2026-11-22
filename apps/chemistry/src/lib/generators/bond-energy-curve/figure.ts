@@ -19,7 +19,7 @@ import {
 import { fmt } from '$shared/graph/numbering'
 import { LABEL_SCALE } from '$shared/labelSize'
 import { LENGTH_UNIT_TEXT, fromPm, samples, wallAt } from './morse'
-import { UNIT_TEXT, drawnBonds, regionsShown, shownName, type BondSettings } from './settings'
+import { UNIT_TEXT, drawnBonds, namesHidden, regionsShown, shownName, type BondSettings } from './settings'
 
 const SAMPLES = 400
 const PAD = 14 // the figure's margin, as the grid's
@@ -54,7 +54,7 @@ export function describe(s: BondSettings) {
 /** The answer key: each bond's length and energy, naming each hidden one with the name the teacher typed. */
 export function answerLines(s: BondSettings): string[] {
   return drawnBonds(s).map((b) => {
-    const who = s.names ? b.name : `${shownName(s, b.slot)} is ${b.name}`
+    const who = namesHidden(s) ? `${shownName(s, b.slot)} is ${b.name}` : b.name
     return `${who}: bond length ${lengthText(s, b.pm)}, bond energy ${energyText(s, b.energy)}`
   })
 }

@@ -24,16 +24,32 @@ export const TIME_UNIT_NAMES: Record<TimeUnit, { one: string; many: string }> = 
   h: { one: 'hour', many: 'hours' },
 }
 
+/** The digits after a letter or a bracket lowered: "N2O5" is "N_2O_5". */
+const lowered = (formula: string) =>
+  formula.replace(/(?<=[A-Za-z)\]])\d+/g, (digits) => (digits.length === 1 ? `_${digits}` : `_{${digits}}`))
+
 /**
  * A species' formula as key text ($shared/particles/keyText), the digits
  * after a letter or a bracket lowered: "N2O5" is "N_2O_5", "C6H12O6" is
  * "C_6H_{12}O_6". A number in front stays as it is ("2NO2" is "2NO_2"), and
  * so does a formula already written with _ or ^ ("Fe^{3+}").
+ *
+ * A + or − at the end is a charge, raised with the digit just before it when
+ * that digit is the charge's: one element's ("Fe3+" is Fe³⁺, "O2-" is O²⁻),
+ * or the last of two or more ("SO42-" is SO₄²⁻, "Hg22+" is Hg₂²⁺). One digit
+ * after a group of elements is its subscript, the charge 1 ("NH4+" is NH₄⁺).
  */
 export function formulaMarkup(species: string) {
   const typed = species.trim()
   if (/[_^]/.test(typed)) return typed
-  return typed.replace(/(?<=[A-Za-z)\]])\d+/g, (digits) => (digits.length === 1 ? `_${digits}` : `_{${digits}}`))
+  const ion = /^(.*?[A-Za-z)\]])(\d*)([+\-−])$/.exec(typed)
+  if (!ion) return lowered(typed)
+  const [, base, digits, sign] = ion
+  const element = /^(\d*)[A-Z][a-z]?$/.test(base)
+  const charged = digits.length > 1 || (digits.length === 1 && element)
+  const sub = charged ? digits.slice(0, -1) : digits
+  const charge = (charged ? digits.at(-1) : '') + (sign === '+' ? '+' : '-')
+  return `${lowered(base + sub)}^${charge.length === 1 ? charge : `{${charge}}`}`
 }
 
 /** A species' formula in plain characters, for titles, answer keys and screen readers: "N₂O₅". */

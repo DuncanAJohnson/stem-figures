@@ -80,7 +80,23 @@ describe('the fitted axes', () => {
     }
   })
 
-  it('number the top of each axis', () => {
+  it('fit small concentrations and quick reactions, never ending an axis at 0', () => {
+    for (const over of [
+      { ...setupFields('fescn'), start1: 0.002, start2: 0.002, start3: 0, k: 200 },
+      { ...setupFields('fescn'), start1: 0.0005, start2: 0.0005, start3: 0, k: 1000 },
+      { established: 0.002 },
+      { start1: 0, start2: 0, start3: 0 },
+    ]) {
+      const s = fitted(over)
+      expect(Object.values(readAxes(s).problems).filter(Boolean), JSON.stringify(over)).toEqual([])
+      expect(Number(s.xTo)).toBeGreaterThan(0)
+      expect(Number(s.yTo)).toBeGreaterThan(0)
+      expect(buildEquilibrium(s).notes.filter((n) => !n.startsWith('Nothing can react')), JSON.stringify(over)).toEqual([])
+    }
+    expect(fitted({ ...setupFields('fescn'), start1: 0.002, start2: 0.002, start3: 0, k: 200 }).yTo).toBe('0.0024')
+  })
+
+    it('number the top of each axis', () => {
     for (const id of REACTION_IDS) {
       const s = fitted({ ...setupFields(id), count: 3 })
       const axes = readAxes(s)
@@ -195,6 +211,8 @@ describe('the figure', () => {
     const removed = notes({ count: 1, s1Kind: 'remove', s1Species: 3, s1Amount: 5, xTo: '16', xStep: '1' })
     expect(removed[0]).toBe('The stress removes 5 mol/L of NH₃, but only 0.972 mol/L is there, so all of it goes.')
     expect(notes({ count: 2, s1At: 6, s2At: 7, xTo: '16', xStep: '1', yTo: '8', yStep: '0.5' })[0]).toMatch(/^Stress 2 comes at time 7, before/)
+    // two stresses at once act together: the second isn't early
+    expect(notes({ count: 2, s1At: 8, s2At: 8, s2Kind: 'volume', xTo: '16', xStep: '1', yTo: '4' })).toEqual([])
   })
 })
 
@@ -245,7 +263,20 @@ describe('the answer key', () => {
     expect(v({ ...setupFields('fescn'), s1Amount: 2 })).toContain('volume × 2 (water added, every concentration × 0.5): shifts left, toward the reactants (the side with more dissolved particles)')
   })
 
-  it('writes numbers to three significant figures', () => {
+  it('says how much a removal took when there was less than asked for', () => {
+    const lines = answerLines(make({ count: 1, s1Kind: 'remove', s1Species: 3, s1Amount: 5 }))
+    expect(lines[2]).toMatch(/^At time 8, all the NH₃ removed \(0\.972 mol\/L\): shifts right/)
+    expect(answerLines(make({ count: 1, s1Kind: 'remove', s1Species: 3, s1Amount: 0.3 }))[2]).toMatch(/^At time 8, NH₃ removed \(0\.3 mol\/L\): /)
+  })
+
+  it('gives two stresses at the same moment one shift, under the later one', () => {
+    const lines = answerLines(make({ count: 2, s1At: 8, s2At: 8, s2Kind: 'volume' }))
+    expect(lines).toHaveLength(4)
+    expect(lines[2]).toBe('At time 8, N₂ added (0.5 mol/L), at the same moment as the next stress.')
+    expect(lines[3]).toMatch(/^At time 8, volume × 0\.5 \(every concentration × 2\): shifts right, toward the products/)
+  })
+
+    it('writes numbers to three significant figures', () => {
     expect([sig(0.51413), sig(1.5424), sig(12.345), sig(0.25), sig(2)]).toEqual(['0.514', '1.54', '12.3', '0.25', '2'])
   })
 })

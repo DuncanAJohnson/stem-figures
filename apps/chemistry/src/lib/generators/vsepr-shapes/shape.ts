@@ -34,6 +34,10 @@ interface ShapeSpec {
   angles: AngleKind[]
   /** atoms go by electronegativity, the most electronegative first (axial) */
   byElectronegativity?: boolean
+  /** the first slot (the apex, opposite the lone pair) takes the odd atom
+   *  out: the one with the most bonds to it, else the one of its element
+   *  alone, as O in XeOF₄ */
+  apexOddOneOut?: boolean
 }
 
 const S3 = Math.sqrt(3) / 2
@@ -142,6 +146,7 @@ const SHAPES: Record<string, ShapeSpec> = {
       { ideal: 90, squeezed: true, pairs: [[0, 1], [0, 2], [0, 3], [0, 4]] },
       { ideal: 90, squeezed: false, pairs: roundSquare(1) },
     ],
+    apexOddOneOut: true,
   },
   '6,0': {
     name: 'octahedral',
@@ -152,6 +157,11 @@ const SHAPES: Record<string, ShapeSpec> = {
     angles: [{ ideal: 90, squeezed: false, pairs: [...roundSquare(2), ...[2, 3, 4, 5].flatMap((i) => [[0, i], [1, i]] as [number, number][])] }],
   },
 }
+
+/** A radical with three atoms and its lone electron round a period 2 atom,
+ *  as CH₃•: planar, with the lone electron in a p orbital at right angles to
+ *  the plane (toward the viewer), not squeezing the 120° angles. */
+const PLANAR_RADICAL: ShapeSpec = { ...SHAPES['3,0'], lone: [[0, 0, 1]] }
 
 /** An atom or lone group around the central atom. */
 export type Group =
@@ -202,8 +212,9 @@ export function vseprShape(s: Structure, central: number): ShapeResult {
   const single = lone % 2
   const x = outer.length
   const e = pairs + single
-  const spec = SHAPES[`${x},${e}`]
   const el = s.atoms[central].element
+  const planarRadical = x === 3 && pairs === 0 && single === 1 && ELEMENTS[el].period === 2
+  const spec: ShapeSpec | undefined = planarRadical ? PLANAR_RADICAL : SHAPES[`${x},${e}`]
   if (!spec)
     return {
       ok: false,
@@ -218,6 +229,15 @@ export function vseprShape(s: Structure, central: number): ShapeResult {
   const sorted = [...outer].sort((p, q) =>
     spec.byElectronegativity && en(p) !== en(q) ? en(q) - en(p) : first.get(s.atoms[p.atom].element)! - first.get(s.atoms[q.atom].element)!,
   )
+  if (spec.apexOddOneOut) {
+    const count = (o: (typeof outer)[number]) => outer.filter((other) => s.atoms[other.atom].element === s.atoms[o.atom].element).length
+    const apex = sorted.reduce((best, o) => (o.order > best.order || (o.order === best.order && count(o) < count(best)) ? o : best))
+    sorted.splice(sorted.indexOf(apex), 1)
+    sorted.unshift(apex)
+  }
+  // A lone electron on its own pushes the bonds less than a pair does (NO₂
+  // is 134°, ClO₂ 117.6°), so no angle is labeled as squeezed below ideal.
+  const angles = single ? spec.angles.map((a) => ({ ...a, squeezed: false })) : spec.angles
 
   const loneGroups: VseprShape['lone'] = Array.from({ length: e }, (_, i) => ({
     kind: 'lone' as const,
@@ -235,7 +255,7 @@ export function vseprShape(s: Structure, central: number): ShapeResult {
       axe: axeOf(x, e),
       atoms: sorted.map((o, i) => ({ kind: 'atom' as const, atom: o.atom, order: o.order, dir: placed(spec.atoms[i], spec) })),
       lone: loneGroups,
-      angles: spec.angles,
+      angles,
     },
   }
 }

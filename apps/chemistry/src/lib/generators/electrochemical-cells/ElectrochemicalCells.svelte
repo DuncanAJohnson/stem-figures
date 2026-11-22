@@ -5,19 +5,22 @@
   import { FlaskConical, Gauge, Tags, Type } from '@lucide/svelte'
   import FigureTextSettings from '$lib/shared/FigureTextSettings.svelte'
   import GeneratorPage from '$shared/GeneratorPage.svelte'
+  import ReadingField from '$lib/shared/ReadingField.svelte'
   import Section from '$lib/shared/Section.svelte'
   import { generatorState } from '$shared/generatorState.svelte'
   import CellFigure from './CellFigure.svelte'
   import { METALS, METAL_INFO, cellOf, voltageText, type Metal, type Side } from './cell'
-  import { METERS, READINGS, answerLine, cellSettings, cellVoltage, type Meter, type Reading } from './settings'
+  import { MAX_VOLTAGE, METERS, READINGS, answerLines, cellSettings, cellVoltage, tidyVoltage, type Meter, type Reading } from './settings'
 
   const gen = generatorState(cellSettings, 'electrochemical-cells')
   const s = gen.s
+  // The settings as kept: what the figure, the summaries and the answer key show, as the page address does.
+  const clean = $derived(gen.snapshot())
   let svg = $state<SVGSVGElement>()
 
   const METER_NAMES: Record<Meter, string> = { digital: 'Digital voltmeter', dial: 'Dial voltmeter', coil: 'Coil of wire' }
   const SIDE_NAMES: Record<Side, string> = { left: 'Left electrode', right: 'Right electrode' }
-  const cell = $derived(cellOf(s.left, s.right))
+  const cell = $derived(cellOf(clean.left, clean.right))
   const READING_NAMES: Record<Reading, string> = { table: 'From the table', typed: 'Your own' }
 
   /** Your own starts from the table's value, so the figure doesn't change until you type. */
@@ -34,7 +37,7 @@
     s[side] = metal
   }
 
-  const cellSummary = $derived(`${s.left} | ${s.right}, ${voltageText(cellVoltage(s))} V`)
+  const cellSummary = $derived(`${clean.left} and ${clean.right}, ${voltageText(cellVoltage(clean))} V`)
   const labelSummary = $derived(
     [s.labels && 'names', s.electrodes && 'anode and cathode', s.electronFlow && 'electron flow'].filter(Boolean).join(', ') || 'None',
   )
@@ -73,10 +76,9 @@
         {/each}
       </div>
       {#if s.reading === 'typed'}
-        <label class="voltage">
-          <input type="number" step="0.01" min="0" max="9.99" bind:value={s.voltage} aria-label="E°cell in volts" />
-          <span>V</span>
-        </label>
+        <div class="voltage">
+          <ReadingField label="Your E°cell" value={clean.voltage} decimals={2} min={0} max={MAX_VOLTAGE} unit="V" onchange={(v) => (s.voltage = tidyVoltage(v))} />
+        </div>
       {/if}
     </Section>
 
@@ -106,11 +108,11 @@
     </Section>
 
     <Section title="Title and answer key" summary={textSummary} icon={Type}>
-      <FigureTextSettings bind:titleMode={s.titleMode} bind:title={s.title} bind:answerKey={s.answerKey} answer={answerLine(s)} />
+      <FigureTextSettings bind:titleMode={s.titleMode} bind:title={s.title} bind:answerKey={s.answerKey} answer={answerLines(clean).join(' · ')} />
     </Section>
   {/snippet}
   {#snippet figure()}
-    <CellFigure settings={s} bind:svg />
+    <CellFigure settings={clean} bind:svg />
   {/snippet}
 </GeneratorPage>
 
@@ -118,8 +120,7 @@
   .field-label { margin: 0.9rem 0 0.45rem; font-weight: 700; font-size: 0.9rem; }
   .field-label:first-child { margin-top: 0; }
   .note { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.82rem; }
-  .voltage { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem; font-weight: 600; }
-  .voltage input { width: 7rem; }
+  .voltage { margin-top: 0.6rem; }
   .check { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 1rem; cursor: pointer; }
   .check.first { margin-top: 0; }
   .check input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; accent-color: var(--blue); }

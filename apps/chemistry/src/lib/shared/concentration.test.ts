@@ -32,6 +32,24 @@ describe('a species’ formula', () => {
     expect(formulaText('Fe^{3+}')).toBe('Fe³⁺')
     expect(formulaText('FeSCN^{2+}')).toBe('FeSCN²⁺')
   })
+
+  it('raises a typed charge at the end, with its digit, instead of lowering it', () => {
+    expect(formulaText('Fe3+')).toBe('Fe³⁺')
+    expect(formulaText('O2-')).toBe('O²⁻')
+    expect(formulaText('Cu2+')).toBe('Cu²⁺')
+    expect(formulaText('SO42-')).toBe('SO₄²⁻')
+    expect(formulaText('Cr2O72-')).toBe('Cr₂O₇²⁻')
+    expect(formulaText('Hg22+')).toBe('Hg₂²⁺')
+    expect(formulaText('NH4+')).toBe('NH₄⁺')
+    expect(formulaText('MnO4-')).toBe('MnO₄⁻')
+    expect(formulaText('H3O+')).toBe('H₃O⁺')
+    expect(formulaText('Na+')).toBe('Na⁺')
+    expect(formulaText('Cl−')).toBe('Cl⁻')
+    expect(concentrationOf('Fe3+')).toBe('[Fe³⁺]')
+    // Not a charge: a sign alone, or one in the middle.
+    expect(formulaText('+')).toBe('+')
+    expect(formulaText('A+B')).toBe('A+B')
+  })
 })
 
 describe('axis titles', () => {

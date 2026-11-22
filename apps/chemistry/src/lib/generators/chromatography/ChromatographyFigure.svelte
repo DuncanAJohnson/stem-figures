@@ -23,16 +23,26 @@
 
   /** A measurement arrow from the origin line up to `top`, with heads at both ends. */
   const HEAD = 5
+  /** Shorter than this, a measurement's arrows point in from outside its two lines. */
+  const SHORT = 2 * HEAD + 6
+  const TAIL = 12
   const arrowHead = (x: number, y: number, dir: 1 | -1) => `M ${x} ${y} L ${x - 3.2} ${y + dir * HEAD} L ${x + 3.2} ${y + dir * HEAD} Z`
 </script>
 
 {#snippet dimension(x: number, top: number, text: string)}
-  <line x1={x} x2={x} y1={top + HEAD} y2={l.originY - HEAD} stroke="#111" stroke-width="1.2" />
-  <path d={arrowHead(x, top, 1)} fill="#111" />
-  <path d={arrowHead(x, l.originY, -1)} fill="#111" />
+  {#if l.originY - top >= SHORT}
+    <line x1={x} x2={x} y1={top + HEAD} y2={l.originY - HEAD} stroke="#111" stroke-width="1.2" />
+    <path d={arrowHead(x, top, 1)} fill="#111" />
+    <path d={arrowHead(x, l.originY, -1)} fill="#111" />
+  {:else}
+    <!-- too short for arrows between the lines: they point in from outside, the label above -->
+    <line x1={x} x2={x} y1={top - TAIL} y2={l.originY + HEAD} stroke="#111" stroke-width="1.2" />
+    <path d={arrowHead(x, top, -1)} fill="#111" />
+    <path d={arrowHead(x, l.originY, 1)} fill="#111" />
+  {/if}
   <text
     x={x + 5}
-    y={(top + l.originY) / 2 + 4}
+    y={l.originY - top >= SHORT ? (top + l.originY) / 2 + 4 : top - TAIL + 4}
     font-size="12"
     fill="#111"
     stroke="#fff"
