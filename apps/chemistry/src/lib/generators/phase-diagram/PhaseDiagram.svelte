@@ -17,7 +17,6 @@
   import { endsSummary, readAxes } from '$shared/graph/axes'
   import { CAPS } from '$shared/graph/caps'
   import { COLORS, type Color } from '$shared/graph/colors'
-  import HelpTip from '$lib/shared/HelpTip.svelte'
   import { P_UNITS, P_UNIT_TEXT, SUBSTANCES, T_UNITS, T_UNIT_TEXT, atmIn, fromKelvin, fromPascal, toKelvin, toPascal, type PUnit, type TUnit } from './phase'
   import { answerLines, buildDiagram, fittedAxes, lettersOf, valuesOf } from './figure'
   import {
@@ -131,16 +130,7 @@
 <GeneratorPage name="Phase Diagram" {filename} {gen} {svg} bind:labelSize={s.labelSize}>
   {#snippet inputs()}
     <section class="phase-card">
-      <div class="head-row">
-        <h2 class="card-head">Substance</h2>
-        <HelpTip id="phase-tip" label="How the diagram is drawn">
-          Three phase boundaries meet at the triple point: the sublimation curve up to it, the fusion line from it to
-          the top of the graph, and the vaporization curve from it to the critical point, where it stops. A real
-          substance is drawn not to scale: water’s triple point is at 0.006 atm and its critical point at 218 atm, so no
-          plain axis shows both. The values written at the axes are the real ones; the shape is the textbook’s. Your own
-          substance can go on a grid, to scale, for students to read values from.
-        </HelpTip>
-      </div>
+      <h2 class="card-head">Substance</h2>
       <label class="field">
         <span>Substance</span>
         <select value={s.substance} onchange={(e) => chooseSubstance(e.currentTarget.value as PhaseSettings['substance'])}>
@@ -159,13 +149,9 @@
           {@render numberField('triple-p', 'Triple point', pu, 'tripleP')}
           {@render numberField('crit-t', 'Critical point', tu, 'critT')}
           {@render numberField('crit-p', 'Critical point', pu, 'critP')}
-          {@render numberField('nmp', 'Melts at', tu, 'nmp')}
-          {@render numberField('nbp', 'Boils at', tu, 'nbp')}
+          {@render numberField('nmp', 'Normal melting point', tu, 'nmp')}
+          {@render numberField('nbp', 'Normal boiling point', tu, 'nbp')}
         </div>
-        <p class="help">
-          The melting and boiling points are the normal ones, at {oneAtm}. A melting point below the triple point’s
-          temperature leans the fusion line left, like water’s; above it, right.
-        </p>
         {#each valueProblems as key}<p class="help problem">{g.problems[key]}</p>{/each}
       {/if}
 
@@ -312,7 +298,6 @@
 <style>
   .card-head { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .phase-card { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .head-row { display: flex; align-items: center; justify-content: space-between; }
   .field { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.88rem; min-width: 0; }
   .fields, .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: end; }
   .number-field { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.3rem; font-weight: 600; font-size: 0.88rem; min-width: 0; }

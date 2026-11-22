@@ -71,7 +71,6 @@
       </div>
 
       {#if top}
-        <p class="note">The circle seen from above.</p>
         <div class="field">
           Around it
           <Choice name="Around it" options={[['nothing', 'Nothing'], ['string', 'String'], ['turntable', 'Turntable'], ['road', 'Road']]} bind:value={gen.s.around} />
@@ -95,14 +94,11 @@
           </span>
         </label>
       {:else if s.setup === 'vertical'}
-        <p class="note">A circle standing upright, seen from the side.</p>
         <div class="field">
           Held by
           <Choice name="Held by" options={[['string', 'String'], ['loop', 'Loop'], ['hill', 'Hill'], ['dip', 'Dip']]} bind:value={gen.s.held} />
         </div>
-        {#if ground}
-          <p class="note">{s.held === 'hill' ? 'The object is at the top of the hill.' : 'The object is at the bottom of the dip.'}</p>
-        {:else}
+        {#if !ground}
           <div class="field">
             Drawn at
             <Choice
@@ -113,7 +109,6 @@
           </div>
         {/if}
       {:else}
-        <p class="note">A bob on a string going round a level circle, seen from the side.</p>
         <label class="field">
           Angle from the vertical
           <span class="slider">
@@ -135,7 +130,7 @@
 
     <Section title="Object" icon={Circle} summary={objectSummary}>
       {#if top && s.around === 'road'}
-        <p class="note">On a road the object is a block, turned along the road.</p>
+        <p class="note">On a road the object is a block.</p>
       {:else}
         <div class="field">
           <Choice name="Object" options={[['ball', 'Ball'], ['block', 'Block']]} bind:value={gen.s.object} />
@@ -161,7 +156,6 @@
         <label class="check"><input type="checkbox" bind:checked={gen.s.acceleration} /> Centripetal acceleration</label>
         {#if s.acceleration}
           <div class="field"><LabelField name="Acceleration label" bind:label={gen.s.accelerationLabel} /></div>
-          {#if !top}<p class="note">Drawn beside the object, dashed, because it isn't a force.</p>{/if}
         {/if}
       </div>
       {#if top}
@@ -169,7 +163,6 @@
           <label class="check"><input type="checkbox" bind:checked={gen.s.inwardForce} /> Inward force</label>
           {#if s.inwardForce}
             <div class="field"><LabelField name="Inward force label" bind:label={gen.s.forceLabel} /></div>
-            <p class="note">The force toward the center. Name it for what supplies it: T, F_f or F_g.</p>
           {/if}
         </div>
       {:else}

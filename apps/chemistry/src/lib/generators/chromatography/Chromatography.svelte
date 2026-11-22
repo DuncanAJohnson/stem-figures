@@ -47,12 +47,11 @@
   })
 </script>
 
-{#snippet check(label: string, help: string, checked: boolean, set: (v: boolean) => void)}
+{#snippet check(label: string, checked: boolean, set: (v: boolean) => void)}
   <label class="check">
     <input type="checkbox" {checked} onchange={(e) => set(e.currentTarget.checked)} />
     <span>
       <strong>{label}</strong>
-      <small>{help}</small>
     </span>
   </label>
 {/snippet}
@@ -153,11 +152,11 @@
           </button>
         {/each}
       </div>
-      {@render check('Setup', 'The paper hanging from a glass rod in a beaker of solvent', s.setup, (v) => (s.setup = v))}
+      {@render check('Beaker of solvent and glass rod', s.setup, (v) => (s.setup = v))}
     </Section>
     <Section title="Measurements and labels" summary={markSummary} icon={Ruler} open>
-      {@render check('Measurements', 'Arrows from the origin line to each spot and to the solvent front, in cm', s.measurements, (v) => (s.measurements = v))}
-      {@render check('Part labels', 'Names the solvent front, the pencil line and the setup', s.labels, (v) => (s.labels = v))}
+      {@render check('Distance arrows, in cm', s.measurements, (v) => (s.measurements = v))}
+      {@render check('Part labels', s.labels, (v) => (s.labels = v))}
       {#if s.labels && s.setup}
         <label class="field">
           <span>Solvent</span>
@@ -200,5 +199,4 @@
   .check input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; accent-color: var(--blue); }
   .check span { display: flex; flex-direction: column; }
   .check strong { font-size: 0.9rem; }
-  .check small { color: var(--muted); font-size: 0.82rem; }
 </style>

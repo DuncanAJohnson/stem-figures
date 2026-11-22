@@ -4,7 +4,6 @@
   // in the page address.
   import { Scale, SlidersHorizontal, Tag, Type, Weight } from '@lucide/svelte'
   import Choice from '$lib/shared/Choice.svelte'
-  import HelpTip from '$lib/shared/HelpTip.svelte'
   import LabelField from '$lib/shared/LabelField.svelte'
   import type { Label } from '$lib/shared/label'
   import Section from '$lib/shared/Section.svelte'
@@ -13,7 +12,7 @@
   import { generatorState } from '$shared/generatorState.svelte'
   import Lever from './Lever.svelte'
   import { drawnArms } from './lever'
-  import { CLASSES, G, answerLines, armsSuit, comesOutEven, exact, leverOf, leverSettings, sig3, valueTexts, type LeverClass } from './settings'
+  import { CLASSES, answerLines, armsSuit, comesOutEven, exact, leverOf, leverSettings, sig3, valueTexts, type LeverClass } from './settings'
 
   const gen = generatorState(leverSettings, 'lever', { history: 'physicsfigures.lever.history', presets: 'physicsfigures.lever.presets' })
   const s = gen.s
@@ -99,13 +98,7 @@
     </Section>
 
     <Section title="Load" icon={Weight} summary={loadSummary}>
-      <div class="head-row">
-        <span class="field-name">Load</span>
-        <HelpTip id="lever-effort-tip" label="How the effort is worked out">
-          The lever is ideal: it balances, and the beam has no weight. So the effort is the load’s weight × the load arm ÷ the effort arm. A load in kg or g
-          weighs its mass × {G} N/kg.
-        </HelpTip>
-      </div>
+      <span class="field-name">Load</span>
       <div class="field-row">
         <label class="field">
           <span class="visually-hidden">Load</span>
@@ -160,8 +153,7 @@
 </GeneratorPage>
 
 <style>
-  .head-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.45rem; }
-  .field-name { font-weight: 600; font-size: 0.88rem; }
+  .field-name { display: block; margin-bottom: 0.45rem; font-weight: 600; font-size: 0.88rem; }
   .below { margin-top: 0.6rem; }
   .effort { color: var(--ink); }
   .warning { color: var(--ink); background: #fffbeb; border-left: 3px solid var(--amber); border-radius: 6px; padding: 0.5rem 0.7rem; margin: 0.5rem 0 0; }

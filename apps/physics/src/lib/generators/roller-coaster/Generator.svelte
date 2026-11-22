@@ -42,7 +42,6 @@
 <GeneratorPage name="Roller Coaster Generator" filename="roller-coaster" {gen}>
   {#snippet settings()}
     <Section title="Track" icon={Route} summary={trackSummary}>
-      <p class="note">The track runs through these points from left to right, evenly spaced. A point higher than its neighbours is the top of a hill, a lower one the bottom of a dip.</p>
       {#each gen.s.points as p, i (p)}
         {@const name = nameOf(s.points[i] ?? p, i)}
         <div class="point">
@@ -70,9 +69,6 @@
             <label class="check"><input type="checkbox" bind:checked={p.rough} /> Rough from here to point {i + 2}</label>
             {#if p.rough}
               <div class="field">Length mark <LabelField name="{name} length mark" bind:label={p.lengthLabel} /></div>
-              {#if p.lengthLabel.mode === 'none' && s.points[i - 1]?.rough}
-                <p class="note">The length mark before this one runs on to point {i + 2}.</p>
-              {/if}
             {/if}
           {/if}
         </div>
@@ -100,13 +96,9 @@
             <output>{s.loopRadius}</output>
           </span>
         </label>
-        <p class="note">
-          {#if fig.loopCapped}
-            There’s no room for a loop this big between its neighbours, so it’s drawn smaller than to scale.
-          {:else}
-            In the same units as the heights, and drawn to scale with them. The track is level under the loop.
-          {/if}
-        </p>
+        {#if fig.loopCapped}
+          <p class="note">There’s no room for a loop this big between its neighbours, so it’s drawn smaller than to scale.</p>
+        {/if}
         <div class="field">Radius label <LabelField name="Radius label" bind:label={gen.s.radiusLabel} /></div>
         <div class="field">Label at the top of the loop <LabelField name="Label at the top of the loop" bind:label={gen.s.loopTopLabel} /></div>
       {/if}
@@ -150,11 +142,11 @@
     </Section>
 
     <Section title="Marks and friction" icon={Ruler} summary={marksSummary}>
-      <label class="check"><input type="checkbox" bind:checked={gen.s.ground} /> Ground, the line heights are measured from</label>
+      <label class="check"><input type="checkbox" bind:checked={gen.s.ground} /> Ground</label>
       {#if anyRough}
         <div class="field">Friction label, at the first rough stretch <LabelField name="Friction label" bind:label={gen.s.roughLabel} /></div>
       {:else}
-        <p class="note">To show friction on part of the track, turn on Rough at the point where it starts, under Track. Each point’s height mark is set there too.</p>
+        <p class="note">Friction is set per point, under Track.</p>
       {/if}
     </Section>
     <FigureOptions bind:mirror={gen.s.mirror} bind:color={gen.s.color} />

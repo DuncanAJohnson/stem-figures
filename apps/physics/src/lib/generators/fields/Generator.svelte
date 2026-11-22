@@ -56,8 +56,6 @@
           <Choice name="How many field lines" options={[['fewer', 'Fewer'], ['normal', 'Normal'], ['more', 'More']]} bind:value={gen.s.lines} />
         </div>
         <label class="check"><input type="checkbox" bind:checked={gen.s.arrows} /> Arrows showing the direction</label>
-      {:else}
-        <p class="note">Just the {s.setup === 'magnet' ? 'magnet' : s.setup === 'wire' ? 'wire' : s.setup === 'plates' ? 'plates' : 'charges'}, for students to draw the field.</p>
       {/if}
     </Section>
 

@@ -23,18 +23,8 @@
   let svg = $state<SVGSVGElement>()
 
   const STYLE_NAMES: Record<Style, string> = { diagonal: 'Diagonal', rectangular: 'Rectangular' }
-  const STYLE_NOTES: Record<Style, string> = {
-    diagonal: 'Straight branches with the taxa along the top, the classic cladogram.',
-    rectangular: 'Square branches with the taxa down the right, the usual phylogenetic tree.',
-  }
   const TAXA_NAMES = { names: 'Names', blank: 'Blank lines' }
   const TRAIT_NAMES = { names: 'Names', blank: 'Blank lines', ticks: 'Ticks only', none: 'None' }
-  const TRAIT_NOTES = {
-    names: 'Each trait beside a tick across the branch where it is gained.',
-    blank: 'A numbered blank line beside each tick, for students to write the trait.',
-    ticks: 'A tick where each trait is gained, with no words.',
-    none: 'No ticks or traits, just the branches.',
-  }
 
   function start(id: string) {
     const setup = SETUPS.find((x) => x.id === id)
@@ -82,16 +72,10 @@
           {#each SETUPS as setup (setup.id)}<option value={setup.id}>{setup.name}</option>{/each}
         </select>
       </label>
-      <p class="note">{SETUPS.find((x) => x.id === setupId)?.note ?? 'Replaces the tree with a ready-made one. Undo brings yours back.'}</p>
 
       <div class="tree">
         <TreeEditor node={clean.tree} path={[]} siblings={1} full={count >= MAX_TAXA} least={count <= MIN_TAXA} {onText} {onEdit} />
       </div>
-      <p class="note">
-        Each group’s trait (in the blue boxes) is shared by every taxon in it, and drawn as a tick on the branch leading to the group. The
-        top one is on the root, shared by all. A group can also hold a group, and a taxon can have a trait of its own. Leave a taxon
-        empty for a blank line.
-      </p>
       {#if count >= MAX_TAXA}
         <p class="note">That’s the most taxa a tree can have ({MAX_TAXA}).</p>
       {/if}
@@ -100,10 +84,9 @@
     <Section title="Look" summary={lookSummary} icon={Network} open>
       <p class="field-label">Branches</p>
       {@render segmented('Branches', STYLES, STYLE_NAMES, s.style, (v) => (s.style = v))}
-      <p class="note">{STYLE_NOTES[s.style]}</p>
       <label class="check spaced">
         <input type="checkbox" bind:checked={s.nodeNumbers} />
-        <span>Number the nodes, for questions on common ancestors</span>
+        <span>Number the nodes</span>
       </label>
     </Section>
 
@@ -112,7 +95,6 @@
       {@render segmented('Taxa', TAXA_LABELS, TAXA_NAMES, s.taxa, (v) => (s.taxa = v))}
       <p class="field-label spaced">Traits</p>
       {@render segmented('Traits', TRAIT_LABELS, TRAIT_NAMES, s.traits, (v) => (s.traits = v))}
-      <p class="note">{TRAIT_NOTES[s.traits]}</p>
       {#if at.crowded}
         <p class="note">Some trait labels are crowded. Shorter traits, or the other branch style, may help.</p>
       {/if}
@@ -123,7 +105,6 @@
         bind:titleMode={s.titleMode} bind:title={s.title} bind:answerKey={s.answerKey}
         answer={answers.join(' · ') || 'nothing yet'}
       />
-      <p class="note">The answer key lists the taxa when their names are blank, and the traits by number when they are blank.</p>
     </Section>
   {/snippet}
   {#snippet figure()}

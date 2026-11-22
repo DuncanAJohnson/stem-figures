@@ -56,7 +56,6 @@
               aria-checked={s[side] === metal}
               class="chip"
               class:on={s[side] === metal}
-              title="{METAL_INFO[metal].name} in {METAL_INFO[metal].ion}"
               onclick={() => pick(side, metal)}>{metal}</button
             >
           {/each}
@@ -89,23 +88,20 @@
           </button>
         {/each}
       </div>
-      <p class="note">
-        {s.meter === 'coil' ? 'A plain wire with a coil in it, and no reading.' : 'Its + terminal is wired to the cathode, so it reads E°cell.'}
-      </p>
     </Section>
 
     <Section title="Labels" summary={labelSummary} icon={Tags}>
       <label class="check first">
         <input type="checkbox" bind:checked={s.labels} />
-        <span><strong>Names</strong><small>The metals, their solutions and the salt bridge. Off for students to label.</small></span>
+        <span><strong>Part names</strong></span>
       </label>
       <label class="check">
         <input type="checkbox" bind:checked={s.electrodes} />
-        <span><strong>Anode and cathode</strong><small>Under each beaker, with its sign.</small></span>
+        <span><strong>Anode and cathode</strong></span>
       </label>
       <label class="check">
         <input type="checkbox" bind:checked={s.electronFlow} />
-        <span><strong>Electron flow</strong><small>Arrows along the wire from the anode to the cathode.</small></span>
+        <span><strong>Electron flow</strong></span>
       </label>
     </Section>
 
@@ -129,5 +125,4 @@
   .check input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; accent-color: var(--blue); }
   .check span { display: flex; flex-direction: column; }
   .check strong { font-size: 0.9rem; }
-  .check small { color: var(--muted); font-size: 0.82rem; }
 </style>

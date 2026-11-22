@@ -11,7 +11,6 @@
   import LabelField from '$shared/LabelField.svelte'
   import { titlesSummary } from '$shared/graph/axes'
   import Section from '$shared/Section.svelte'
-  import HelpTip from '$lib/shared/HelpTip.svelte'
   import { CONC_UNITS, TIME_UNITS, TIME_UNIT_NAMES, concentrationOf, timeTitle } from '$lib/shared/concentration'
   import { answerLines, buildRateLaw, dataText } from './figure'
   import { firstHalfLife, kForHalfLife, kUnit, sig, type Order } from './kinetics'
@@ -109,15 +108,7 @@
 <GeneratorPage name="Rate Law Graphs" {filename} {gen} {svg} settingsWidth={26} bind:labelSize={s.labelSize}>
   {#snippet inputs()}
     <section class="reaction">
-      <div class="head-row">
-        <h2 class="card-head">Reaction: {speciesOf(clean)} → products</h2>
-        <HelpTip id="rate-law-tip" label="How the graphs are worked out">
-          The rate is k{conc}ⁿ, where n is the order. Zero order: {conc} = {conc}₀ − kt, so {conc} against time is a
-          straight line. First order: ln{conc} = ln{conc}₀ − kt, so ln{conc} is. Second order: 1/{conc} = 1/{conc}₀ + kt,
-          so 1/{conc} is. The figure never says the order: students find it from which graph is straight. The time axis
-          runs until a tenth of {conc}₀ is left, and a zero-order reaction’s line stops where {conc} reaches 0.
-        </HelpTip>
-      </div>
+      <h2 class="card-head">Reaction: {speciesOf(clean)} → products</h2>
 
       <div class="field">
         <span>Order</span>
@@ -155,9 +146,6 @@
           {#each TABLES as v}<option value={v}>{tableNames[v]}</option>{/each}
         </select>
       </label>
-      {#if !clean.curve && !clean.points && clean.table !== 'none'}
-        <p class="note">The grids are empty, for students to plot the table’s data on.</p>
-      {/if}
       <div class="fields setting">
         <label class="number-field">
           <span>Number of points</span>
@@ -180,10 +168,6 @@
           {#if copied}<Check size={16} aria-hidden="true" /> Copied{:else}<Copy size={16} aria-hidden="true" /> Copy data{/if}
         </button>
       </div>
-      <p class="note">
-        Each {conc} is rounded to three significant figures, and ln{conc} and 1/{conc} are worked out from it, as a
-        student would. Copy data copies the table for a spreadsheet or your own document.
-      </p>
       {#if g.problems.scatter}<p class="problem">{g.problems.scatter}</p>{/if}
       <div class="setting">{@render segmented('Lines', ['color', 'bw'] as const, { color: 'Color', bw: 'Black and white' }, s.color ? 'color' : 'bw', (v) => (s.color = v === 'color'))}</div>
     </Section>
@@ -211,7 +195,7 @@
 
     <Section title="Species and units" icon={FlaskConical} summary={unitSummary}>
       <label class="field setting">
-        <span>Reactant <span class="hint">a letter or a formula, like N2O5</span></span>
+        <span>Reactant</span>
         <input type="text" maxlength="20" placeholder="A" bind:value={s.species} />
       </label>
       <div class="fields">
@@ -241,14 +225,11 @@
           <LabelField name={f.name} placeholder={placeholderOf(f.key)} bind:mode={s[`${f.key}TitleMode`]} bind:text={s[`${f.key}Title`]} />
         </div>
       {/each}
-      <p class="note">Left empty, an axis title follows the reactant and the units.</p>
     </Section>
 
     <Section title="Axes and grid" icon={Grid3x3} summary={gridSummary}>
       {@render check('Numbers on the axes', s.numbers, (v) => (s.numbers = v))}
-      {#if !clean.numbers}<p class="note">Sketch graphs: just the shapes, straight or curved.</p>{/if}
       {@render check('Gridlines', s.gridlines, (v) => (s.gridlines = v))}
-      <p class="note">The axes are fitted to the reaction: time runs until a tenth of {conc}₀ is left.</p>
     </Section>
   {/snippet}
 
@@ -260,9 +241,7 @@
 <style>
   .card-head { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .reaction { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .head-row { display: flex; align-items: center; justify-content: space-between; }
   .field { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.88rem; }
-  .field .hint { font-weight: 400; color: var(--muted); }
   .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: end; }
   .number-field { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.3rem; font-weight: 600; font-size: 0.88rem; min-width: 0; }
   .number-field input, .number-field select { width: 100%; min-width: 0; }

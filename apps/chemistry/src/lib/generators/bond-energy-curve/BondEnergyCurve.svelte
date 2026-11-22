@@ -18,7 +18,6 @@
   import { COLORS } from '$shared/graph/colors'
   import { DASHES } from '$shared/graph/labels'
   import Section from '$shared/Section.svelte'
-  import HelpTip from '$lib/shared/HelpTip.svelte'
   import BondEnergyFigure from './BondEnergyFigure.svelte'
   import { answerLines, buildCurve, fittedAxes } from './figure'
   import { LENGTH_UNITS, LENGTH_UNIT_TEXT, fromPm, toPm, type LengthUnit } from './morse'
@@ -146,16 +145,7 @@
 <GeneratorPage name="Bond Energy Curve" {filename} {gen} {svg} bind:labelSize={s.labelSize}>
   {#snippet inputs()}
     <section class="bonds">
-      <div class="head-row">
-        <h2 class="card-head">Bonds</h2>
-        <HelpTip id="bond-energy-tip" label="How the curves are drawn">
-          Each curve’s lowest point is exactly at the bond length you type, and as far below zero as the bond energy.
-          Zero is the two atoms far apart: the curve rises toward it as they separate, and climbs steeply past it when
-          they are pushed closer than the bond length. Every curve has the same shape, stretched to its own length
-          and energy, so read the minimum, not the width of the well. Hide the names and the key says Bond A, B and
-          C, for students to match to a table of bond lengths and energies.
-        </HelpTip>
-      </div>
+      <h2 class="card-head">Bonds</h2>
 
       {#each SLOTS.slice(0, clean.count) as i (i)}
         <div class="bond">
@@ -184,10 +174,7 @@
           </div>
         </div>
       {/each}
-      <p class="note">
-        {#if untouched}Bond X is made up. Type a bond’s name, length and energy from your own textbook’s table.
-        {:else}Type each bond’s name, length and energy from your own textbook’s table.{/if}
-      </p>
+      {#if untouched}<p class="note">Bond X is made up.</p>{/if}
       {#if clean.count < MAX_BONDS}
         <button type="button" class="btn-ghost small add" onclick={addBond}>
           <Plus size={16} aria-hidden="true" /> Add a bond
@@ -291,7 +278,6 @@
 <style>
   .card-head { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .bonds { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .head-row { display: flex; align-items: center; justify-content: space-between; }
   .field { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.88rem; }
   .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: end; }
   .number-field { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.3rem; font-weight: 600; font-size: 0.88rem; min-width: 0; }

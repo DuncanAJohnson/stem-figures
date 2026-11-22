@@ -14,7 +14,6 @@
   import { readAxes } from '$shared/graph/axes'
   import { COLORS } from '$shared/graph/colors'
   import Section from '$shared/Section.svelte'
-  import HelpTip from '$lib/shared/HelpTip.svelte'
   import { SPECIES_DASHES, concentrationOf, concentrationTitle, formulaText, timeTitle } from '$lib/shared/concentration'
   import EquilibriumFigure from './EquilibriumFigure.svelte'
   import { answerLines, buildEquilibrium, fittedAxes } from './figure'
@@ -118,17 +117,7 @@
 <GeneratorPage name="Equilibrium Graph" {filename} {gen} {svg} bind:labelSize={s.labelSize}>
   {#snippet inputs()}
     <section class="reaction">
-      <div class="head-row">
-        <h2 class="card-head">Reaction</h2>
-        <HelpTip id="equilibrium-tip" label="How the lines are worked out">
-          The page solves the chemistry, so the lines always move in the ratio of the coefficients and every level
-          stretch gives the same K. Each stretch settles where Q = K. It gets there as an elementary reaction would:
-          rate forward = k × the reactants’ concentrations, each to the power of its coefficient, and the same for the
-          reverse rate. Adding or removing a reactant or product makes its line jump; changing the volume makes every line jump
-          together; changing the temperature changes K with no jump, down on heating an exothermic reaction. Type a
-          formula in a stress’s words as N_2 or Fe^{'{'}3+{'}'}.
-        </HelpTip>
-      </div>
+      <h2 class="card-head">Reaction</h2>
 
       <select aria-label="Reaction" value={s.reaction} onchange={(e) => chooseReaction(e.currentTarget.value as ReactionId)}>
         {#each REACTIONS as x}<option value={x.id}>{equationText(x)}{x.id === MADE_UP ? ' (made up)' : ''}</option>{/each}
@@ -157,7 +146,7 @@
         {#if clean.reaction === MADE_UP}
           Any K: this reaction is made up.
         {:else}
-          Example value, chosen to give a clear graph. It is not this reaction’s measured K. Type your own to match your textbook.
+          Example value, chosen to give a clear graph. It is not this reaction’s measured K.
         {/if}
       </p>
 
@@ -267,7 +256,6 @@
 <style>
   .card-head { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .reaction { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .head-row { display: flex; align-items: center; justify-content: space-between; }
   .field { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.88rem; }
   .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: end; }
   .fields.wide { grid-template-columns: 3fr 2fr; }

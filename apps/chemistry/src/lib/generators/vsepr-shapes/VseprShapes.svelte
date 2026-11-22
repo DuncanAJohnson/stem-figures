@@ -12,22 +12,17 @@
   import { openRequest } from '$shared/request.svelte'
   import VseprFigure from './VseprFigure.svelte'
   import { defaultAngleText } from './shape'
-  import { LONE_PAIRS, MAX_ANGLE_TEXT, MAX_FORMULA, STYLES, angleLabels, findShape, vseprSettings, withAngleLabel, type LonePairs, type Style } from './settings'
+  import { LONE_PAIRS, MAX_ANGLE_TEXT, MAX_FORMULA, STYLES, findShape, vseprSettings, withAngleLabel, type LonePairs, type Style } from './settings'
 
   const gen = generatorState(vseprSettings, 'vsepr-shapes')
   const s = gen.s
   let svg = $state<SVGSVGElement>()
 
   const STYLE_NAMES: Record<Style, string> = { 'wedge-and-dash': 'Wedge-and-dash', 'ball-and-stick': 'Ball-and-stick' }
-  const STYLE_NOTES: Record<Style, string> = {
-    'wedge-and-dash': 'As textbooks draw it: a wedge comes toward you, a dashed bond goes away.',
-    'ball-and-stick': 'A model with shaded atoms in their usual colors, the nearer ones in front.',
-  }
   const LONE_NAMES: Record<LonePairs, string> = { lobes: 'Lobes', dots: 'Dots', none: 'Hidden' }
 
   const found = $derived(findShape(s.formula))
   const shape = $derived(found.ok ? found.shape : undefined)
-  const labels = $derived(shape ? angleLabels(shape, s.angles) : [])
   const turned = $derived(s.yaw !== 0 || s.pitch !== 0)
 
   function setFormula(e: Event & { currentTarget: HTMLInputElement }) {
@@ -83,7 +78,7 @@
         <span class="field-head">
           Formula
           <HelpTip id="vsepr-formula-tip" label="How to type a formula">
-            Type a molecule or ion with one central atom, like CH4, SF4, XeF4 or SO4 2-, with a space or ^ before a charge of 2 or more.
+            One central atom, like CH4 or SO4 2-, with a space or ^ before a charge of 2 or more.
           </HelpTip>
         </span>
         <input type="text" maxlength={MAX_FORMULA} value={s.formula} oninput={setFormula} spellcheck="false" autocomplete="off" />
@@ -105,30 +100,26 @@
     <Section title="Look" summary={lookSummary} icon={Eye}>
       <p class="field-label">Style</p>
       {@render segmented('Style', STYLES, s.style, STYLE_NAMES, (v) => (s.style = v))}
-      <p class="note">{STYLE_NOTES[s.style]}</p>
       {#if s.style === 'ball-and-stick'}
         <label class="check">
           <input type="checkbox" bind:checked={s.symbols} />
-          <span><strong>Element symbols</strong><small>Write each atom’s symbol on it.</small></span>
+          <span><strong>Element symbols</strong></span>
         </label>
         <label class="check">
           <input type="checkbox" bind:checked={s.grayscale} />
-          <span><strong>Grayscale</strong><small>Grays instead of colors, for printing in black and white.</small></span>
+          <span><strong>Grayscale</strong></span>
         </label>
       {/if}
       <p class="field-label spaced">Central atom’s lone pairs</p>
       {@render segmented('Central atom’s lone pairs', LONE_PAIRS, s.lonePairs, LONE_NAMES, (v) => (s.lonePairs = v))}
-      <p class="note">
-        {s.lonePairs === 'lobes' ? 'Each as a balloon with two dots in it.' : s.lonePairs === 'dots' ? 'Each as two dots beside the atom.' : 'Left off, for students to add.'}
-      </p>
       <label class="check">
         <input type="checkbox" bind:checked={s.outerPairs} />
-        <span><strong>Outer atoms’ lone pairs</strong><small>Dots on the outer atoms too, like F’s three pairs.</small></span>
+        <span><strong>Outer atoms’ lone pairs</strong></span>
       </label>
     </Section>
 
     <Section title="View" summary={turned ? 'Turned' : 'Textbook view'} icon={Rotate3d}>
-      <p class="note first">Drag the figure to turn the molecule, or turn it a step at a time.</p>
+      <p class="note first">Drag the figure to turn it.</p>
       <div class="turns" role="group" aria-label="Turn the molecule">
         <button type="button" class="icon-btn" aria-label="Turn left" onclick={() => turnBy(-15, 0)}><ArrowLeft size={18} /></button>
         <button type="button" class="icon-btn" aria-label="Turn right" onclick={() => turnBy(15, 0)}><ArrowRight size={18} /></button>
@@ -143,21 +134,20 @@
     <Section title="Labels" summary={labelSummary} icon={Tags}>
       <label class="check first">
         <input type="checkbox" bind:checked={s.shapeName} />
-        <span><strong>Shape name</strong><small>{shape ? `Like “${shape.name}”, under the figure.` : 'The molecular geometry, under the figure.'}</small></span>
+        <span><strong>Shape name</strong></span>
       </label>
       <label class="check">
         <input type="checkbox" bind:checked={s.electronGeometry} />
-        <span><strong>Electron geometry</strong><small>Where all the electron groups point, lone pairs included.</small></span>
+        <span><strong>Electron geometry</strong></span>
       </label>
       <label class="check">
         <input type="checkbox" bind:checked={s.axe} />
-        <span><strong>AXE notation</strong><small>{shape ? `Like ${shape.axe}.` : 'Atoms (X) and lone pairs (E) round the central atom.'}</small></span>
+        <span><strong>AXE notation</strong></span>
       </label>
       <label class="check" class:off={shape && !shape.angles.length}>
         <input type="checkbox" bind:checked={s.bondAngles} disabled={!!shape && !shape.angles.length} />
         <span>
           <strong>Bond angles</strong>
-          <small>{shape && !shape.angles.length ? 'Two atoms have no bond angle.' : 'An arc for each kind of angle, with its size.'}</small>
         </span>
       </label>
       {#if s.bondAngles && shape?.angles.length}
@@ -175,9 +165,6 @@
               />
             </label>
           {/each}
-          <p class="note">
-            The drawing always uses the ideal angles. Type your own label, like 104.5° for water; leave it empty for {labels.map((l, i) => (s.angles.split('|')[i]?.trim() ? null : l)).filter(Boolean).join(' and ') || 'the ideal angle'}.
-          </p>
         </div>
       {/if}
     </Section>
@@ -186,13 +173,12 @@
       <label class="check first" class:off={!anyLabel}>
         <input type="checkbox" bind:checked={s.question} disabled={!anyLabel} />
         <span>
-          <strong>Name the shape</strong>
-          <small>{anyLabel ? 'Leave the labels blank for students to fill in.' : 'Turn on a label to leave it blank.'}</small>
+          <strong>Name the shape (labels left blank)</strong>
         </span>
       </label>
       <label class="check" class:off={!s.question}>
         <input type="checkbox" bind:checked={s.answerKey} disabled={!s.question} />
-        <span><strong>Answer key</strong><small>Print the answers under the figure.</small></span>
+        <span><strong>Answer key</strong></span>
       </label>
       <p class="field-label spaced">Chart title</p>
       <LabelField name="Chart title" bind:mode={s.titleMode} bind:text={s.title} placeholder="e.g. Name the shape" blank={false} />
@@ -221,7 +207,6 @@
   .check input { width: 1.1rem; height: 1.1rem; margin: 0.15rem 0 0; accent-color: var(--blue); }
   .check span { display: flex; flex-direction: column; }
   .check strong { display: flex; align-items: center; gap: 0.3rem; font-size: 0.9rem; }
-  .check small { color: var(--muted); font-size: 0.82rem; }
   .turns { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.7rem; }
   .turns .btn-ghost { margin-left: auto; display: inline-flex; align-items: center; gap: 0.35rem; }
   .angles { margin-top: 0.8rem; padding-left: 1.7rem; }
