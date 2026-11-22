@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { answerLines, balancingValue, forcesOf, num, pivotSums, twoSums, verdict, wallSums, weightOf, whereText } from './moments'
-import { converted, newLoad, resized, torqueSettings, type Load, type TorqueSettings } from './settings'
+import { converted, inUnit, newLoad, resized, torqueSettings, type Load, type TorqueSettings } from './settings'
 
 const settings = (over: Partial<TorqueSettings> = {}): TorqueSettings => torqueSettings.clean({ ...torqueSettings.defaults, ...over })
 const at = (position: number, value: number, kind: Load['kind'] = 'hanging'): Load => newLoad(position, value, kind)
@@ -211,6 +211,40 @@ describe('a wall', () => {
     expect(w.moment).toBeCloseTo(40, 9)
     expect(answerLines(s)).toEqual(['Wall’s force up = forces down = 50 N', 'Torque the wall supplies = 20 N × 0.5 m + 30 N × 1 m = 40 N·m counterclockwise'])
     expect(answerLines({ ...s, mirror: true }).at(-1)).toMatch(/ clockwise$/)
+  })
+})
+
+describe('fixes from review', () => {
+  test('a cantilever with a force up subtracts it in the working', () => {
+    const s = settings({ support: 'wall', cable: false, loads: [at(0.5, 10), at(1, 4, 'up')] })
+    expect(answerLines(s)).toEqual(['Wall’s force up = forces down = 6 N', 'Torque the wall supplies = 10 N × 0.5 m − 4 N × 1 m = 1 N·m counterclockwise'])
+  })
+
+  test('a cantilever pushed up more than down has the wall’s force down, said as such', () => {
+    const s = settings({ support: 'wall', cable: false, loads: [at(0.5, 10, 'up')] })
+    expect(answerLines(s)[0]).toBe('Wall’s force down = forces up − forces down = 10 N')
+    expect(verdict(s).text).toBe('Wall: 10 N down and 5 N·m of torque')
+  })
+
+  test('balanced only within what rounding values to the hundredth leaves', () => {
+    // 6 N × 0.2 m = 1.2 N·m against 3.01 N × 0.4 m = 1.204 N·m: a real difference
+    expect(pivotSums(settings({ loads: [at(0.3, 6), at(0.9, 3.01)] })).balanced).toBe(false)
+    // in kg, half a hundredth of a kilogram is weighed with g
+    expect(pivotSums(settings({ unit: 'kg', loads: [at(0.3, 3), at(0.9, 1.5)] })).balanced).toBe(true)
+    expect(pivotSums(settings({ unit: 'kg', loads: [at(0.3, 3), at(0.9, 1.52)] })).balanced).toBe(false)
+  })
+
+  test('a load with no value has no torque, and no direction', () => {
+    expect(answerLines(settings({ loads: [at(0.3, 0), at(0.9, 0)] }))[0]).toBe('Load 1: 0 N × 0.2 m = 0 N·m, no torque')
+  })
+
+  test('a beam too long or too short for the other unit stays as it is, with the reason', () => {
+    const long = inUnit(settings({ length: 2, supportB: 2 }), 'cm')
+    expect(long).toEqual({ problem: 'A 2 m beam is longer than 100 cm, so it can’t be set in cm. It stays in m.' })
+    const short = inUnit(settings({ length: 5, lengthUnit: 'cm', pivot: 2.5, loads: [at(1, 6), at(4, 3)] }), 'm')
+    expect(short).toEqual({ problem: 'A 5 cm beam is shorter than 0.1 m, so it can’t be set in m. It stays in cm.' })
+    const ok = inUnit(settings(), 'cm')
+    expect(ok).toMatchObject({ changes: { lengthUnit: 'cm', length: 100, pivot: 50 } })
   })
 })
 

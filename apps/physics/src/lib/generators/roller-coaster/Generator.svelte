@@ -48,10 +48,10 @@
           <div class="point-head">
             <span>{name}</span>
             <span class="moves">
-              <button type="button" class="icon-btn" aria-label="Move point {i + 1} left" data-tip="Move left" disabled={i === 0} onclick={() => follow(moved(track(), i, -1))}>
+              <button type="button" class="icon-btn" aria-label="Move point {i + 1} earlier" data-tip="Earlier" disabled={i === 0} onclick={() => follow(moved(track(), i, -1))}>
                 <ArrowUp size={17} />
               </button>
-              <button type="button" class="icon-btn" aria-label="Move point {i + 1} right" data-tip="Move right" disabled={i === gen.s.points.length - 1} onclick={() => follow(moved(track(), i, 1))}>
+              <button type="button" class="icon-btn" aria-label="Move point {i + 1} later" data-tip="Later" disabled={i === gen.s.points.length - 1} onclick={() => follow(moved(track(), i, 1))}>
                 <ArrowDown size={17} />
               </button>
               <button type="button" class="icon-btn" aria-label="Remove point {i + 1}" data-tip="Remove" disabled={gen.s.points.length <= MIN_POINTS} onclick={() => follow(removed(track(), i))}>

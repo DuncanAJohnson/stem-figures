@@ -97,6 +97,8 @@ export const torqueSettings = defineSettings({
   angleLabel: label(text('theta')),
   mirror: bool(false),
   color: bool(false),
+  /** the label of a fixed beam's wall moment, drawn with the support forces */
+  momentLabel: label(text('M')),
 })
 
 export type TorqueSettings = typeof torqueSettings.defaults
@@ -140,4 +142,23 @@ export function converted(s: TorqueSettings, factor: number): Pick<TorqueSetting
     cableAt: at(s.cableAt),
     loads: s.loads.map((l) => ({ ...l, position: at(l.position) })),
   }
+}
+
+/**
+ * The beam in another length unit: every length and place converted, or,
+ * when the beam can't be set in that unit, why not, and nothing changes.
+ */
+export function inUnit(
+  s: TorqueSettings,
+  unit: LengthUnit,
+): { changes: Partial<TorqueSettings> & { lengthUnit: LengthUnit } } | { problem: string } {
+  if (unit === s.lengthUnit) return { changes: { lengthUnit: unit } }
+  const c = converted(s, unit === 'cm' ? 100 : 0.01)
+  if (!c) {
+    const length = `${Math.round(s.length * 100) / 100} ${s.lengthUnit}`
+    return unit === 'cm'
+      ? { problem: `A ${length} beam is longer than ${MAX_LENGTH} cm, so it can’t be set in cm. It stays in m.` }
+      : { problem: `A ${length} beam is shorter than 0.1 m, so it can’t be set in m. It stays in cm.` }
+  }
+  return { changes: { ...c, lengthUnit: unit } }
 }

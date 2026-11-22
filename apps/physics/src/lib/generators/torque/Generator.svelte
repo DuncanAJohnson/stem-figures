@@ -12,7 +12,7 @@
   import Section from '$lib/shared/Section.svelte'
   import GeneratorPage from '$shared/GeneratorPage.svelte'
   import { answerLines, balancingValue, distanceText, exact, loadDistanceText, valueText, verdict, whereText } from './moments'
-  import { G_VALUES, MAX_LENGTH, MAX_LOADS, converted, newLoad, onBeam, resized, torqueSettings, type LengthUnit, type Load, type LoadKind, type SupportKind } from './settings'
+  import { G_VALUES, MAX_LENGTH, MAX_LOADS, inUnit, newLoad, onBeam, resized, torqueSettings, type LengthUnit, type Load, type LoadKind, type SupportKind } from './settings'
   import Torque from './Torque.svelte'
   import { buildTorque } from './torque'
 
@@ -29,6 +29,13 @@
   const KIND_NAMES = Object.fromEntries(KINDS) as Record<LoadKind, string>
 
   const fig = $derived(buildTorque(s))
+  const supportName = $derived(s.support === 'pivot' ? 'the pivot' : 'a support')
+  /** Loads drawn on top of a support or of each other, which a teacher will want to move apart. */
+  const clashText = $derived(
+    fig.clashes
+      .map(([i, j]) => (j < 0 ? `Load ${i + 1} hangs where ${supportName} stands` : `Loads ${i + 1} and ${j + 1} are drawn over each other`))
+      .join('; ') + (fig.clashes.length ? '. Move them apart, or make one a force arrow.' : ''),
+  )
   const answer = $derived(verdict(s))
   const working = $derived(answerLines(s))
   const unit = $derived(s.lengthUnit)
@@ -37,6 +44,7 @@
   // A longer or shorter beam keeps a pivot at its middle and a support or cable at its end.
   const setLength = (v: unknown) => {
     const to = Number(v)
+    unitProblem = ''
     if (v === null || v === '' || !Number.isFinite(to)) {
       gen.s.length = v as number
       return
@@ -46,15 +54,19 @@
     gen.s.length = to
   }
   // Changing m to cm (or back) changes every number, so the beam stays the same.
+  // A beam that can't be set in the other unit stays as it is, and the form says why.
+  let unitProblem = $state('')
   const setUnit = (u: LengthUnit) => {
     if (u === s.lengthUnit) return
-    const c = converted(s, u === 'cm' ? 100 : 0.01)
-    if (c) {
-      const { loads, ...places } = c
-      Object.assign(gen.s, places)
-      gen.s.loads.forEach((l, i) => (l.position = loads[i].position))
+    const next = inUnit(s, u)
+    if ('problem' in next) {
+      unitProblem = next.problem
+      return
     }
-    gen.s.lengthUnit = u
+    unitProblem = ''
+    const { loads, ...places } = next.changes
+    Object.assign(gen.s, places)
+    if (loads) gen.s.loads.forEach((l, i) => (l.position = loads[i].position))
   }
 
   const shown = (l: Label, value: string) => (l.mode === 'text' ? l.text.trim() || value : l.mode === 'blank' ? 'blank' : 'no label')
@@ -165,6 +177,9 @@
           <Choice name="Length unit" options={[['m', 'm'], ['cm', 'cm']]} bind:value={() => s.lengthUnit, setUnit} />
         </div>
       </div>
+      {#if unitProblem}
+        <p class="note warning" role="status">{unitProblem}</p>
+      {/if}
       <label class="field">
         Its own {s.unit === 'N' ? 'weight' : 'mass'} ({s.unit}), 0 for a light beam
         <input type="number" min="0" max="99999" step="any" bind:value={gen.s.beamWeight} />
@@ -242,6 +257,9 @@
           {/if}
         </details>
       {/each}
+      {#if clashText}
+        <p class="note warning" role="status">{clashText}</p>
+      {/if}
       <button type="button" class="btn-ghost add" disabled={full} onclick={add}>
         <Plus size={15} aria-hidden="true" />
         {full ? `A beam holds up to ${MAX_LOADS} loads` : 'Add a load'}
@@ -268,6 +286,8 @@
         </div>
         {#if s.support === 'wall' && s.cable}
           <div class="field">Tension <LabelField name="Tension label" bind:label={gen.s.tensionLabel} /></div>
+        {:else if s.support === 'wall'}
+          <div class="field">Wall’s moment (the curved arrow) <LabelField name="Wall’s moment label" bind:label={gen.s.momentLabel} /></div>
         {/if}
       {/if}
       {#if s.support === 'two'}

@@ -39,6 +39,8 @@ export const ARROW = 60
 export const MASS = { width: 56, height: 11, discs: 3, rod: 14, base: 5 }
 /** The hook at the end of a spring with nothing on it. */
 const RING = 4
+/** How far a spring's label keeps from the natural length's dashed line, along the spring. */
+const LABEL_CLEAR = 16
 
 /** Each hanging layout's width, natural length (in px), and where its copies go. Its height fits what hangs. */
 const HANGING = {
@@ -169,8 +171,11 @@ export function buildSpring(s: SpringSettings): SpringFigure {
         if (i > 0) fig.joins.push(a)
         if (c.springLabels) {
           const l = count > 1 ? numbered(s.springLabel, i + 1) : s.springLabel
-          // A little above the middle, so a spring stretched to twice its length doesn't put it on the natural length line.
-          const middle = at(c.base, piece * (i + (count === 1 ? 0.42 : 0.5)))
+          // A little above the middle, so a spring stretched to twice its length doesn't put it on the natural length line;
+          // in series, the middle of each, moved off that line when it lands on it.
+          let along = piece * (i + (count === 1 ? 0.42 : 0.5))
+          if (count > 1 && Math.abs(along - c.natural) < LABEL_CLEAR) along = c.natural + (along < c.natural ? -LABEL_CLEAR : LABEL_CLEAR)
+          const middle = at(c.base, along)
           if (hanging) ink(l, pt(middle.x + coilWidth / 2 + 8, middle.y), 'start')
           else ink(l, pt(middle.x, middle.y - coilWidth / 2 - 14))
         }
@@ -256,6 +261,13 @@ function copiesOf(s: SpringSettings) {
 /** Does the equilibrium line carry its own label? In Three positions the middle copy's name (x = 0) says it, unless the names are off. */
 export const equilibriumLabelled = (s: Pick<SpringSettings, 'picture' | 'amplitudeLabel'>) => s.picture !== 'positions' || s.amplitudeLabel.mode === 'none'
 
+/**
+ * Is the equilibrium line drawn? Not on a hanging spring an applied force
+ * pulls past where its object rests, where the line would be in the wrong place.
+ */
+export const equilibriumShown = (s: Pick<SpringSettings, 'equilibriumLine' | 'orientation' | 'picture' | 'appliedForce' | 'stretch'>) =>
+  s.equilibriumLine && !(s.orientation === 'hanging' && s.picture !== 'positions' && s.appliedForce && s.stretch !== 0)
+
 /** The positions' names: x = +A, x = 0, x = −A, in the order the copies are drawn. */
 function positionNames(s: SpringSettings): Label[] {
   const a = s.amplitudeLabel
@@ -337,7 +349,7 @@ function buildHanging(s: SpringSettings, fig: SpringFigure, draw: Draw, vector: 
     })
   }
 
-  if (s.equilibriumLine) {
+  if (equilibriumShown(s)) {
     const y = fig.ends[rest].y
     fig.dashed.push(seg(pt(20, y), pt(fig.width - 20, y)))
     if (equilibriumLabelled(s)) ink(s.equilibriumLabel, pt(20, y - 14), 'start')
@@ -399,7 +411,13 @@ function buildHorizontal(s: SpringSettings, fig: SpringFigure, draw: Draw, vecto
       const face = last.d.box.right
       // Pulled out, the force pulls away from the wall; squashed, it pushes toward it.
       if (s.stretch > 0) vector('force', pt(face, y), pt(face + ARROW, y), s.forceLabel, pt(face + ARROW / 2, y - 18))
-      else vector('force', pt(face + ARROW, y), pt(face, y), s.forceLabel, pt(face + ARROW * 0.7, y - 18))
+      else {
+        // Clear of the natural length's dashed line, which a well-squashed spring brings over the arrow.
+        const half = shows(s.forceLabel) ? labelWidth(s.forceLabel) / 2 : 0
+        let x = face + ARROW * 0.7
+        if (Math.abs(x - naturalX) < half + 6) x = naturalX + half + 6
+        vector('force', pt(face + ARROW, y), pt(face, y), s.forceLabel, pt(x, y - 18))
+      }
     }
   } else {
     rows.forEach((r, i) => {
@@ -440,7 +458,7 @@ export function describe(s: SpringSettings): string {
     return `${where}, with ${object} on it, drawn at three positions of its oscillation: at +A, at equilibrium and at −A, where A is ${amount}${marks}`
   }
   const change = s.stretch === 0 ? 'at its natural length' : s.stretch > 0 ? `stretched by ${amount}` : `squashed by ${amount}`
-  const marks = [s.extensionMark && s.stretch !== 0 ? 'the extension marked' : '', s.lengthMark ? 'the natural length marked' : '', s.equilibriumLine ? 'a dashed equilibrium line' : '', s.appliedForce && s.stretch !== 0 ? 'an applied force' : '']
+  const marks = [s.extensionMark && s.stretch !== 0 ? 'the extension marked' : '', s.lengthMark ? 'the natural length marked' : '', equilibriumShown(s) ? 'a dashed equilibrium line' : '', s.appliedForce && s.stretch !== 0 ? 'an applied force' : '']
     .filter(Boolean)
     .join(', ')
   const picture =

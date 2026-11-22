@@ -969,10 +969,10 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'cantilever-with-two-loads',
       title: 'Cantilever with two loads',
-      alt: 'A 1 m beam fixed into a wall at its left end with no other support, a 20 N block hanging 0.5 m from the wall and a 30 N block resting on its far end, and the wall’s force F pointing up',
+      alt: 'A 1 m beam fixed into a wall at its left end with no other support, a 20 N block hanging 0.5 m from the wall and a 30 N block hanging from its far end, the wall’s force F pointing up and the wall’s moment M drawn as a curved arrow turning counterclockwise round the beam’s end',
       caption:
-        'A cantilever: a light 1 m beam fixed into a wall, with a 20 N weight hanging halfway along and a 30 N block on its end. The wall holds it all up, 50 N, and supplies a torque of 20 × 0.5 + 30 × 1 = 40 N·m against the loads’ turning effect.',
-      settings: { support: 'wall', cable: false, supportForces: true, loads: [onBeam('hanging', 0.5, 20), onBeam('resting', 1, 30)] },
+        'A cantilever: a light 1 m beam fixed into a wall, with a 20 N weight hanging halfway along and a 30 N weight hanging from its end. The wall’s force F holds it all up, 50 N, and the wall’s moment M, the curved arrow, supplies 20 × 0.5 + 30 × 1 = 40 N·m counterclockwise, against the loads’ clockwise turning effect.',
+      settings: { support: 'wall', cable: false, supportForces: true, loads: [onBeam('hanging', 0.5, 20), onBeam('hanging', 1, 30)] },
     },
   ]),
   ...examplesOf('circular-motion', [
@@ -997,7 +997,7 @@ export const EXAMPLES: Example[] = [
       title: 'Ball on a string in a vertical circle',
       alt: 'A ball on a string going round a vertical dashed circle, drawn at the top and the bottom. At the top gravity F_g and a shorter tension T both point down; at the bottom a longer tension points up and gravity down. Each has a velocity arrow along the tangent and a centripetal acceleration arrow beside it pointing at the center',
       caption:
-        'A ball whirled on a string in a vertical circle, at the top and the bottom. Gravity is the same at both. At the top the tension adds to gravity, both pointing down to the center, so the tension is small; at the bottom it has to hold the ball up and turn it toward the center, so it is longer than gravity. The centripetal acceleration, drawn beside the ball, points at the center both times.',
+        'A ball whirled on a string in a vertical circle, at the top and the bottom. Gravity is the same at both. At the top the tension adds to gravity, both pointing down to the center, so the tension is small; at the bottom it has to hold the ball up and turn it toward the center, so it is longer than gravity. The ball goes round at a steady speed, so the net force toward the center is the same at both: the tension at the bottom is longer than the one at the top by two gravities. The centripetal acceleration, drawn beside the ball, points at the center and is the same length both times.',
       settings: { setup: 'vertical' },
     },
     {
@@ -1143,7 +1143,7 @@ export const EXAMPLES: Example[] = [
       title: 'Two springs in parallel with a hanging mass',
       alt: 'Two springs k_1 and k_2 side by side from a hatched ceiling to a light bar, with a block m hanging from the middle of the bar, and the extension x marked from a dashed line at the springs’ natural length',
       caption:
-        'Two springs, k₁ and k₂, hang side by side from a ceiling and hold a light bar, with the block m hanging from its middle. Both springs stretch by the same extension x, from the dashed line at their natural length, so together they act as one spring with k = k₁ + k₂.',
+        'Two springs, k₁ and k₂, hang side by side from a ceiling and hold a light bar level, with the block m hanging from it. Both springs stretch by the same extension x, from the dashed line at their natural length, so together they act as one spring with k = k₁ + k₂. Hung from the bar’s middle, as drawn, the bar stays level only if k₁ = k₂; with different springs the block hangs nearer the stiffer one.',
       settings: { picture: 'one', springs: '2p' },
     },
   ]),

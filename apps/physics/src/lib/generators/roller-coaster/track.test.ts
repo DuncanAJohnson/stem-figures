@@ -9,7 +9,7 @@ import {
   type CoasterSettings,
   type TrackPoint,
 } from './settings'
-import { MARK_ROOM, buildTrack, curveAt, lengthRuns, slopes, type TrackFigure } from './track'
+import { MARK_ROOM, buildTrack, curveAt, describe as describeTrack, lengthRuns, slopes, type TrackFigure } from './track'
 
 const text = (t: string) => ({ mode: 'text', text: t }) as const
 const none = (t = '') => ({ mode: 'none', text: t }) as const
@@ -208,6 +208,13 @@ describe('everything drawn is inside the figure', () => {
       }
     }
   }, 30_000)
+
+  test('room taken while fitting is given back: no empty band under the ground', () => {
+    // Three hills down to the ground, whose labels at the dips first ran off the bottom.
+    const f = track([45, 0, 35, 0, 25, 0])
+    expect(f.groundY).toBe(track([40, 10, 25, 5]).groundY)
+    expectInside(f)
+  })
 
   test('with long labels at 8 points, and no two labels on top of each other', () => {
     const pts = [50, 20, 40, 15, 30, 10, 20, 5].map((h, i) =>
@@ -512,6 +519,12 @@ describe('settings', () => {
     expect(round(s)).toEqual(s)
   })
 
+  test('the loop and the object are kept on the track, however the settings come in', () => {
+    expect(fromParams(new URLSearchParams('loopAt=8&objectAt=7'))).toMatchObject({ loopAt: 0, objectAt: 4 })
+    expect(coasterSettings.clean({ ...defaults, points: points([40, 0]), loopAt: 3, objectAt: 5 })).toMatchObject({ loopAt: 0, objectAt: 2 })
+    expect(coasterSettings.clean({ ...defaults, loopAt: 4, objectAt: 4 })).toMatchObject({ loopAt: 4, objectAt: 4 })
+  })
+
   test('a track has 2 to 8 points, with heights from 0 to 100', () => {
     expect(coasterSettings.clean({ points: [] }).points).toHaveLength(2)
     expect(
@@ -572,6 +585,35 @@ describe('relabelling', () => {
     expect(coasterSettings.clean({ points: [a, b, c] }).points[2].height).toBe(100)
   })
 
+  test('a height mark keeps following through a height typed past 100, to 3 decimals, or cleared on the way', () => {
+    const [a, b, c] = points([40, 10, 25])
+    heightTyped(a, 400)
+    heightTyped(a, 40)
+    expect(a).toMatchObject({ height: 40, heightLabel: text('40 m') })
+    heightTyped(b, 12.345)
+    expect(b.heightLabel.text).toBe(`${coasterSettings.clean({ points: [b, c] }).points[0].height} m`)
+    heightTyped(b, 20)
+    expect(b.heightLabel).toEqual(text('20 m'))
+    // Backspacing 25 to 2, to nothing, then typing 3.
+    heightTyped(c, 2)
+    heightTyped(c, null)
+    expect(c.heightLabel).toEqual(text('2 m'))
+    heightTyped(c, 3)
+    expect(c).toMatchObject({ height: 3, heightLabel: text('3 m') })
+    // A typed mark is kept, even through an empty field.
+    c.heightLabel.text = 'h'
+    heightTyped(c, null)
+    heightTyped(c, 7)
+    expect(c.heightLabel).toEqual(text('h'))
+  })
+
+  test('a point added while the last height is empty starts at 0, marked 0 m', () => {
+    const pts = points([40, 10])
+    heightTyped(pts[1], null)
+    const p = added(list(pts)).points[2]
+    expect(p).toMatchObject({ height: 0, heightLabel: text('0 m') })
+  })
+
   test('the loop and the object follow their point', () => {
     expect(moved(list(points([40, 0, 25]), 2, 1), 1, 1)).toMatchObject({
       loopAt: 3,
@@ -589,5 +631,42 @@ describe('relabelling', () => {
       loopAt: 0,
       objectAt: 2,
     })
+  })
+})
+
+describe('the words for screen readers', () => {
+  test('read the labels drawn, never the heights behind them', () => {
+    const s = {
+      ...coasterSettings.defaults,
+      points: [newPoint(50, 'A', { heightLabel: text('h') }), newPoint(0, 'B', { heightLabel: none('0 m') }), newPoint(0, 'D', { heightLabel: none('0 m') })],
+      loopAt: 2,
+      loopRadius: 15,
+      loopTopLabel: text('C'),
+    }
+    const words = describeTrack(s)
+    expect(words).not.toMatch(/50|15/)
+    expect(words).toContain('A, the start, height marked h')
+    expect(words).toContain('A loop stands at B, its radius marked R, its top labeled C.')
+    expect(words).toContain('A cart labeled m is at A.')
+  })
+
+  test('name a blank line, the rough stretch with its labels, and the velocity', () => {
+    const words = describeTrack({
+      ...coasterSettings.defaults,
+      points: [newPoint(30, 'A', { heightLabel: { mode: 'blank', text: '30 m' } }), newPoint(0, 'B', { rough: true }), newPoint(0, 'C')],
+      object: 'block',
+      objectAt: 2,
+      velocity: 'forward',
+    })
+    expect(words).toContain('height marked a blank line')
+    expect(words).toContain('The track from B to C is rough, labeled μ_k, its length marked d.')
+    expect(words).toContain('A block labeled m is at B, moving forward along the track with velocity v.')
+    expect(words).not.toMatch(/30/)
+  })
+
+  test('say which way the track runs when mirrored, and the shapes of its points', () => {
+    const words = describeTrack({ ...coasterSettings.defaults, mirror: true })
+    expect(words).toMatch(/^A roller coaster track through four points, right to left: A, the start, height marked 40 m; B, a dip/)
+    expect(words).toContain('C, a hilltop')
   })
 })

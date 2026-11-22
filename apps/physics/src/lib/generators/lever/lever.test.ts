@@ -3,7 +3,7 @@ import { LABEL_SIZES, type LabelSize } from '$shared/labelSize'
 import type { Label } from '$lib/shared/label'
 import { crosses, overlaps } from '$lib/shared/layout'
 import { BEAM, HEIGHT, LONGEST, MIN_ARM, SHORTEST, SPAN, WIDTH, arrowLengths, buildLever, drawnArms, scaledBox } from './lever'
-import { CLASSES, answerLines, comesOutEven, exact, leverOf, leverSettings, sig3, valueTexts, type LeverSettings } from './settings'
+import { CLASSES, answerLines, comesOutEven, exact, leverOf, leverSettings, sig3, valueTexts, worked, type LeverSettings } from './settings'
 import { LABEL_SCALE } from '$shared/labelSize'
 
 const settings = (over: Partial<LeverSettings> = {}): LeverSettings => leverSettings.tidy({ ...leverSettings.defaults, ...over })
@@ -45,6 +45,11 @@ describe('the sums', () => {
     expect(sig3(133.3333)).toBe('133')
     expect(sig3(0.33333)).toBe('0.333')
     expect(sig3(99.96)).toBe('100')
+    // Trailing zeros are significant figures too.
+    expect(sig3(0.030030)).toBe('0.0300')
+    expect(sig3(1.001e-4)).toBe('0.000100')
+    expect(sig3(3)).toBe('3.00')
+    expect(sig3(1.5e-8)).toBe('0.0000000150')
     expect(sig3(1234.5)).toBe('1230')
     expect(sig3(979020000)).toBe('979000000')
     expect(sig3(0.0000000981)).toBe('0.0000000981')
@@ -54,6 +59,17 @@ describe('the sums', () => {
     expect(comesOutEven(100)).toBe(true)
     expect(comesOutEven(400 / 3)).toBe(false)
     expect(comesOutEven(2.45)).toBe(true)
+    expect(comesOutEven(0.03003)).toBe(false)
+    // An even value is shown in full, a rounded one to 3 significant figures with its zeros.
+    expect(worked(3)).toBe('3')
+    expect(worked(0.25)).toBe('0.25')
+    expect(worked(0.03003)).toBe('0.0300')
+  })
+
+  test('a tiny effort keeps its 3 significant figures', () => {
+    const s = settings({ effortArm: 999, loadArm: 0.1 })
+    expect(valueTexts(s).effort).toBe('0.0300 N')
+    expect(answerLines(s).at(-1)).toBe('Effort = 300 N ÷ 9990 ≈ 0.0300 N')
   })
 })
 
@@ -70,6 +86,21 @@ describe('the answer key', () => {
       'Effort = 294 N ÷ 3 = 98 N',
     ])
     expect(answerLines(settings({ load: 500, loadUnit: 'g' }))[1]).toBe('Load = 500 g = 0.5 kg, and 0.5 kg × 9.8 N/kg = 4.9 N')
+  })
+
+  test('a mass’s weight that doesn’t come out even is to 3 significant figures, and the effort from it is ≈', () => {
+    expect(answerLines(settings({ class: '2', effortArm: 999, loadArm: 0.1, load: 9999, loadUnit: 'g' }))).toEqual([
+      'Class 2 lever',
+      'Load = 9999 g = 9.999 kg, and 9.999 kg × 9.8 N/kg ≈ 98.0 N',
+      'MA = effort arm ÷ load arm = 999 m ÷ 0.1 m = 9990',
+      'Effort = 98.0 N ÷ 9990 ≈ 0.00981 N',
+    ])
+    expect(answerLines(settings({ load: 1.234, loadUnit: 'kg', effortArm: 1, loadArm: 1 }))).toEqual([
+      'Class 1 lever',
+      'Load = 1.234 kg × 9.8 N/kg ≈ 12.1 N',
+      'MA = effort arm ÷ load arm = 1 m ÷ 1 m = 1',
+      'Effort = 12.1 N ÷ 1 ≈ 12.1 N',
+    ])
   })
 
   test('says ≈ for a value that doesn’t come out even, and works the effort from the arms when the advantage is rounded', () => {
@@ -291,6 +322,20 @@ describe('the labels', () => {
     }
   })
 
+  test('when the two columns can’t stand side by side, the inner one goes beside its force, on the fulcrum’s side', () => {
+    const long = { loadShown: 'arrow' as const, load: 1234.5, effortName: text('Effort force F_E'), loadName: text('Load force F_L'), effortArm: 1, loadArm: 1 }
+    for (const [cls, inner] of [['2', 'load'], ['3', 'effort']] as const) {
+      const f = fig({ class: cls, ...long, labelSize: 'large' })
+      const sc = LABEL_SCALE.large
+      for (const key of [`${inner}Name`, `${inner}Value`]) {
+        const l = f.labels.find((l) => l.key === key)!
+        const b = scaledBox(l.at, l.label, sc)
+        expect(b.x + b.w / 2, key).toBeLessThan(f.x[inner])
+        expect(b.y + b.h / 2, key).toBeLessThanOrEqual(f.beam.y)
+      }
+    }
+  })
+
   test('with its value off, a name takes the value’s place', () => {
     const on = fig().labels.find((l) => l.key === 'effortValue')!.at
     const off = fig({ effortLabel: { mode: 'none', text: '' } }).labels.find((l) => l.key === 'effortName')!.at
@@ -320,6 +365,8 @@ describe('the labels', () => {
     { effortLabel: { mode: 'blank', text: '' }, loadLabel: { mode: 'blank', text: '' }, effortArmLabel: { mode: 'blank', text: '' }, loadArmLabel: { mode: 'blank', text: '' }, effortName: { mode: 'blank', text: '' }, loadName: { mode: 'blank', text: '' }, fulcrumName: { mode: 'blank', text: '' } },
     { effortLabel: { mode: 'none', text: '' }, loadLabel: { mode: 'none', text: '' }, arms: false },
     { effortName: text('Input force'), loadName: text('Output force'), fulcrumName: text('Pivot') },
+    // Long names on two arrows, which at equal arms on a class 2 or 3 lever can't stand side by side.
+    { loadShown: 'arrow', load: 1234.5, effortName: text('Effort force F_E'), loadName: text('Load force F_L') },
   ]
   const every = (check: (f: ReturnType<typeof fig>, sc: number, name: string) => void) => {
     let n = 0

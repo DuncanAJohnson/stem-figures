@@ -655,7 +655,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'Are the arrows drawn to scale?',
-        a: 'The motion is uniform, so every velocity arrow in a figure is the same length, and so is every acceleration arrow. On a turntable the second object, halfway out, has arrows half as long, because v = ωr. On the Vertical circle gravity is the same length everywhere, and the tension or normal force is shorter than gravity at the top and longer at the bottom, so the net force points to the center there. The Conical pendulum’s forces are to scale: the tension’s vertical component is exactly as long as gravity.',
+        a: 'The motion is uniform, so every velocity arrow in a figure is the same length, and so is every acceleration arrow. On a turntable the second object, halfway out, has arrows half as long, because v = ωr. On the Vertical circle gravity is the same length everywhere, and the tension or normal force is shorter than gravity at the top and longer at the bottom, so the net force points to the center there. The speed is steady, so the net force is the same size at the top, the side and the bottom: the tension at the bottom is two gravities longer than at the top. The Conical pendulum’s forces are to scale: the tension’s vertical component is exactly as long as gravity.',
       },
       {
         q: 'Is there an arrow for the centripetal force?',
@@ -697,7 +697,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'How is the effort worked out?',
-        a: 'The lever is ideal: it balances, there is no friction, and the beam has no weight. So effort × effort arm = load × load arm, and the effort is the load × the load arm ÷ the effort arm. It is rounded to 3 significant figures, and the label, the form and the answer key all show the same rounded value.',
+        a: 'The lever is ideal: it balances, there is no friction, and the beam has no weight. So effort × effort arm = load × load arm, and the effort is the load × the load arm ÷ the effort arm. When it doesn’t come out even it is rounded to 3 significant figures, so 0.03003 N is 0.0300 N, and the label, the form and the answer key all show the same rounded value.',
       },
       {
         q: 'How is mechanical advantage worked out?',
@@ -705,7 +705,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'What if the load is a mass in kg or g?',
-        a: 'Then it is drawn as a block labeled with its mass, and its weight is its mass × 9.8 N/kg, so a 30 kg load weighs 294 N. The effort is always a force in newtons. The answer key shows the weight first. A load in N or lb is already a force, and can be drawn as a block or as an arrow pointing down.',
+        a: 'Then it is drawn as a block labeled with its mass, and its weight is its mass × 9.8 N/kg, so a 30 kg load weighs 294 N, and a weight that doesn’t come out even is rounded to 3 significant figures, like the effort. The effort is always a force in newtons. The answer key shows the weight first. A load in N or lb is already a force, and can be drawn as a block or as an arrow pointing down.',
       },
       {
         q: 'How do I make one value the unknown?',
@@ -762,7 +762,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'How is a hanging sign’s cable tension worked out?',
-        a: 'By taking moments about the wall, where the beam is hinged: T sin θ times the cable’s distance from the wall equals the sum of each weight times its distance from the wall, so T = Σ(W d) ÷ (d sin θ). The wall’s force on the beam is then T cos θ along the beam and the rest of the weight up the wall. With no cable, the beam is a cantilever fixed into the wall, which holds up all of its weight and supplies the torque.',
+        a: 'By taking moments about the wall, where the beam is hinged: T sin θ times the cable’s distance from the wall equals the sum of each weight times its distance from the wall, so T = Σ(W d) ÷ (d sin θ). The wall’s force on the beam is then T cos θ along the beam and the rest of the weight up the wall. With no cable, the beam is a cantilever fixed into the wall, which holds up all of its weight and supplies the torque, drawn with the support forces as a curved arrow M round the beam’s end.',
       },
       {
         q: 'Is a moment the same as a torque?',

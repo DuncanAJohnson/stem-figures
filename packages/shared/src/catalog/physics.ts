@@ -212,7 +212,7 @@ export const PHYSICS: CatalogEntry[] = [
       'centripetal acceleration', 'tangential velocity', 'velocity', 'acceleration', 'radius', 'diameter', 'angular speed',
       'angular velocity', 'omega', 'rotation', 'turntable', 'record player', 'merry-go-round', 'ball on a string',
       'vertical circle', 'loop', 'loop-the-loop', 'hill', 'dip', 'car over a hill', 'conical pendulum', 'flat curve', 'curve',
-      'car on a curve', 'tension', 'normal force', 'gravity', 'net force', 'top view', 'side view', 'period', 'printable',
+      'car on a curve', 'tension', 'normal force', 'gravity', 'net force', 'top view', 'side view', 'printable',
     ],
   },
   {

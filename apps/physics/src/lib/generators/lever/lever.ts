@@ -177,6 +177,8 @@ export function buildLever(s: LeverSettings): LeverFigure {
   const loadLabel = valueLabel(s.loadLabel, values.load)
   const effortLabel = valueLabel(s.effortLabel, values.effort)
   const up = { x: 0, y: -1 }
+  /** Along the beam toward the fulcrum, which is at the left end of a class 2 or 3 lever. */
+  const toFulcrum = { x: -1, y: 0 }
   const above = (top: number, value: Label): [Point, Point] => {
     const valueAt = pt(0, top - 6 - lh / 2)
     return [valueAt, pt(0, value.mode === 'none' ? valueAt.y : valueAt.y - lh - 3 * sc)]
@@ -188,6 +190,7 @@ export function buildLever(s: LeverSettings): LeverFigure {
   // the outer one toward the beam's end, then the inner one toward the
   // fulcrum, each staying over its own force and clear of the other's.
   const column = { load: x.load, effort: x.effort }
+  let beside: { part: 'load' | 'effort'; value: Point; name: Point } | null = null
   if (s.class !== '1') {
     const [inner, outer] = s.class === '2' ? (['load', 'effort'] as const) : (['effort', 'load'] as const)
     const widthOf = (part: 'load' | 'effort') =>
@@ -199,6 +202,29 @@ export function buildLever(s: LeverSettings): LeverFigure {
     column[outer] = x[outer] + outward
     const inward = clamp(Math.max(x[inner] + wi / 2 + gap - x[outer], (wi + wo) / 2 + gap - (column[outer] - x[inner])), 0, most(wi))
     column[inner] = x[inner] - inward
+    // Columns that still meet (as at equal arms, which leave the two forces
+    // only MIN_ARM apart, with long names) can't both stand over their forces,
+    // so the inner one goes beside its force instead, on the fulcrum's side,
+    // its name over its value, just above the beam.
+    const shown = (part: 'load' | 'effort'): Box[] => {
+      const rows: [Label, Point][] =
+        part === 'load'
+          ? [[loadLabel, loadValueAt], [s.loadName, loadNameAt]]
+          : [[effortLabel, effortValueAt], [s.effortName, effortNameAt]]
+      return rows.filter(([l]) => l.mode !== 'none').map(([l, at]) => scaledBox(pt(column[part], at.y), l, sc))
+    }
+    const meet = (a: Box, b: Box) => Math.abs(a.x - b.x) < (a.w + b.w) / 2 + gap / 2 && Math.abs(a.y - b.y) < (a.h + b.h) / 2
+    if (shown(inner).some((a) => shown(outer).some((b) => meet(a, b)))) {
+      const clear = (inner === 'load' && block ? blockW / 2 : 3) + 8 * sc
+      const [value, name] = inner === 'load' ? [loadLabel, s.loadName] : [effortLabel, s.effortName]
+      const valueY = beam.y - 4 - lh / 2
+      const nameY = value.mode === 'none' ? valueY : valueY - lh - 3 * sc
+      beside = {
+        part: inner,
+        value: pt(x[inner] - clear - scaledBox(pt(0, 0), value, sc).w / 2, valueY),
+        name: pt(x[inner] - clear - scaledBox(pt(0, 0), name, sc).w / 2, nameY),
+      }
+    }
   }
   // Beside the fulcrum's triangle, halfway up: on the longer arm's side of a
   // class 1 lever, and outside the end of a class 2 or 3 lever, with the
@@ -209,10 +235,10 @@ export function buildLever(s: LeverSettings): LeverFigure {
   const rightFirst = s.class === '1' && arms.effort >= arms.load
   const side = rightFirst ? 1 : -1
   const placings: (Placing & { key: LabelKey; onVector: boolean })[] = [
-    { key: 'loadValue', label: loadLabel, at: pt(column.load, loadValueAt.y), out: up, onVector: !block },
-    { key: 'effortValue', label: effortLabel, at: pt(column.effort, effortValueAt.y), out: up, onVector: true },
-    { key: 'loadName', label: s.loadName, at: pt(column.load, loadNameAt.y), out: up, onVector: !block },
-    { key: 'effortName', label: s.effortName, at: pt(column.effort, effortNameAt.y), out: up, onVector: true },
+    { key: 'loadValue', label: loadLabel, at: beside?.part === 'load' ? beside.value : pt(column.load, loadValueAt.y), out: beside?.part === 'load' ? toFulcrum : up, onVector: !block },
+    { key: 'effortValue', label: effortLabel, at: beside?.part === 'effort' ? beside.value : pt(column.effort, effortValueAt.y), out: beside?.part === 'effort' ? toFulcrum : up, onVector: true },
+    { key: 'loadName', label: s.loadName, at: beside?.part === 'load' ? beside.name : pt(column.load, loadNameAt.y), out: beside?.part === 'load' ? toFulcrum : up, onVector: !block },
+    { key: 'effortName', label: s.effortName, at: beside?.part === 'effort' ? beside.name : pt(column.effort, effortNameAt.y), out: beside?.part === 'effort' ? toFulcrum : up, onVector: true },
     {
       key: 'fulcrumName',
       label: s.fulcrumName,

@@ -8,6 +8,7 @@
   import FigureLabel from '$lib/shared/FigureLabel.svelte'
   import ObjectShape from '$lib/shared/ObjectShape.svelte'
   import VectorArrow from '$lib/shared/VectorArrow.svelte'
+  import { VECTOR_WIDTH } from '$lib/shared/vector'
   import { mirrorTransform, mirrorX, palette } from '$lib/shared/figure'
   import { baselineBelowMiddle } from '$lib/shared/label'
   import { LABEL_SIZE } from '$lib/shared/layout'
@@ -65,6 +66,10 @@
       </g>
     {/each}
     {#each fig.arrows as a (a.key)}<VectorArrow v={a.v} color={p.vector} halo={false} />{/each}
+    {#if fig.moment}
+      <path d={fig.moment.d} stroke={p.vector} stroke-width={VECTOR_WIDTH} />
+      <polygon points={fig.moment.head.map((c) => `${c.x},${c.y}`).join(' ')} fill={p.vector} stroke="none" />
+    {/if}
   </g>
   </g>
 

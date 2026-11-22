@@ -362,11 +362,11 @@ The point a lever turns about, drawn as a triangle under the beam standing on a 
 _Avoid_: Pivot (on a Lever figure), support, hinge
 
 **Effort**:
-The force put on a lever to work it, an arrow down onto the beam on a class 1 lever and up from it on class 2 and 3. It is never typed: it is the load's weight × the load arm ÷ the effort arm, to 3 significant figures, in lb for a load in lb and in N otherwise.
+The force put on a lever to work it, an arrow down onto the beam on a class 1 lever and up from it on class 2 and 3. It is never typed: it is the load's weight × the load arm ÷ the effort arm, in full when it comes out even and otherwise to 3 significant figures, trailing zeros kept (0.0300 N), in lb for a load in lb and in N otherwise.
 _Avoid_: Input force (fine as a search word), applied force, push
 
 **Load**:
-What a lever moves: a force in N or lb, drawn as a block (an Object) on the beam or an arrow down onto it, or a mass in kg or g, always drawn as a block, whose weight is its mass × 9.8 N/kg.
+What a lever moves: a force in N or lb, drawn as a block (an Object) on the beam or an arrow down onto it, or a mass in kg or g, always drawn as a block, whose weight is its mass × 9.8 N/kg, rounded like the effort.
 _Avoid_: Resistance, output force (both fine as search words), weight (for the thing drawn)
 
 **Effort arm**:
@@ -392,15 +392,15 @@ Which of the three ways the Circular Motion figure draws the circle: the Top vie
 _Avoid_: View (alone), mode, scenario
 
 **Top view**:
-The circle seen from above, dashed, with its center, and the object at 1 to 8 positions on it: on its own, on a string to the center, on a turntable (with a second object halfway out, if wanted) or on a flat road. It shows velocity, acceleration and one inward force, never gravity.
+The circle seen from above, dashed, with its center, and the object at 1 to 8 positions on it: on its own, on a string to the center, on a turntable (with a second object halfway out, if wanted) or on a flat road. It shows velocity, acceleration and one inward force, never gravity. With a second object, the first one's radius is measured beside the line through both, from the center all the way out.
 _Avoid_: Horizontal circle, overhead view
 
 **Vertical circle**:
-The circle standing upright, seen from the side, with the object at the top, side or bottom: on a string, inside a loop, at the top of a hill or the bottom of a dip. Gravity is one length everywhere; the tension or normal force is shorter at the top and longer at the bottom, so the net force points to the center.
+The circle standing upright, seen from the side, with the object at the top, side or bottom: on a string, inside a loop, at the top of a hill or the bottom of a dip. Gravity is one length everywhere; the tension or normal force is shorter than gravity at the top and longer at the bottom, so the net force points to the center. The speed is steady, so the net force is the same everywhere: at the bottom the tension is two gravities longer than at the top, and at the side it is the whole net force. Over a hill the normal force is less than gravity, and a dip mirrors it.
 _Avoid_: Loop-the-loop (it's a loop), side view (alone)
 
 **Conical pendulum**:
-A bob on a string from a hatched ceiling at 15° to 60° from the vertical, going round a level circle drawn as an ellipse, its back half lighter. Its forces are to scale: the tension's vertical component is as long as gravity. Its velocity is along the line of sight, a dot (out of the page) or a cross (into it).
+A bob on a string from a hatched ceiling at 15° to 60° from the vertical, going round a level circle drawn as an ellipse, its back half lighter. Its forces are to scale: the tension's vertical component is as long as gravity. At a small angle the horizontal component is too short to come out from under the bob, so it is drawn from the vertical component's tip to the tension's. Its velocity is along the line of sight, a dot (out of the page) or a cross (into it).
 _Avoid_: Cone pendulum, swing
 
 **Inward force**:
@@ -472,7 +472,7 @@ The line from a beam up to the wall it is hinged to, at 15° to 75° to the beam
 _Avoid_: Rope, wire, string (a string holds a hanging object)
 
 **Support force**:
-A force holding the beam up, drawn as a solid arrow: up at the Pivot or at A and B, or at a wall its parts along the beam and up the wall, with the Cable's tension along the cable. Off by default, since they are often the answer.
+A force holding the beam up, drawn as a solid arrow: up at the Pivot or at A and B (down onto the beam when it comes out down: a pivot under forces that are all up, or a support the beam would lift off), or at a wall its parts along the beam and up the wall, with the Cable's tension along the cable. A beam fixed into a wall also gets the wall's moment, a curved arrow labelled M round the beam's end, turning against the loads (on the other side of the beam from the wall's force). Off by default, since they are often the answer.
 _Avoid_: Reaction (fine as a search word), normal force
 
 ### Pendulum
@@ -518,11 +518,11 @@ How long a spring is with nothing pulling or pushing it, L₀. Drawn as a dashed
 _Avoid_: Rest length, unstretched length (fine in captions), original length
 
 **Extension**:
-How far the free end has moved from where it would be at the natural length, as a share of that length: up to 100% stretched, or, on a floor, down to −50%, squashed. Marked with a dimension line labelled x. A hanging spring with an Object on it is always stretched.
+How far the free end has moved from where it would be at the natural length, as a share of that length: up to 100% stretched, or, on a floor, down to −50%, squashed. Marked with a dimension line labelled x. A hanging spring with an Object on it is always stretched, by at least 5%.
 _Avoid_: Stretch (as a noun), displacement (fine for Three positions), compression (fine for a squashed spring)
 
 **Equilibrium line**:
-A dashed line across the figure where the free end rests: on a floor, at the natural length; hanging, where the Object hangs at rest, stretched. Labelled x = 0 unless the teacher types another label. The Wave's rest line is a different thing.
+A dashed line across the figure where the free end rests: on a floor, at the natural length; hanging, where the Object hangs at rest, stretched, so it is left off while an applied force pulls a hanging Object further. Labelled x = 0 unless the teacher types another label. The Wave's rest line is a different thing.
 _Avoid_: Rest line (that's a Wave's), midline, zero line
 
 **Before and after**:

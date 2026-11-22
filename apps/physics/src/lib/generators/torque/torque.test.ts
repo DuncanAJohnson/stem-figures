@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { crosses, labelBox, overlaps, pt } from '$lib/shared/layout'
 import { newLoad, torqueSettings, type Load, type TorqueSettings } from './settings'
-import { BEAM, BEAM_LEFT, HEIGHT, MIN_WALL_BEAM, WALL_X, WIDTH, buildTorque, describe as describeFigure, suffixed } from './torque'
+import { BEAM, BEAM_LEFT, HEIGHT, MIN_WALL_BEAM, MOMENT_R, WALL_X, WIDTH, buildTorque, describe as describeFigure, suffixed } from './torque'
 
 const settings = (over: Partial<TorqueSettings> = {}): TorqueSettings => torqueSettings.clean({ ...torqueSettings.defaults, ...over })
 const fig = (over: Partial<TorqueSettings> = {}) => buildTorque(settings(over))
@@ -178,6 +178,72 @@ describe('labels', () => {
     expect(w.labels.find((l) => l.key === 'wallUp')!.label.text).toBe('F_y')
     expect(w.labels.find((l) => l.key === 'wallAlong')!.label.text).toBe('F_x')
     expect(w.labels.find((l) => l.key === 'tension')!.label.text).toBe('T')
+  })
+})
+
+describe('support forces that come out down', () => {
+  test('a pivot under forces that are all up is pulled down, and its arrow points down onto the beam', () => {
+    const f = fig({ loads: [at(0.3, 6, 'up'), at(0.9, 3, 'up')], supportForces: true })
+    const v = f.arrows.find((a) => a.key === 'support0')!.v
+    expect(v.y2).toBeGreaterThan(v.y1)
+    expect(v.y2).toBeCloseTo(f.beam.y, 6)
+  })
+
+  test('a support the beam would lift off points down; the other still points up', () => {
+    const f = fig({ support: 'two', supportA: 0, supportB: 0.5, loads: [at(1, 10)], supportForces: true })
+    const a = f.arrows.find((x) => x.key === 'support0')!.v
+    const b = f.arrows.find((x) => x.key === 'support1')!.v
+    expect(a.y2).toBeGreaterThan(a.y1)
+    expect(b.y2).toBeLessThan(b.y1)
+  })
+})
+
+describe('a cantilever’s wall moment', () => {
+  const cantilever = { support: 'wall', cable: false, supportForces: true, loads: [at(0.5, 20), at(1, 30)] } as Partial<TorqueSettings>
+
+  test('turns against the loads: counterclockwise under loads down, below the beam, labelled M', () => {
+    const f = fig(cantilever)
+    expect(f.moment).not.toBeNull()
+    expect(f.moment!.clockwise).toBe(false)
+    // Below the beam, round its end at the wall, the arrow's tip within its radius of the end.
+    const tip = f.moment!.head[0]
+    expect(tip.y).toBeGreaterThan(f.beam.y + f.beam.height)
+    expect(Math.hypot(tip.x - WALL_X, tip.y - (f.beam.y + f.beam.height / 2))).toBeCloseTo(MOMENT_R, 0)
+    // Counterclockwise as drawn: its tip is the end nearer the beam (the arrow runs from straight down up toward the beam).
+    expect(tip.x).toBeGreaterThan(WALL_X + MOMENT_R * 0.8)
+    expect(f.labels.find((l) => l.key === 'moment')!.label.text).toBe('M')
+  })
+
+  test('turns clockwise when the forces up win, and sits above the beam when the wall’s force points down', () => {
+    const f = fig({ ...cantilever, loads: [at(0.5, 20, 'up')] })
+    expect(f.moment!.clockwise).toBe(true)
+    expect(f.moment!.head[0].y).toBeLessThan(f.beam.y)
+  })
+
+  test('only on a fixed beam with the support forces on, and a torque to hold', () => {
+    expect(fig({ ...cantilever, supportForces: false }).moment).toBeNull()
+    expect(fig({ ...cantilever, cable: true }).moment).toBeNull()
+    expect(fig({ ...cantilever, loads: [] }).moment).toBeNull()
+  })
+
+  test('mirrored, it is the same drawing flipped, so its sense turns with it', () => {
+    expect(fig({ ...cantilever, mirror: true }).moment).toEqual(fig(cantilever).moment)
+  })
+})
+
+describe('clashes', () => {
+  test('a hanging object where a support stands is reported', () => {
+    expect(fig({ support: 'two', supportA: 0, supportB: 1, loads: [at(0.03, 10), at(0.6, 5)] }).clashes).toEqual([[0, -1]])
+    expect(fig({ loads: [at(0.5, 6), at(0.9, 3)] }).clashes).toEqual([[0, -1]])
+  })
+
+  test('two resting objects drawn over each other are reported', () => {
+    expect(fig({ loads: [at(0.8, 6, 'resting'), at(0.83, 3, 'resting')] }).clashes).toEqual([[0, 1]])
+  })
+
+  test('the default and the examples’ kinds of figure have none', () => {
+    expect(fig().clashes).toEqual([])
+    for (const c of CASES.slice(4, 11)) expect(fig(c).clashes).toEqual([])
   })
 })
 

@@ -20,9 +20,14 @@ describe('settings', () => {
     expect([s.orientation, s.picture, s.springs, s.stretch, s.object, s.extensionMark]).toEqual(['hanging', 'beforeAfter', '1', 0.4, 'block', true])
   })
 
-  test('a hanging spring is never squashed', () => {
-    expect(settings({ stretch: -0.3 }).stretch).toBe(0)
+  test('a hanging spring is never squashed, and with an object on it always stretched a little', () => {
+    expect(settings({ stretch: -0.3 }).stretch).toBe(0.05)
+    expect(settings({ stretch: 0 }).stretch).toBe(0.05)
+    expect(settings({ stretch: 0, picture: 'one' }).stretch).toBe(0.05)
     expect(settings({ stretch: -0.3, orientation: 'horizontal' }).stretch).toBe(-0.3)
+    expect(settings({ stretch: 0, orientation: 'horizontal' }).stretch).toBe(0)
+    // Three positions' amplitude can still be 0.
+    expect(settings({ stretch: 0, picture: 'positions' }).stretch).toBe(0)
   })
 
   test('Three positions has one spring and an amplitude with no sign, at most half the natural length on a floor', () => {
@@ -90,7 +95,7 @@ describe('Before and after, hanging (the default)', () => {
   })
 
   test('no extension mark or natural length line on a spring that isn’t stretched, in one picture', () => {
-    const one = fig({ picture: 'one', stretch: 0 })
+    const one = fig({ picture: 'one', orientation: 'horizontal', stretch: 0 })
     expect(one.dimensions).toEqual([])
     expect(one.dashed).toEqual([])
   })
@@ -121,6 +126,38 @@ describe('series and parallel', () => {
       const ys = pointsOf(d).map((p) => p.y)
       expect(floors.some((floor) => Math.max(...ys) < floor && Math.max(...ys) > floor - 140)).toBe(true)
     }
+  })
+})
+
+describe('crowding', () => {
+  test('in series, a spring’s label moves off the natural length’s dashed line', () => {
+    for (const orientation of ['hanging', 'horizontal'] as const)
+      for (const picture of ['one', 'beforeAfter'] as const) {
+        const f = fig({ orientation, picture, springs: '3s', stretch: 1, lengthMark: true })
+        const line = f.dashed[0]
+        for (const l of f.labels.filter((l) => /^k/.test(l.label.text))) {
+          // The dashed line is level when hanging, upright on a floor.
+          const off = orientation === 'hanging' ? Math.abs(l.at.y - line.y1) : Math.abs(l.at.x - line.x1)
+          expect(off, `${orientation} ${picture} ${l.label.text}`).toBeGreaterThanOrEqual(14)
+        }
+      }
+  })
+
+  test('the applied force’s label keeps off the natural length’s line, however squashed', () => {
+    for (const stretch of [-0.5, -0.45, -0.4, -0.2]) {
+      const f = fig({ orientation: 'horizontal', picture: 'one', stretch, appliedForce: true })
+      const naturalX = 50 + 200
+      const label = f.labels.find((l) => l.tone === 'vector')!
+      expect(Math.abs(label.at.x - naturalX), String(stretch)).toBeGreaterThanOrEqual(10)
+    }
+  })
+
+  test('a hanging spring pulled on by an applied force has no equilibrium line, which would be in the wrong place', () => {
+    const pulled = fig({ picture: 'one', appliedForce: true, equilibriumLine: true, extensionMark: false })
+    expect(pulled.dashed).toEqual([])
+    expect(fig({ picture: 'one', equilibriumLine: true, extensionMark: false }).dashed).toHaveLength(1)
+    // On a floor the line is at the natural length, so it stays.
+    expect(fig({ orientation: 'horizontal', picture: 'one', appliedForce: true, equilibriumLine: true, extensionMark: false }).dashed).toHaveLength(1)
   })
 })
 

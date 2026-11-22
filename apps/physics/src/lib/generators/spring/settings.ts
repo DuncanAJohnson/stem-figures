@@ -47,6 +47,9 @@ const { titleMode, title } = figureTextFields()
 export const MOST_COMPRESSED = -0.5
 export const MOST_STRETCHED = 1
 
+/** The least a hanging spring is stretched by the object on it. */
+export const LEAST_HANGING_STRETCH = 0.05
+
 /** In Three positions on a floor, the spring is squashed by A at −A, so A is at most this. */
 export const HORIZONTAL_MOST_AMPLITUDE = -MOST_COMPRESSED
 
@@ -89,8 +92,8 @@ export const springSettings = defineSettings(
   (s) => {
     const r2 = (n: number) => Math.round(n * 100) / 100
     let stretch = r2(s.stretch)
-    // A hanging spring with a mass on it is stretched.
-    if (s.orientation === 'hanging') stretch = Math.max(0, stretch)
+    // A hanging spring with a mass on it is stretched, if only a little.
+    if (s.orientation === 'hanging') stretch = Math.max(s.picture === 'positions' ? 0 : LEAST_HANGING_STRETCH, stretch)
     // In Three positions the stretch is the amplitude, which has no sign.
     if (s.picture === 'positions') stretch = Math.min(Math.abs(stretch), s.orientation === 'horizontal' ? HORIZONTAL_MOST_AMPLITUDE : MOST_STRETCHED)
     return {

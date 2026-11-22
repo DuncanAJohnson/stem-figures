@@ -15,7 +15,7 @@
 // (placeLabels); no arrow or line moves for one.
 
 import { asVector, type Label } from '$lib/shared/label'
-import { boxCorners, direction, labelBox, labelWidth, placeLabels, pt, seg, type Placing } from '$lib/shared/layout'
+import { boxCorners, crosses, direction, labelBox, labelWidth, overlaps, placeLabels, pt, seg, type Box, type Placing } from '$lib/shared/layout'
 import { objectHeight, type ObjectKind } from '$lib/shared/objects'
 import { ceiling, type Support } from '$lib/shared/support'
 import { numbered, type LabeledVector, type Point, type Segment } from '$lib/shared/vector'
@@ -32,16 +32,32 @@ export const TOP = { centre: { x: 320, y: 210 }, r: 135, velocity: 76, inward: 6
 /** A turntable's edge and a road's edges, out from the path. */
 const DISC_RIM = 34
 const ROAD_HALF = 24
-/** The Vertical circle: its circle, a velocity arrow, and a force of length 1. */
-export const VERTICAL = { centre: { x: 320, y: 185 }, r: 122, velocity: 64, unit: 62 }
+/** The Vertical circle: its circle, a velocity arrow, and a force of length 1 (gravity's), short enough that the bottom's tension stops short of the centre. */
+export const VERTICAL = { centre: { x: 320, y: 185 }, r: 122, velocity: 64, unit: 42 }
+/** Over a hill or through a dip only one point is drawn, so a force of length 1 can be longer. */
+export const GROUND_UNIT = 62
 /** A hill or a dip: how tightly it curves, and how its ends level out. */
 const HILL = { r: 220, fillet: 50, top: 150, bottom: 300, left: 30, right: 610 }
-/** The tension or normal force beside gravity's 1: shorter at the top, longer at the bottom. */
-export const CONTACT = { top: 0.6, side: 1, bottom: 1.6 }
+/**
+ * The net force toward the centre, in units of gravity. The speed is steady,
+ * so it is the same at every point: on a string or in a loop the tension or
+ * normal force plus gravity at the top, it alone at the side, and it minus
+ * gravity at the bottom. Over a hill it is gravity minus the normal force, so
+ * it is less than 1 there (more and the car leaves the road), and a dip mirrors it.
+ */
+export const NET = { circle: 1.7, ground: 0.4 }
+
+/** The tension or normal force at a point, in units of gravity: shorter than gravity at the top, longer at the bottom. */
+export function contactOf(held: CircularSettings['held'], p: 'top' | 'side' | 'bottom'): number {
+  const n = held === 'hill' ? 1 - NET.ground : held === 'dip' ? 1 + NET.ground : { top: NET.circle - 1, side: NET.circle, bottom: NET.circle + 1 }[p]
+  return Math.round(n * 100) / 100
+}
 /** The Conical pendulum: its pivot, string, and gravity arrow. */
 export const CONICAL = { pivot: { x: 300, y: 34 }, length: 240, gravity: 62, squash: 0.22 }
 /** An acceleration arrow drawn beside the object, in the side views: how long, and how far beside. */
 const BESIDE = { length: 50, gap: 62 }
+/** How much of an arrow from an object's middle must show past its edge (a head and a little shaft). */
+const MIN_SHOWN = 18
 const OMEGA_R = 18
 const MARK_R = 36
 
@@ -93,8 +109,8 @@ export interface CircularFigure {
   vectors: FigureVector[]
   /** Dotted lines from a force's tip to its components' tips. */
   guides: Segment[]
-  /** A diameter, drawn as a dimension line. */
-  dimension: Segment | null
+  /** A diameter, or a radius measured beside a line, drawn as a dimension line. */
+  dimensions: Segment[]
   /** Arrowheads of curved arrows (the angular speed's), as corners. */
   heads: Point[][]
   /** A velocity along the line of sight: a dot (out of the page) or a cross (into it). */
@@ -162,7 +178,7 @@ function draft(s: CircularSettings) {
     objects: [],
     vectors: [],
     guides: [],
-    dimension: null,
+    dimensions: [],
     heads: [],
     symbol: null,
     notes: [],
@@ -245,9 +261,32 @@ function draft(s: CircularSettings) {
   /** Every label put at a clear spot, vectors' first, and kept on the figure. */
   const finish = (): CircularFigure => {
     const wants = [...vectorWants, ...noteWants]
+    const onFigure = (p: Point, l: Label) => {
+      const b = labelBox(p, l)
+      return pt(Math.min(WIDTH - 4 - b.w / 2, Math.max(4 + b.w / 2, p.x)), Math.min(HEIGHT - 4 - b.h / 2, Math.max(4 + b.h / 2, p.y)))
+    }
+    // A busy figure can leave placeLabels no clear spot near where a label wants to be (or
+    // keeping it on the figure can push it onto something), so any label still on another
+    // label or a line looks further round its spot for the nearest clear one.
+    const placed: Box[] = []
+    const clear = (b: Box) => !placed.some((q) => overlaps(q, b, 2)) && !lines.some((v) => crosses(v, b))
     placeLabels(wants, lines, null).forEach((p, i) => {
-      const b = labelBox(p, wants[i].label)
-      wants[i].put(pt(Math.min(WIDTH - 4 - b.w / 2, Math.max(4 + b.w / 2, p.x)), Math.min(HEIGHT - 4 - b.h / 2, Math.max(4 + b.h / 2, p.y))))
+      const l = wants[i].label
+      let at = onFigure(p, l)
+      if (labelWidth(l) > 0 && !clear(labelBox(at, l))) {
+        search: for (let r = 6; r <= 120; r += 6) {
+          for (let k = 0; k < 24; k++) {
+            const a = (k * Math.PI) / 12
+            const t = onFigure(pt(wants[i].at.x + Math.cos(a) * r, wants[i].at.y + Math.sin(a) * r), l)
+            if (clear(labelBox(t, l))) {
+              at = t
+              break search
+            }
+          }
+        }
+      }
+      placed.push(labelBox(at, l))
+      wants[i].put(at)
     })
     fig.extent.push(
       ...fig.vectors.flatMap((v) => [pt(v.v.x1, v.v.y1), pt(v.v.x2, v.v.y2), ...boxCorners(labelBox(v.labelAt, v.label))]),
@@ -320,8 +359,9 @@ function buildTop(s: CircularSettings): CircularFigure {
   // A diameter runs midway between the positions' own diameters, clear of every object.
   const across = a0 + (n % 2 ? 90 / n : 180 / n)
   if (s.radius === 'diameter') {
-    fig.dimension = seg(polar(C, R, across), polar(C, R, across + 180))
-    d.lines.push(fig.dimension)
+    const m = seg(polar(C, R, across), polar(C, R, across + 180))
+    fig.dimensions.push(m)
+    d.lines.push(m)
   }
   fig.dots.push({ at: C, r: s.around === 'turntable' ? 5 : 3 })
 
@@ -348,9 +388,17 @@ function buildTop(s: CircularSettings): CircularFigure {
 
   // Marks. Each goes on the side of the first radius the object is heading for, away from the inward arrows' labels.
   const ahead = direction(a0 + sign * 90)
+  // With a second object on the line, the first one's radius is measured beside it, from the
+  // centre all the way out, so r₁ isn't read as the gap between the two objects.
+  const besideR1 = { x: -ahead.x * (half + 10), y: -ahead.y * (half + 10) }
   if (s.radius === 'radius') {
-    besideLine(d, name(s.radiusLabel, 1), C, a0, inner ? R * 0.8 : R * 0.3, ahead)
-    if (inner) besideLine(d, name(s.radiusLabel, 2), C, a0, R * 0.22, ahead)
+    if (inner) {
+      const m = seg(add(C, besideR1), add(first, besideR1))
+      fig.dimensions.push(m)
+      d.lines.push(m)
+      besideLine(d, name(s.radiusLabel, 1), add(C, besideR1), a0, R * 0.62, { x: -ahead.x, y: -ahead.y })
+      besideLine(d, name(s.radiusLabel, 2), C, a0, R * 0.22, ahead)
+    } else besideLine(d, name(s.radiusLabel, 1), C, a0, R * 0.3, ahead)
   }
   if (s.radius === 'diameter') besideLine(d, radiusLabelOf(s), C, across, R * 0.5, { x: 0, y: -1 })
   if (marked) {
@@ -360,7 +408,7 @@ function buildTop(s: CircularSettings): CircularFigure {
   }
   if (s.angularSpeed) {
     // A curved arrow round the centre, its gap (and its label) where the least is going on.
-    const busy = [...Array.from({ length: n }, (_, i) => angleOf(i)), ...(marked ? [0, a0 / 2] : []), ...(s.radius === 'diameter' ? [across, across + 180] : [])]
+    const busy = [...Array.from({ length: n }, (_, i) => angleOf(i)), ...(marked ? [0, a0 / 2] : []), ...(s.radius === 'diameter' ? [across, across + 180] : []), ...(inner && s.radius === 'radius' ? [a0 - sign * 90] : [])]
     const apart = (a: number, b: number) => Math.abs(((a - b + 540) % 360) - 180)
     const gap = Array.from({ length: 24 }, (_, i) => 270 + i * 15)
       .map((a) => ({ a, clear: Math.min(...busy.map((b) => apart(a, b))) }))
@@ -423,11 +471,11 @@ function buildVertical(s: CircularSettings): CircularFigure {
   const kind = s.object as ObjectKind
   const half = objectHeight(kind, OBJECT_SIZE) / 2
   const sign = s.direction === 'ccw' ? 1 : -1
-  const U = VERTICAL.unit
   const ANGLE = { top: 90, side: 0, bottom: 270 }
   const points = pointsOf(s)
   const hill = s.held === 'hill'
   const ground = hill || s.held === 'dip'
+  const U = ground ? GROUND_UNIT : VERTICAL.unit
 
   // The circle the object's middle goes round.
   const C = ground ? pt(320, hill ? HILL.top + HILL.r : HILL.bottom - HILL.r) : pt(VERTICAL.centre.x, VERTICAL.centre.y)
@@ -463,8 +511,9 @@ function buildVertical(s: CircularSettings): CircularFigure {
     if (s.radius === 'diameter') {
       // Level, or tilted clear of an object at the side.
       const tilt = points.includes('side') ? 135 : 0
-      fig.dimension = seg(polar(C, rim, tilt), polar(C, rim, tilt + 180))
-      d.lines.push(fig.dimension)
+      const m = seg(polar(C, rim, tilt), polar(C, rim, tilt + 180))
+      fig.dimensions.push(m)
+      d.lines.push(m)
       besideLine(d, radiusLabelOf(s), C, tilt, rim * 0.5, { x: 0, y: -1 })
     }
     fig.dots.push({ at: C, r: 3 })
@@ -479,7 +528,7 @@ function buildVertical(s: CircularSettings): CircularFigure {
     const contact: ArrowSpec = {
       kind: s.held === 'string' ? 'tension' : 'normal',
       angle: hill ? 90 : a + 180,
-      length: U * CONTACT[p],
+      length: U * contactOf(s.held, p),
       label: s.held === 'string' ? s.tensionLabel : s.normalLabel,
       place: hill ? 'tip' : 'beside',
       side: way,
@@ -565,20 +614,22 @@ function buildConical(s: CircularSettings): CircularFigure {
   const tension = G / Math.cos(theta)
   const index = d.object(kind, B)
   const on = s.forces
+  const components = on && s.components
+  // At a small angle the horizontal part is too short to come out from under the bob, so it is
+  // drawn from the tip of the vertical part instead, closing the triangle with the tension.
+  const tx = G * Math.tan(theta)
+  const xFromBob = tx >= half + MIN_SHOWN
+  const xSpec = (side: Point): ArrowSpec => ({ kind: 'x', angle: 180, length: tx, label: s.xLabel, place: 'middle', side })
   d.arrows(index, B, [
     ...(on ? [{ kind: 'tension', angle: 90 + s.angle, length: tension, label: s.tensionLabel, place: 'beside', side: { x: 1, y: -1 } } as const] : []),
     ...(on ? [{ kind: 'gravity', angle: 270, length: G, label: s.gravityLabel, place: 'tip' } as const] : []),
-    ...(on && s.components
-      ? [
-          { kind: 'x', angle: 180, length: G * Math.tan(theta), label: s.xLabel, place: 'middle', side: { x: 0, y: 1 } } as const,
-          { kind: 'y', angle: 90, length: G, label: s.yLabel, place: 'middle', side: { x: 1, y: 0 } } as const,
-        ]
-      : []),
+    ...(components ? [...(xFromBob ? [xSpec({ x: 0, y: 1 })] : []), { kind: 'y', angle: 90, length: G, label: s.yLabel, place: 'middle', side: { x: 1, y: 0 } } as const] : []),
   ])
-  if (on && s.components) {
+  if (components && xFromBob) {
     const tip = add(B, direction(90 + s.angle), tension)
     fig.guides.push(seg(tip, pt(tip.x, B.y)), seg(tip, pt(B.x, tip.y)))
   }
+  if (components && !xFromBob) d.arrows(-1, pt(B.x, B.y - G), [xSpec({ x: 0, y: -1 })])
 
   // Beside the bob, clear of the path: the velocity along the line of sight, and the acceleration toward the axis.
   if (s.velocity) {
@@ -601,35 +652,57 @@ export function buildCircular(s: CircularSettings): CircularFigure {
   return s.setup === 'top' ? buildTop(s) : s.setup === 'vertical' ? buildVertical(s) : buildConical(s)
 }
 
-/** What the figure shows, for screen readers. */
+/** What the figure shows, for screen readers: the setup, its vectors, which way it goes, and any marks. */
 export function describe(s: CircularSettings): string {
   const kind = objectKind(s)
   const list = (parts: string[]) => (parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : (parts[0] ?? ''))
+  const marked = (parts: string[]) => {
+    const kept = parts.filter(Boolean)
+    return kept.length ? `. Marked: ${list(kept)}` : ''
+  }
+  const letters = s.pointLabels ? 'the positions lettered A, B, C in the order the object reaches them' : ''
   if (s.setup === 'top') {
     const where = { nothing: '', string: ' on a string to the center', turntable: ' on a turntable', road: ' on a curved road' }[s.around]
     const shown = [s.velocity ? 'velocity' : '', s.acceleration ? 'centripetal acceleration' : '', s.inwardForce ? 'inward force' : ''].filter(Boolean)
+    const radius =
+      s.radius === 'diameter' ? 'the diameter' : s.radius === 'radius' ? (hasInner(s) ? 'the radius of each object' : 'the radius to the first position') : ''
     return (
       `Circular motion seen from above: a ${kind}${where} at ${s.positions === 1 ? 'one position' : `${s.positions} positions`} on a dashed circle, going ${s.direction === 'ccw' ? 'counterclockwise' : 'clockwise'}` +
       (hasInner(s) ? ', and a second one halfway out' : '') +
-      (shown.length ? `, with its ${list(shown)} ${shown.length > 1 ? 'vectors' : 'vector'}` : '')
+      (shown.length ? `, with its ${list(shown)} ${shown.length > 1 ? 'vectors' : 'vector'}` : '') +
+      marked([
+        radius,
+        s.angularSpeed ? 'the angular speed, as a curved arrow round the center' : '',
+        s.angleMark && s.startAngle !== 0 ? `the first position's angle, ${s.startAngle}° counterclockwise from the right` : '',
+        letters,
+      ])
     )
   }
   if (s.setup === 'vertical') {
     const points = pointsOf(s)
+    const turning = s.direction === 'ccw' ? 'counterclockwise' : 'clockwise'
+    // At the top, going counterclockwise is moving left; at the bottom, moving right.
+    const moving = (s.held === 'hill') === (s.direction === 'ccw') ? 'left' : 'right'
     const what = {
-      string: `A ${kind} on a string going round a vertical circle, drawn at the ${list(points)}`,
-      loop: `A ${kind} inside a vertical loop, drawn at the ${list(points)}`,
-      hill: `A ${kind} at the top of a hill`,
-      dip: `A ${kind} at the bottom of a dip`,
+      string: `A ${kind} on a string going ${turning} round a vertical circle, drawn at the ${list(points)}`,
+      loop: `A ${kind} going ${turning} round inside a vertical loop, drawn at the ${list(points)}`,
+      hill: `A ${kind} at the top of a hill, moving to the ${moving}`,
+      dip: `A ${kind} at the bottom of a dip, moving to the ${moving}`,
     }[s.held]
     const contact = s.held === 'string' ? 'tension' : 'normal force'
     const shown = [s.forces ? `gravity and the ${contact}` : '', s.velocity ? 'its velocity' : '', s.acceleration ? 'its centripetal acceleration' : ''].filter(Boolean)
-    return what + (shown.length ? `, with ${list(shown)}` : '')
+    const ground = s.held === 'hill' || s.held === 'dip'
+    const radius = s.radius === 'none' ? '' : s.radius === 'diameter' && !ground ? 'the diameter' : ground ? 'the radius of the curve, down to its center' : 'the radius'
+    return what + (shown.length ? `, with ${list(shown)}` : '') + marked([radius, ground ? '' : letters])
   }
   const shown = [
     s.forces ? `gravity and the tension${s.components ? ' with its components' : ''}` : '',
     s.velocity ? `its velocity ${s.velocityInto === 'out' ? 'out of' : 'into'} the page` : '',
     s.acceleration ? 'its centripetal acceleration' : '',
   ].filter(Boolean)
-  return `A conical pendulum: a ${kind} on a string from a ceiling, ${s.angle}° from the vertical, going round a level circle` + (shown.length ? `, with ${list(shown)}` : '')
+  return (
+    `A conical pendulum: a ${kind} on a string from a ceiling, ${s.angle}° from the vertical, going round a level circle` +
+    (shown.length ? `, with ${list(shown)}` : '') +
+    marked([s.radius !== 'none' ? "the circle's radius" : ''])
+  )
 }

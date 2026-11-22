@@ -29,7 +29,7 @@ import { LABEL_SIZE, arcPieces, crosses, labelBox, labelWidth, placeLabels, pt, 
 import { objectHeight, objectWidth } from '$lib/shared/objects'
 import { wall as wallAt, type Support } from '$lib/shared/support'
 import type { Point, Segment } from '$lib/shared/vector'
-import { distanceText, loadDistanceText, valueText, wallSums } from './moments'
+import { distanceText, loadDistanceText, pivotSums, twoSums, valueText, wallSums } from './moments'
 import { onBeam, type Load, type TorqueSettings } from './settings'
 
 export const WIDTH = 640
@@ -58,6 +58,9 @@ const LH = LABEL_SIZE + 4
 const ROWS_GAP = 14
 /** How deep a beam fixed into a wall goes into it. */
 const INTO_WALL = 12
+/** The wall's moment on a fixed beam: a curved arrow this far round the beam's end at the wall, and its head. */
+export const MOMENT_R = 40
+const MOMENT_HEAD = 12
 
 export type LabelKey = string
 
@@ -108,9 +111,51 @@ export interface TorqueFigure {
   dropped: number
   /** does the cable meet the wall above the top of the figure? */
   cableOffTop: boolean
+  /** a fixed beam's wall moment: a curved arrow round the beam's end at the wall, turning the way the wall turns the beam */
+  moment: { d: string; head: Point[]; clockwise: boolean } | null
+  /** loads drawn on top of a support or of each other, by their places in the list: [i, j] for two loads, [i, -1] for a support */
+  clashes: [number, number][]
 }
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
+const r2 = (n: number) => Math.round(n * 100) / 100
+const seg2 = (a: Point, b: Point): Segment => ({ x1: a.x, y1: a.y, x2: b.x, y2: b.y })
+const head3 = (h: Point[]): Segment[] => h.map((p, i) => seg2(p, h[(i + 1) % h.length]))
+
+/**
+ * Objects drawn on top of something else: a hanging object over a support's
+ * triangle, or two objects over each other. Each is [load, other load], or
+ * [load, -1] for a support.
+ */
+function clashesOf(objects: DrawnObject[], fulcrums: Fulcrum[]): [number, number][] {
+  const out: [number, number][] = []
+  const boxOf = (o: DrawnObject) => {
+    const w = objectWidth(o.kind, o.size)
+    const h = objectHeight(o.kind, o.size)
+    return { left: o.at.x - w / 2, right: o.at.x + w / 2, top: o.at.y - h, bottom: o.at.y }
+  }
+  for (const o of objects) {
+    const b = boxOf(o)
+    for (const f of fulcrums) {
+      const [apex, baseL, baseR] = f.triangle
+      if (b.bottom <= apex.y || b.top >= baseL.y) continue
+      // The triangle's half-width at the object's lowest point within it.
+      const y = Math.min(b.bottom, baseL.y)
+      const half = ((baseR.x - baseL.x) / 2) * ((y - apex.y) / (baseL.y - apex.y))
+      if (b.left < apex.x + half - 1 && b.right > apex.x - half + 1) {
+        out.push([o.of, -1])
+        break
+      }
+    }
+  }
+  for (let i = 0; i < objects.length; i++)
+    for (let j = i + 1; j < objects.length; j++) {
+      const a = boxOf(objects[i])
+      const b = boxOf(objects[j])
+      if (a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) out.push([objects[i].of, objects[j].of])
+    }
+  return out
+}
 const text = (t: string): Label => ({ mode: 'text', text: t })
 
 /** A label that shows its value when it is written and left empty. */
@@ -189,6 +234,19 @@ function stringLevels(loads: { i: number; x: number; w: number }[]): Map<number,
   return levels
 }
 
+/** For each support drawn (the pivot, or A and B), does its force on the beam point down? */
+export function supportDirections(s: TorqueSettings): boolean[] {
+  if (s.support === 'pivot') {
+    const f = pivotSums(s).pivotForce
+    return [f < -1e-9 * Math.max(1, Math.abs(f))]
+  }
+  if (s.support === 'two') {
+    const t = twoSums(s)
+    return t.together ? [false, false] : [t.negative === 'A', t.negative === 'B']
+  }
+  return []
+}
+
 export function buildTorque(s: TorqueSettings): TorqueFigure {
   const L = s.length
   const isWall = s.support === 'wall'
@@ -199,6 +257,17 @@ export function buildTorque(s: TorqueSettings): TorqueFigure {
   const loadLabels = s.loads.map((l) => valueLabel(l.label, valueText(l.value, s)))
   /** Does an object's label go inside it? Not on a resting object with a weight arrow down its middle. */
   const insideOf = (l: Load, i: number) => fitsInside(loadLabels[i], l.shape as 'block', l.size) && !(l.kind === 'resting' && s.weightArrows)
+
+  // A fixed beam's wall moment goes on the other side of the beam from the wall's force: below it, unless that force points down.
+  const fixedSum = isWall && !s.cable ? wallSums(s) : null
+  const showMoment = !!fixedSum && s.supportForces && Math.abs(fixedSum.moment) > 1e-9
+  const wallDown = !!fixedSum && fixedSum.up < -1e-9
+  // An object hanging near the wall would sit on the arrow below the beam, so the moment goes above and the wall's force below.
+  const hangingNearWall =
+    !!fixedSum && s.loads.some((l) => l.kind === 'hanging' && (onBeam(l.position, L) / L) * BEAM - objectWidth(l.shape as 'block', l.size) / 2 < MOMENT_R + 6)
+  const momentBelow = showMoment && !wallDown && !hangingNearWall
+  /** Is a fixed beam's wall force drawn under the beam (pushing up onto it, or pulling down)? */
+  const wallForceBelow = !!fixedSum && (wallDown || (showMoment && !momentBelow))
 
   // How far below the beam's underside things reach, for a beam `px` long.
   const stringsFor = (left: number, px: number) =>
@@ -215,6 +284,8 @@ export function buildTorque(s: TorqueSettings): TorqueFigure {
     })
     if (s.beamWeight > 0) below = Math.max(below, ARROW + 4 + LH)
     if (withCable && s.supportForces) below = Math.max(below, 16 + 4 + LH + 4)
+    if (momentBelow) below = Math.max(below, MOMENT_R + 4 + LH)
+    if (wallForceBelow && s.supportForces) below = Math.max(below, ARROW + 4)
     return below + 4
   }
 
@@ -263,7 +334,8 @@ export function buildTorque(s: TorqueSettings): TorqueFigure {
   const wallUpX = WALL_X + 16
   const wallUp = isWall && s.supportForces && wallSum && Math.abs(wallSum.up) > 1e-9 && !(withCable && wallSum.cableProblem)
   const wallUpLabel = withCable ? { ...s.supportLabel, text: componentLabel(s.supportLabel.text, 'y') } : s.supportLabel
-  if (wallUp && wallSum!.up > 0) column(wallUpX, 8, ARROW + 4)
+  if (wallUp && wallSum!.up > 0 && !wallForceBelow) column(wallUpX, 8, ARROW + 4)
+  if (showMoment && !momentBelow) column(left + MOMENT_R / 2, MOMENT_R / 2 + 4, MOMENT_R + 4 + LH)
   const above = Math.max(0, ...columns.map((c) => c.rise))
   const riseAt = (x: number) => Math.max(0, ...columns.filter((c) => x >= c.x1 - 2 && x <= c.x2 + 2).map((c) => c.rise))
 
@@ -393,20 +465,23 @@ export function buildTorque(s: TorqueSettings): TorqueFigure {
 
   // The forces holding the beam up.
   if (s.supportForces) {
+    // A support whose force comes out down (a pivot under forces that are all up, or a support the beam would lift off) points down onto the beam.
+    const supportDown = supportDirections(s)
     supportXs.forEach((_, k) => {
       const x = arrowX.get(`support${k}`)!
-      arrows.push({ key: `support${k}`, v: forceOnBeam(beam, x, 'up', ARROW) })
+      arrows.push({ key: `support${k}`, v: forceOnBeam(beam, x, supportDown[k] ? 'down' : 'up', ARROW) })
       placings.push({ key: `support${k}`, label: supportLabels[k], at: pt(x, top - ARROW - 4 - LH / 2), out: outFor(`support${k}`, supportXs[k]), onVector: true })
     })
     if (wallUp) {
       const goingUp = wallSum!.up > 0
-      arrows.push({ key: 'wallUp', v: forceOnBeam(beam, wallUpX, goingUp ? 'up' : 'down', ARROW, goingUp ? 'top' : 'bottom') })
+      const below = goingUp ? wallForceBelow : true
+      arrows.push({ key: 'wallUp', v: forceOnBeam(beam, wallUpX, goingUp ? 'up' : 'down', ARROW, below ? 'bottom' : 'top') })
       // Beside its head, away from the wall, where the cable is least in the way.
       const half = widthOf(wallUpLabel) / 2
       placings.push({
         key: 'wallUp',
         label: wallUpLabel,
-        at: goingUp ? pt(wallUpX + 6 + half, top - ARROW + LH / 2) : pt(wallUpX + 6 + half, underside + ARROW - LH / 2),
+        at: below ? pt(wallUpX + 6 + half, underside + ARROW - LH / 2) : pt(wallUpX + 6 + half, top - ARROW + LH / 2),
         out: { x: 1, y: 0 },
         onVector: true,
       })
@@ -436,6 +511,37 @@ export function buildTorque(s: TorqueSettings): TorqueFigure {
         placings.push({ key: 'wallAlong', label: along, at: pt(left + 4 + ARROW / 2, y + 4 + LH / 2), out: down, onVector: true })
       }
     }
+  }
+
+  // The wall's moment on a fixed beam: a curved arrow round the beam's end, against the loads' turning.
+  let moment: TorqueFigure['moment'] = null
+  if (showMoment) {
+    const clockwise = -fixedSum!.moment > 0
+    const P = (deg: number) => pt(left + MOMENT_R * Math.cos((deg * Math.PI) / 180), middle + MOMENT_R * Math.sin((deg * Math.PI) / 180))
+    // y is down, so a growing angle turns clockwise as drawn.
+    const [lo, hi] = momentBelow ? [14, 80] : [-80, -14]
+    const [from, to] = clockwise ? [lo, hi] : [hi, lo]
+    const dir = Math.sign(to - from)
+    const headDeg = ((MOMENT_HEAD / MOMENT_R) * 180) / Math.PI
+    const tip = P(to)
+    const back = P(to - dir * headDeg)
+    const len = Math.hypot(tip.x - back.x, tip.y - back.y)
+    const u = { x: (tip.x - back.x) / len, y: (tip.y - back.y) / len }
+    const base = { x: tip.x - u.x * MOMENT_HEAD, y: tip.y - u.y * MOMENT_HEAD }
+    const shaftEnd = P(to - dir * headDeg * 0.6)
+    const start = P(from)
+    moment = {
+      d: `M${r2(start.x)},${r2(start.y)} A${MOMENT_R},${MOMENT_R} 0 0 ${dir > 0 ? 1 : 0} ${r2(shaftEnd.x)},${r2(shaftEnd.y)}`,
+      head: [tip, pt(r2(base.x - u.y * 5.5), r2(base.y + u.x * 5.5)), pt(r2(base.x + u.y * 5.5), r2(base.y - u.x * 5.5))],
+      clockwise,
+    }
+    for (let k = 0; k < 8; k++) lines.push(seg2(P(lo + ((hi - lo) * k) / 8), P(lo + ((hi - lo) * (k + 1)) / 8)))
+    lines.push(...head3(moment.head))
+    const mid = (lo + hi) / 2
+    const out = { x: Math.cos((mid * Math.PI) / 180), y: Math.sin((mid * Math.PI) / 180) }
+    const half = widthOf(s.momentLabel) / 2
+    const reach = MOMENT_R + 8 + Math.max(half * Math.abs(out.x), (LH / 2) * Math.abs(out.y))
+    placings.push({ key: 'moment', label: s.momentLabel, at: pt(left + out.x * reach, middle + out.y * reach), out, onVector: true })
   }
 
   // The cable's angle mark.
@@ -540,6 +646,8 @@ export function buildTorque(s: TorqueSettings): TorqueFigure {
     supportX: withCable ? [X(s.cableAt)] : supportXs,
     dropped,
     cableOffTop: !!cable && cable.line.y2 < 0,
+    moment,
+    clashes: clashesOf(objects, fulcrums),
   }
 }
 

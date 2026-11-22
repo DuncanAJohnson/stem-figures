@@ -85,22 +85,36 @@ type Sums = Pick<LeverSettings, 'class' | 'effortArm' | 'loadArm' | 'lengthUnit'
 /** A number as typed or multiplied out, without the stray digits sums leave behind. */
 export const exact = (n: number) => plain(Number(n.toPrecision(12)))
 
-/** A number to 3 significant figures, the one way every worked-out value is rounded. */
+/** A number to 3 significant figures, the one way every worked-out value is rounded, its trailing zeros kept: 0.0300, 3.00. */
 export function sig3(n: number): string {
   if (!Number.isFinite(n) || n === 0) return '0'
-  return plain(Number(n.toPrecision(3)))
+  return expanded(n.toPrecision(3))
 }
 
 /** A number written out in full, never as 1e-7. */
 function plain(n: number): string {
-  const written = String(n)
+  return expanded(String(n))
+}
+
+/** Digits in e-notation ("9.81e-8", "1.23e+3") written out in full, keeping every digit given. */
+function expanded(written: string): string {
   if (!written.includes('e')) return written
-  const fixed = n.toFixed(20)
-  return fixed.includes('.') ? fixed.replace(/0+$/, '').replace(/\.$/, '') : fixed
+  const [mantissa, power] = written.split('e')
+  const sign = mantissa.startsWith('-') ? '-' : ''
+  const unsigned = mantissa.replace('-', '')
+  const dot = unsigned.indexOf('.')
+  const digits = unsigned.replace('.', '')
+  const point = (dot < 0 ? unsigned.length : dot) + Number(power)
+  if (point <= 0) return `${sign}0.${'0'.repeat(-point)}${digits}`
+  if (point >= digits.length) return `${sign}${digits}${'0'.repeat(point - digits.length)}`
+  return `${sign}${digits.slice(0, point)}.${digits.slice(point)}`
 }
 
 /** Does a worked-out value come out even, so 3 significant figures say all of it? */
-export const comesOutEven = (n: number) => sig3(n) === exact(n)
+export const comesOutEven = (n: number) => !Number.isFinite(n) || n === 0 || Number(n.toPrecision(3)) === Number(n.toPrecision(12))
+
+/** A worked-out value as it's shown: in full when it comes out even (3, 49, 0.25), else to 3 significant figures (0.333, 12.1, 0.0300). */
+export const worked = (n: number) => (comesOutEven(n) ? exact(n) : sig3(n))
 
 /**
  * The lever's sums. The load's weight is the load itself in N or lb, and
@@ -131,7 +145,7 @@ export function valueTexts(s: Sums) {
   const l = leverOf(s)
   return {
     load: `${exact(s.load)} ${s.loadUnit}`,
-    effort: `${sig3(l.effort)} ${l.forceUnit}`,
+    effort: `${worked(l.effort)} ${l.forceUnit}`,
     effortArm: `${exact(s.effortArm)} ${s.lengthUnit}`,
     loadArm: `${exact(s.loadArm)} ${s.lengthUnit}`,
   }
@@ -145,16 +159,19 @@ export function valueTexts(s: Sums) {
 export function answerLines(s: Sums): string[] {
   const l = leverOf(s)
   const v = valueTexts(s)
-  const weight = `${exact(l.weight)} ${l.forceUnit}`
+  // A mass's weight, like every worked-out value, is to 3 significant figures when it doesn't come out even.
+  const weight = `${worked(l.weight)} ${l.forceUnit}`
   const is = (n: number) => (comesOutEven(n) ? '=' : '≈')
   const lines = [`Class ${s.class} lever`]
-  if (s.loadUnit === 'kg') lines.push(`Load = ${v.load} × ${G} N/kg = ${weight}`)
-  if (s.loadUnit === 'g') lines.push(`Load = ${v.load} = ${exact(l.kg)} kg, and ${exact(l.kg)} kg × ${G} N/kg = ${weight}`)
-  lines.push(`MA = effort arm ÷ load arm = ${v.effortArm} ÷ ${v.loadArm} ${is(l.advantage)} ${sig3(l.advantage)}`)
+  if (s.loadUnit === 'kg') lines.push(`Load = ${v.load} × ${G} N/kg ${is(l.weight)} ${weight}`)
+  if (s.loadUnit === 'g') lines.push(`Load = ${v.load} = ${exact(l.kg)} kg, and ${exact(l.kg)} kg × ${G} N/kg ${is(l.weight)} ${weight}`)
+  lines.push(`MA = effort arm ÷ load arm = ${v.effortArm} ÷ ${v.loadArm} ${is(l.advantage)} ${worked(l.advantage)}`)
+  // Worked from a rounded weight, the effort is ≈ even when it comes out even itself.
+  const effortIs = comesOutEven(l.weight) ? is(l.effort) : '≈'
   lines.push(
     comesOutEven(l.advantage)
-      ? `Effort = ${weight} ÷ ${sig3(l.advantage)} ${is(l.effort)} ${v.effort}`
-      : `Effort = ${weight} × ${v.loadArm} ÷ ${v.effortArm} ${is(l.effort)} ${v.effort}`,
+      ? `Effort = ${weight} ÷ ${worked(l.advantage)} ${effortIs} ${v.effort}`
+      : `Effort = ${weight} × ${v.loadArm} ÷ ${v.effortArm} ${effortIs} ${v.effort}`,
   )
   return lines
 }

@@ -50,8 +50,12 @@ export function forcesOf(s: Sums): BeamForce[] {
   return out
 }
 
-/** Is a net torque small enough to call balanced: under half a percent of the larger total, as rounded values leave? */
-export const isBalanced = (cw: number, ccw: number) => Math.abs(cw - ccw) <= 0.005 * Math.max(cw, ccw) + 1e-9
+/**
+ * Is a net torque small enough to call balanced? Values are set to the
+ * hundredth, so a load rounded to balance the beam can be off by half a
+ * hundredth of its value: `tolerance` is the most torque that leaves.
+ */
+export const isBalanced = (cw: number, ccw: number, tolerance = 0) => Math.abs(cw - ccw) <= tolerance + 1e-9
 
 export interface PivotSums {
   /** each force's torque about the pivot, clockwise positive */
@@ -72,7 +76,9 @@ export function pivotSums(s: Sums): PivotSums {
   const clockwise = torques.reduce((t, q) => t + Math.max(0, q.torque), 0)
   const counterclockwise = torques.reduce((t, q) => t + Math.max(0, -q.torque), 0)
   const pivotForce = forcesOf(s).reduce((t, f) => t + f.down, 0)
-  return { torques, clockwise, counterclockwise, net: clockwise - counterclockwise, balanced: isBalanced(clockwise, counterclockwise), pivotForce }
+  // Half a hundredth of each value, at its arm: what rounding the values to the hundredth can leave.
+  const tolerance = torques.reduce((t, q) => t + Math.abs(q.arm) * weightOf(0.005, s), 0)
+  return { torques, clockwise, counterclockwise, net: clockwise - counterclockwise, balanced: isBalanced(clockwise, counterclockwise, tolerance), pivotForce }
 }
 
 export interface TwoSums {
@@ -253,6 +259,8 @@ export function answerLines(s: Sums): string[] {
       lines.push(
         Math.abs(arm) < 1e-9
           ? `${what}: at the pivot, no torque`
+          : Math.abs(torque) < 1e-9
+            ? `${what}: ${newtons(force)} × ${distanceText(arm, s)} = 0 N·${s.lengthUnit}, no torque`
           : `${what}: ${newtons(force)} × ${distanceText(arm, s)} = ${num(Math.abs(torque))} ${tu} ${turning(torque, s.mirror)}`,
       )
     }
@@ -288,10 +296,16 @@ export function answerLines(s: Sums): string[] {
   const w = wallSums(s)
   const end = startEnd(s.mirror)
   if (!s.cable) {
-    lines.push(`Wall’s force up = forces down ${is(w.up)} ${num(w.up)} N`)
-    const terms = forces.filter((f) => f.x > 1e-9).map((f) => `${newtons(f)} × ${distanceText(f.x, s)}`)
     lines.push(
-      `Torque the wall supplies = ${terms.join(' + ') || '0'} ${is(w.moment)} ${num(Math.abs(w.moment))} ${tu}${Math.abs(w.moment) > 1e-9 ? ` ${turning(-w.moment, s.mirror)}` : ''}`,
+      w.up >= -1e-9
+        ? `Wall’s force up = forces down ${is(w.up)} ${num(w.up)} N`
+        : `Wall’s force down = forces up − forces down ${is(w.up)} ${num(-w.up)} N`,
+    )
+    const terms = forces
+      .filter((f) => f.x > 1e-9)
+      .map((f, k) => `${f.down < 0 ? (k ? '− ' : '−') : k ? '+ ' : ''}${newtons(f)} × ${distanceText(f.x, s)}`)
+    lines.push(
+      `Torque the wall supplies = ${terms.join(' ') || '0'} ${is(w.moment)} ${num(Math.abs(w.moment))} ${tu}${Math.abs(w.moment) > 1e-9 ? ` ${turning(-w.moment, s.mirror)}` : ''}`,
     )
     return lines
   }
@@ -326,7 +340,7 @@ export function verdict(s: Sums): { text: string; warning: boolean } {
     return { text: `F_A ${is(t.forceA)} ${num(t.forceA)} N, F_B ${is(t.forceB)} ${num(t.forceB)} N`, warning: false }
   }
   const w = wallSums(s)
-  if (!s.cable) return { text: `Wall: ${num(w.up)} N up and ${num(Math.abs(w.moment))} ${tu} of torque`, warning: false }
+  if (!s.cable) return { text: `Wall: ${num(Math.abs(w.up))} N ${w.up >= -1e-9 ? 'up' : 'down'} and ${num(Math.abs(w.moment))} ${tu} of torque`, warning: false }
   if (w.cableProblem === 'atWall') return { text: 'The cable meets the beam at the wall, so it can’t hold it up. Move it along the beam.', warning: true }
   if (w.cableProblem === 'push') return { text: 'The tension comes out negative: a cable can only pull, so it can’t hold this beam.', warning: true }
   return { text: `T ${is(w.tension)} ${num(w.tension)} N`, warning: false }

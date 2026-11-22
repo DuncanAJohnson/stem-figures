@@ -3,7 +3,7 @@
   // marks on the left, the figure on the right. Settings live in the page
   // address.
   import { Circle, MoveUpRight, Orbit, Ruler, SlidersHorizontal } from '@lucide/svelte'
-  import Choice from '$lib/shared/Choice.svelte'
+  import Choice, { radioKeys, radioTabIndex } from '$lib/shared/Choice.svelte'
   import { createGenerator } from '$lib/shared/generator.svelte'
   import GeneratorPage from '$shared/GeneratorPage.svelte'
   import LabelField from '$lib/shared/LabelField.svelte'
@@ -64,7 +64,15 @@
     <Section title="Setup" icon={Orbit} summary={setupSummary}>
       <div class="setups" role="radiogroup" aria-label="Setup">
         {#each SETUPS as setup}
-          <button type="button" role="radio" aria-checked={s.setup === setup} class:on={s.setup === setup} onclick={() => (gen.s.setup = setup)}>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={s.setup === setup}
+            tabindex={radioTabIndex(SETUPS, s.setup, setup)}
+            class:on={s.setup === setup}
+            onclick={() => (gen.s.setup = setup)}
+            onkeydown={(e) => radioKeys(e, SETUPS, s.setup, (next) => (gen.s.setup = next))}
+          >
             {SETUP_NAMES[setup]}
           </button>
         {/each}

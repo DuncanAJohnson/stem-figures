@@ -11,8 +11,8 @@
   import TitleField from '$shared/LabelField.svelte'
   import { generatorState } from '$shared/generatorState.svelte'
   import Spring from './Spring.svelte'
-  import { equilibriumLabelled } from './spring'
-  import { HORIZONTAL_MOST_AMPLITUDE, MOST_COMPRESSED, MOST_STRETCHED, arrangementOf, springSettings, type Orientation, type Picture } from './settings'
+  import { equilibriumLabelled, equilibriumShown } from './spring'
+  import { HORIZONTAL_MOST_AMPLITUDE, LEAST_HANGING_STRETCH, MOST_COMPRESSED, MOST_STRETCHED, arrangementOf, springSettings, type Orientation, type Picture } from './settings'
 
   const gen = generatorState(springSettings, 'spring', { history: 'physicsfigures.spring.history', presets: 'physicsfigures.spring.presets' })
   const s = gen.s
@@ -46,7 +46,7 @@
     ['beforeAfter', 'Before and after'],
     ['positions', 'Three positions'],
   ]
-  const lowest = $derived(hanging || positions ? 0 : MOST_COMPRESSED)
+  const lowest = $derived(positions ? 0 : hanging ? LEAST_HANGING_STRETCH : MOST_COMPRESSED)
   const highest = $derived(positions && !hanging ? HORIZONTAL_MOST_AMPLITUDE : MOST_STRETCHED)
   const percent = (n: number) => `${Math.round(Math.abs(n) * 100)}%`
 
@@ -129,7 +129,10 @@
         {#if clean.lengthMark}<div class="field"><LabelField name="Natural length label" bind:label={s.lengthLabel} /></div>{/if}
       {/if}
       <label class="check"><input type="checkbox" bind:checked={s.equilibriumLine} /> Equilibrium line</label>
-      {#if clean.equilibriumLine && equilibriumLabelled(clean)}<div class="field"><LabelField name="Equilibrium line label" bind:label={s.equilibriumLabel} /></div>{/if}
+      {#if clean.equilibriumLine && !equilibriumShown(clean)}
+        <p class="note">Left off while the applied force pulls the object past where it hangs at rest.</p>
+      {/if}
+      {#if equilibriumShown(clean) && equilibriumLabelled(clean)}<div class="field"><LabelField name="Equilibrium line label" bind:label={s.equilibriumLabel} /></div>{/if}
       {#if !positions}
         <label class="check"><input type="checkbox" bind:checked={s.appliedForce} /> Applied force</label>
         {#if clean.appliedForce}<div class="field"><LabelField name="Applied force label" bind:label={s.forceLabel} /></div>{/if}

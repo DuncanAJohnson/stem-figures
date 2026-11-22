@@ -125,3 +125,19 @@ test('every setup and density builds, and more means more lines', () => {
     expect(more).toBeGreaterThan(fewer)
   }
 })
+
+test('the directory preview has its own id, so its clip path is not another preview’s', async () => {
+  const { readFileSync, readdirSync, existsSync } = await import('node:fs')
+  const { join } = await import('node:path')
+  const { fileURLToPath } = await import('node:url')
+  const dir = fileURLToPath(new URL('..', import.meta.url))
+  const idOf = (name: string) => readFileSync(join(dir, name, 'Preview.svelte'), 'utf8').match(/\bid="([^"]+)"/)?.[1]
+  const ours = idOf('fields')
+  // Every other figure that draws a clip path names it after its id, as Fields does.
+  const others = readdirSync(dir)
+    .filter((name) => name !== 'fields' && existsSync(join(dir, name, 'Preview.svelte')))
+    .filter((name) => readdirSync(join(dir, name)).some((f) => f.endsWith('.svelte') && readFileSync(join(dir, name, f), 'utf8').includes('-clip"')))
+    .map(idOf)
+  expect(ours).toBeTruthy()
+  expect(others).not.toContain(ours)
+})

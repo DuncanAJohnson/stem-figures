@@ -61,7 +61,7 @@
     {@const look = looks[piece.look]}
     <path d={piece.d} fill={look.fill ?? 'none'} fill-rule="evenodd" stroke={look.stroke} stroke-width={look.width} stroke-dasharray={look.dash} stroke-linecap={look.dash ? 'butt' : 'round'} stroke-linejoin="round" />
   {/each}
-  {#if fig.dimension}<DimensionLine m={fig.dimension} color={p.ink} />{/if}
+  {#each fig.dimensions as m}<DimensionLine {m} color={p.ink} />{/each}
   {#each fig.dots as d}<circle cx={d.at.x} cy={d.at.y} r={d.r} fill={p.ink} />{/each}
   {#each fig.heads as head}<polygon points={head.map((c) => `${c.x},${c.y}`).join(' ')} fill={p.vector} />{/each}
 

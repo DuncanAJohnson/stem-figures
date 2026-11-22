@@ -5,4 +5,4 @@
   import { fieldSettings } from './settings'
 </script>
 
-<Fields settings={fieldSettings.defaults} id="preview" />
+<Fields settings={fieldSettings.defaults} id="preview-fields" />

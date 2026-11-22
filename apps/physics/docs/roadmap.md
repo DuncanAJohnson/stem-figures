@@ -108,7 +108,8 @@ A level beam on a pivot, on two supports A and B, or at a wall with a cable
 objects hanging from it or resting on it, and force arrows down or up, in N,
 kg or g (g = 9.8, 9.81 or 10 N/kg). Places are to scale along the beam; the
 beam can have its own weight at its middle. Distance marks stack in rows above
-the beam; support forces, tension and weight arrows can be drawn. The panel
+the beam; support forces (with a cantilever's wall moment as a curved arrow),
+tension and weight arrows can be drawn. The panel
 works out the torques, the forces at A and B (warning when one comes out
 negative), or the tension and the wall's force, and "Balance with this load"
 sets a load to the value that balances a pivot. It reuses the Lever's beam,

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { crosses, labelBox, overlaps } from '$lib/shared/layout'
 import type { Point } from '$lib/shared/vector'
-import { CONICAL, CONTACT, HEIGHT, TOP, VERTICAL, WIDTH, buildCircular, describe as describeFigure, radiusLabelOf, type CircularFigure, type FigureVector } from './circular'
+import { CONICAL, GROUND_UNIT, HEIGHT, NET, TOP, VERTICAL, WIDTH, contactOf, buildCircular, describe as describeFigure, radiusLabelOf, type CircularFigure, type FigureVector } from './circular'
 import { AROUND, HELD, POINTS, circularSettings, pointsOf, type CircularSettings } from './settings'
 
 const fig = (s: Partial<CircularSettings>) => buildCircular({ ...circularSettings.defaults, ...s })
@@ -111,6 +111,18 @@ describe('Top view', () => {
     expect(of(f, 'velocity').map((v) => v.label.text)).toEqual(['v_1', 'v_2'])
     expect(of(f, 'acceleration').map((v) => v.label.text)).toEqual(['a_{c1}', 'a_{c2}'])
     expect(f.notes.map((n) => n.label.text)).toEqual(expect.arrayContaining(['r_1', 'r_2']))
+    // r_1 is measured beside the line through both objects, from level with the centre to level with the outer one.
+    expect(f.dimensions).toHaveLength(1)
+    const [m] = f.dimensions
+    expect(Math.hypot(m.x2 - m.x1, m.y2 - m.y1)).toBeCloseTo(r(outer.at), 1)
+    const along = inward(f, 0)
+    expect(Math.abs(((m.x2 - m.x1) * along.x + (m.y2 - m.y1) * along.y) / r(outer.at))).toBeCloseTo(1, 3)
+    // Off the line, on the side away from where the objects are heading, clear of the second object.
+    expect(Math.hypot(m.x1 - TOP.centre.x, m.y1 - TOP.centre.y)).toBeGreaterThan(20)
+    const [v2] = of(f, 'velocity').slice(1)
+    expect(dot({ x: m.x1 - TOP.centre.x, y: m.y1 - TOP.centre.y }, way(v2))).toBeLessThan(0)
+    // Without a second object, the radius is just the labelled line.
+    expect(fig({ around: 'turntable', radius: 'radius' }).dimensions).toHaveLength(0)
     // The outer object's inward arrows stop before the second object.
     const [a] = of(f, 'acceleration')
     expect(r({ x: a.v.x2, y: a.v.y2 })).toBeGreaterThan(r(second.at) + 13)
@@ -145,7 +157,8 @@ describe('Top view', () => {
   test('a diameter crosses the whole circle through its centre, clear of every object, and is labelled d', () => {
     for (const positions of [1, 2, 3, 4, 8]) {
       const f = fig({ positions, radius: 'diameter' })
-      const m = f.dimension!
+      expect(f.dimensions).toHaveLength(1)
+      const m = f.dimensions[0]
       expect(Math.hypot(m.x2 - m.x1, m.y2 - m.y1)).toBeCloseTo(2 * TOP.r, 1)
       expect((m.x1 + m.x2) / 2).toBeCloseTo(TOP.centre.x, 1)
       expect((m.y1 + m.y2) / 2).toBeCloseTo(TOP.centre.y, 1)
@@ -169,6 +182,20 @@ describe('Top view', () => {
       expectNoLabelOnAnother(f)
     }
   })
+
+  test('with everything on, at every count, start and way round, no label lands on another or on an arrow', () => {
+    for (const around of AROUND)
+      for (const positions of [1, 3, 4, 5, 8])
+        for (let startAngle = 15; startAngle < 360; startAngle += 30)
+          for (const direction of ['ccw', 'cw'] as const)
+            for (const radius of ['radius', 'diameter'] as const) {
+              const f = fig({ around, positions, startAngle, direction, radius, inner: true, inwardForce: true, angularSpeed: true, angleMark: true, pointLabels: true, objectLabel: text('m'), notation: 'arrow' })
+              const name = `${around} ${positions} ${startAngle} ${direction} ${radius}`
+              const all = labels(f)
+              for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) expect(overlaps(all[i].box, all[j].box), `${name}: ${all[i].label.text} on ${all[j].label.text}`).toBe(false)
+              for (const l of all) for (const v of f.vectors) expect(crosses(v.v, l.box), `${name}: ${l.label.text} on an arrow`).toBe(false)
+            }
+  }, 30_000)
 
   test('every start angle keeps the figure on the page', () => {
     for (let startAngle = 0; startAngle < 360; startAngle += 15) {
@@ -204,21 +231,48 @@ describe('Vertical circle', () => {
   test('gravity is one length everywhere and points straight down', () => {
     for (const held of HELD) {
       const f = vertical({ held, points: 'all' })
+      const unit = held === 'hill' || held === 'dip' ? GROUND_UNIT : VERTICAL.unit
       for (const g of of(f, 'gravity')) {
-        expect(length(g)).toBeCloseTo(VERTICAL.unit, 1)
+        expect(length(g)).toBeCloseTo(unit, 1)
         expect(way(g)).toEqual({ x: 0, y: 1 })
       }
     }
   })
 
-  test('the tension or normal force is shorter at the top, equal at the side and longer at the bottom', () => {
+  test('the tension or normal force is shorter than gravity at the top and longer at the bottom', () => {
     for (const held of ['string', 'loop'] as const) {
       const f = vertical({ held, points: 'all' })
       const kind = held === 'string' ? 'tension' : 'normal'
-      expect(of(f, kind).map((v) => length(v) / VERTICAL.unit).map((n) => Math.round(n * 100) / 100)).toEqual([CONTACT.top, CONTACT.side, CONTACT.bottom])
+      const sizes = of(f, kind).map((v) => Math.round((length(v) / VERTICAL.unit) * 100) / 100)
+      expect(sizes).toEqual([contactOf(held, 'top'), contactOf(held, 'side'), contactOf(held, 'bottom')])
+      expect(sizes[0]).toBeLessThan(1)
+      expect(sizes[2]).toBeGreaterThan(1)
       // Each pulls or pushes toward the centre.
       for (const v of of(f, kind)) expect(dot(way(v), inward(f, v.object))).toBeCloseTo(1, 3)
     }
+  })
+
+  test('the speed is steady, so the net force toward the centre is the same at the top, the side and the bottom', () => {
+    for (const held of ['string', 'loop'] as const) {
+      for (const direction of ['ccw', 'cw'] as const) {
+        const f = vertical({ held, points: 'all', direction })
+        const inwardNet = f.objects.map((_, i) => dot(net(f, i), inward(f, i)))
+        for (const n of inwardNet) expect(n).toBeCloseTo(NET.circle * VERTICAL.unit, 1)
+      }
+    }
+  })
+
+  test('a hill and a dip of the same radius at the same speed have the same net force, gravity minus the normal force or the other way round', () => {
+    const hill = vertical({ held: 'hill' })
+    const dip = vertical({ held: 'dip' })
+    expect(dot(net(hill, 0), inward(hill, 0))).toBeCloseTo(NET.ground * GROUND_UNIT, 1)
+    expect(dot(net(dip, 0), inward(dip, 0))).toBeCloseTo(NET.ground * GROUND_UNIT, 1)
+  })
+
+  test('the tension at the bottom stops short of the centre', () => {
+    const f = vertical({ held: 'string', points: 'bottom' })
+    const [t] = of(f, 'tension')
+    expect(t.v.y2).toBeGreaterThan(f.centre.y + 5)
   })
 
   test('at the top and the bottom the net force points to the centre', () => {
@@ -235,7 +289,7 @@ describe('Vertical circle', () => {
   test('at the side the net force along the radius points to the centre, and gravity is the only force along the tangent', () => {
     const f = vertical({ held: 'string', points: 'side' })
     const n = net(f, 0)
-    expect(dot(n, inward(f, 0))).toBeCloseTo(VERTICAL.unit, 1)
+    expect(dot(n, inward(f, 0))).toBeCloseTo(NET.circle * VERTICAL.unit, 1)
     expect(n.y).toBeCloseTo(VERTICAL.unit, 1)
   })
 
@@ -244,7 +298,7 @@ describe('Vertical circle', () => {
     expect(f.centre.y).toBeGreaterThan(f.objects[0].at.y)
     const [normal] = of(f, 'normal')
     expect(way(normal)).toEqual({ x: 0, y: -1 })
-    expect(length(normal)).toBeLessThan(VERTICAL.unit)
+    expect(length(normal)).toBeLessThan(GROUND_UNIT)
     const n = net(f, 0)
     expect(dot(n, inward(f, 0)) / Math.hypot(n.x, n.y)).toBeCloseTo(1, 3)
   })
@@ -254,7 +308,7 @@ describe('Vertical circle', () => {
     expect(f.centre.y).toBeLessThan(f.objects[0].at.y)
     const [normal] = of(f, 'normal')
     expect(way(normal)).toEqual({ x: 0, y: -1 })
-    expect(length(normal)).toBeGreaterThan(VERTICAL.unit)
+    expect(length(normal)).toBeGreaterThan(GROUND_UNIT)
     const n = net(f, 0)
     expect(dot(n, inward(f, 0)) / Math.hypot(n.x, n.y)).toBeCloseTo(1, 3)
   })
@@ -340,6 +394,29 @@ describe('Conical pendulum', () => {
     expect(dot(way(x), inward(f, 0))).toBeCloseTo(1, 3)
   })
 
+  test('the horizontal component always shows: too short to come out from under the bob, it is drawn from the vertical one’s tip to the tension’s', () => {
+    for (let angle = 15; angle <= 60; angle++) {
+      for (const object of ['ball', 'block'] as const) {
+        const f = conical({ angle, object, components: true })
+        const bob = f.objects[0].at
+        const [x] = of(f, 'x')
+        const [y] = of(f, 'y')
+        const [tension] = of(f, 'tension')
+        const fromBob = x.v.x1 === bob.x && x.v.y1 === bob.y
+        if (fromBob) expect(length(x), `${angle} ${object}`).toBeGreaterThanOrEqual(14 + 18 - 0.5)
+        else {
+          expect(x.v.x1).toBeCloseTo(y.v.x2, 1)
+          expect(x.v.y1).toBeCloseTo(y.v.y2, 1)
+          expect(x.v.x2).toBeCloseTo(tension.v.x2, 1)
+          expect(x.v.y2).toBeCloseTo(tension.v.y2, 1)
+          expect(f.guides).toHaveLength(0)
+        }
+      }
+    }
+    expect(of(conical({ angle: 15, components: true }), 'x')[0].v.y1).toBeLessThan(conical({ angle: 15 }).objects[0].at.y)
+    expect(conical({ angle: 40, components: true }).guides).toHaveLength(2)
+  })
+
   test('the string is at the angle from the vertical, and the tension runs along it to the pivot', () => {
     const f = conical({ angle: 40 })
     const bob = f.objects[0].at
@@ -392,10 +469,35 @@ describe('describe', () => {
   test('says what each setup shows', () => {
     const say = (s: Partial<CircularSettings>) => describeFigure({ ...circularSettings.defaults, ...s })
     expect(say({})).toBe('Circular motion seen from above: a ball at one position on a dashed circle, going counterclockwise, with its velocity and centripetal acceleration vectors')
-    expect(say({ setup: 'vertical', held: 'hill' })).toBe('A ball at the top of a hill, with gravity and the normal force, its velocity and its centripetal acceleration')
+    expect(say({ setup: 'vertical', held: 'hill' })).toBe('A ball at the top of a hill, moving to the left, with gravity and the normal force, its velocity and its centripetal acceleration')
     expect(say({ setup: 'conical', velocity: false, acceleration: false, forces: false })).toBe(
       'A conical pendulum: a ball on a string from a ceiling, 30° from the vertical, going round a level circle',
     )
+  })
+
+  test('says which way a side view goes round', () => {
+    const say = (s: Partial<CircularSettings>) => describeFigure({ ...circularSettings.defaults, setup: 'vertical', velocity: false, acceleration: false, forces: false, ...s })
+    expect(say({ direction: 'cw' })).toBe('A ball on a string going clockwise round a vertical circle, drawn at the top and bottom')
+    expect(say({ held: 'loop', points: 'side' })).toBe('A ball going counterclockwise round inside a vertical loop, drawn at the side')
+    expect(say({ held: 'hill', direction: 'cw' })).toBe('A ball at the top of a hill, moving to the right')
+    expect(say({ held: 'dip' })).toBe('A ball at the bottom of a dip, moving to the right')
+    expect(say({ held: 'dip', direction: 'cw' })).toBe('A ball at the bottom of a dip, moving to the left')
+  })
+
+  test('names the marks', () => {
+    const say = (s: Partial<CircularSettings>) => describeFigure({ ...circularSettings.defaults, velocity: false, acceleration: false, ...s })
+    expect(say({ radius: 'radius', angularSpeed: true, angleMark: true, pointLabels: true })).toBe(
+      "Circular motion seen from above: a ball at one position on a dashed circle, going counterclockwise. Marked: the radius to the first position, the angular speed, as a curved arrow round the center, the first position's angle, 45° counterclockwise from the right and the positions lettered A, B, C in the order the object reaches them",
+    )
+    expect(say({ around: 'turntable', inner: true, radius: 'radius' })).toContain('Marked: the radius of each object')
+    expect(say({ radius: 'diameter' })).toContain('Marked: the diameter')
+    // No angle to mark at 0°.
+    expect(say({ angleMark: true, startAngle: 0 })).not.toContain('Marked')
+    expect(say({ setup: 'vertical', held: 'hill', radius: 'radius', pointLabels: true, forces: false })).toBe(
+      'A ball at the top of a hill, moving to the left. Marked: the radius of the curve, down to its center',
+    )
+    expect(say({ setup: 'vertical', radius: 'diameter', pointLabels: true, forces: false })).toContain('Marked: the diameter and the positions lettered')
+    expect(say({ setup: 'conical', radius: 'radius', forces: false })).toContain("Marked: the circle's radius")
   })
 })
 

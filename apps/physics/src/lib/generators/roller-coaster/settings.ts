@@ -43,7 +43,7 @@ export const newPoint = (height: number, letter: string, more: Partial<TrackPoin
 
 export const OBJECTS = ['cart', 'ball', 'block', 'none'] as const
 
-export const coasterSettings = defineSettings({
+const base = defineSettings({
   /** The track, from left to right, drawn evenly spaced. */
   points: list(
     point,
@@ -74,7 +74,20 @@ export const coasterSettings = defineSettings({
   color: bool(false),
 })
 
-export type CoasterSettings = typeof coasterSettings.defaults
+export type CoasterSettings = typeof base.defaults
+
+/** The loop and the object at a point the track has: a loop past its end is none, an object past it sits at the last point. */
+function withinTrack(s: CoasterSettings): CoasterSettings {
+  const n = s.points.length
+  return { ...s, loopAt: s.loopAt > n ? 0 : s.loopAt, objectAt: Math.min(s.objectAt, n) }
+}
+
+/** The settings, with the loop and the object kept on the track whichever way they come in (a link, a preset, undo). */
+export const coasterSettings = {
+  ...base,
+  clean: (raw: unknown) => withinTrack(base.clean(raw)),
+  fromParams: (params: URLSearchParams) => withinTrack(base.fromParams(params)),
+}
 
 // Editing the track's list of points from the settings panel: adding, moving
 // and removing a point, and retyping its height. Labels still as the
@@ -95,11 +108,14 @@ export interface TrackList {
 const inOrder = (rows: TrackPoint[]) => rows.every((p, i) => p.label.text === LETTERS[i])
 const reletter = (rows: TrackPoint[]) => rows.forEach((p, i) => (p.label.text = LETTERS[i]))
 
+/** A height as the settings keep it: from 0 to 100, to 0.01, and 0 for nothing typed. */
+const tidyHeight = (h: unknown) => point.height.clean(h)
+
 /** A new point at the right end, level with the one before it. */
 export function added(t: TrackList): TrackList {
   if (t.points.length >= MAX_POINTS) return t
   const relabel = inOrder(t.points)
-  const points = [...t.points, newPoint(t.points.at(-1)!.height, LETTERS[t.points.length])]
+  const points = [...t.points, newPoint(tidyHeight(t.points.at(-1)!.height), LETTERS[t.points.length])]
   if (relabel) reletter(points)
   return { ...t, points }
 }
@@ -129,10 +145,19 @@ export function moved(t: TrackList, i: number, by: -1 | 1): TrackList {
   return { points, loopAt: after(t.loopAt), objectAt: after(t.objectAt) }
 }
 
-/** A point's height retyped; nothing typed (null) is left for the settings to tidy. */
+/** A height mark as the generator writes it ("40 m", "12.35 m"). */
+const WRITTEN = /^\d+(\.\d+)? m$/
+
+/**
+ * A point's height retyped; nothing typed (null) is left for the settings to
+ * tidy. The mark follows when it shows the height as last tidied, so a height
+ * typed past 100, to more than 2 decimals, or cleared on the way to a new one
+ * doesn't stop it following. While the field is empty there's no height to
+ * compare with, so a mark written the generator's way follows.
+ */
 export function heightTyped(p: TrackPoint, typed: number | null) {
-  const follows = p.heightLabel.text === heightText(p.height)
+  const empty = typeof p.height !== 'number' || !Number.isFinite(p.height)
+  const follows = empty ? WRITTEN.test(p.heightLabel.text) : p.heightLabel.text === heightText(tidyHeight(p.height))
   p.height = typed as number
-  if (follows && typeof typed === 'number' && Number.isFinite(typed))
-    p.heightLabel.text = heightText(Math.min(100, Math.max(0, Math.round(typed * 100) / 100)))
+  if (follows && typeof typed === 'number' && Number.isFinite(typed)) p.heightLabel.text = heightText(tidyHeight(typed))
 }

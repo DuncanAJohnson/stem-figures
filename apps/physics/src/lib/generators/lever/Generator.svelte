@@ -12,7 +12,7 @@
   import { generatorState } from '$shared/generatorState.svelte'
   import Lever from './Lever.svelte'
   import { drawnArms } from './lever'
-  import { CLASSES, answerLines, armsSuit, comesOutEven, exact, leverOf, leverSettings, sig3, valueTexts, type LeverClass } from './settings'
+  import { CLASSES, answerLines, armsSuit, comesOutEven, leverOf, leverSettings, valueTexts, worked, type LeverClass } from './settings'
 
   const gen = generatorState(leverSettings, 'lever', { history: 'physicsfigures.lever.history', presets: 'physicsfigures.lever.presets' })
   const s = gen.s
@@ -109,9 +109,9 @@
         </div>
       </div>
       <p class="note effort" role="status">
-        {#if sums.mass}{values.load} weighs {exact(sums.weight)} N.{/if}
+        {#if sums.mass}{values.load} weighs {comesOutEven(sums.weight) ? '' : 'about '}{worked(sums.weight)} N.{/if}
         Effort: <strong>{values.effort}</strong>{comesOutEven(sums.effort) ? '' : ', rounded to 3 significant figures'}. Mechanical advantage:
-        <strong>{sig3(sums.advantage)}</strong>{comesOutEven(sums.advantage) ? '' : ' (rounded)'}.
+        <strong>{worked(sums.advantage)}</strong>{comesOutEven(sums.advantage) ? '' : ' (rounded)'}.
       </p>
       {#if !sums.mass}
         <div class="field">

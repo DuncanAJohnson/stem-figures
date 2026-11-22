@@ -5,7 +5,7 @@
 // tallest filling the room above the ground; nothing else is to scale, and
 // nothing is worked out from the heights.
 
-import { baselineBelowMiddle, type Label } from '$lib/shared/label'
+import { baselineBelowMiddle, typeLabel, withoutVectors, type Label } from '$lib/shared/label'
 import {
   LABEL_SIZE,
   bounds,
@@ -719,6 +719,7 @@ export function buildTrack(s: CoasterSettings): TrackFigure {
     // A track all at height 0 sits on the ground in the middle of the figure.
     groundY: flat ? Math.round(HEIGHT * 0.6) : HEIGHT - BOTTOM - (lengthRuns(s).length ? MARK_ROOM : 0),
   }
+  const start = { ...frame }
   let f = layout(s, frame)
   for (let i = 0; i < 12; i++) {
     const b = bounds(f.extent)
@@ -737,21 +738,96 @@ export function buildTrack(s: CoasterSettings): TrackFigure {
     if (groundY - top >= 120) Object.assign(frame, { top, groundY })
     f = layout(s, frame)
   }
+  // Drawing in can overshoot: what ran off on one pass (a label first tried
+  // under the track, say) may sit elsewhere on the next, leaving an empty band
+  // at that edge. Give the room back, no farther than the start, while
+  // everything still fits.
+  const over = (g: TrackFigure) => {
+    const b = bounds(g.extent)
+    return { left: MARGIN - b.left, right: b.right - (WIDTH - MARGIN), top: MARGIN - b.top, bottom: b.bottom - (HEIGHT - MARGIN) }
+  }
+  const fits = (g: TrackFigure) => Math.max(...Object.values(over(g))) <= 0.5
+  for (let i = 0; i < 6 && fits(f); i++) {
+    const o = over(f)
+    const next: Frame = {
+      xa: Math.max(start.xa, frame.xa + Math.min(0, o.left)),
+      xb: Math.min(start.xb, frame.xb - Math.min(0, o.right)),
+      top: Math.max(start.top, frame.top + Math.min(0, o.top)),
+      groundY: Math.min(start.groundY, frame.groundY - Math.min(0, o.bottom)),
+    }
+    if (Math.max(frame.xa - next.xa, next.xb - frame.xb, frame.top - next.top, next.groundY - frame.groundY) < 1) break
+    const g = layout(s, next)
+    if (!fits(g)) break
+    Object.assign(frame, next)
+    f = g
+  }
   return f
 }
 
 const COUNT = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']
 
-/** The figure in words, for screen readers. */
+/** A label as it's read out: its text with symbols ("mu_k" is μ_k), "a blank line", or null when it's off or empty. */
+function said(l: Label): string | null {
+  if (l.mode === 'none') return null
+  if (l.mode === 'blank') return 'a blank line'
+  return typeLabel(withoutVectors(l.text)).trim() || null
+}
+
+/**
+ * The figure in words, for screen readers: what's drawn and the labels on
+ * it, never the heights behind them, so a height marked h or left blank isn't
+ * read out as its number.
+ */
 export function describe(s: CoasterSettings): string {
-  const heights = s.points.map((p) => p.height).join(', ')
-  const loop = loopIndexOf(s) >= 0 ? `, with a loop at point ${s.loopAt}` : ''
-  const rough = s.points.slice(0, -1).some((p) => p.rough) ? ', part of it rough' : ''
-  const object =
-    s.object === 'none'
-      ? ''
-      : s.objectOnLoop && loopIndexOf(s) >= 0
-        ? `, and a ${s.object} at the top of the loop`
-        : `, and a ${s.object} at point ${Math.min(s.objectAt, s.points.length)}`
-  return `A roller coaster track through ${COUNT[s.points.length]} points at heights ${heights}${loop}${rough}${object}`
+  const n = s.points.length
+  const hs = s.points.map((p) => p.height)
+  const name = (i: number) => {
+    const l = s.points[i].label
+    return l.mode === 'text' && said(l) ? said(l)! : `point ${i + 1}`
+  }
+  const shape = (i: number) =>
+    i === 0 ? 'the start' : i === n - 1 ? 'the end' : hs[i] > hs[i - 1] && hs[i] > hs[i + 1] ? 'a hilltop' : hs[i] < hs[i - 1] && hs[i] < hs[i + 1] ? 'a dip' : ''
+  const points = s.points.map((p, i) => {
+    const label = said(p.label)
+    const mark = said(p.heightLabel)
+    return [
+      p.label.mode === 'text' && label ? label : p.label.mode === 'blank' ? `point ${i + 1}, labeled with a blank line` : `point ${i + 1}`,
+      shape(i),
+      mark ? `height marked ${mark}` : '',
+    ]
+      .filter(Boolean)
+      .join(', ')
+  })
+  const sentences = [
+    `A roller coaster track through ${COUNT[n]} points, ${s.mirror ? 'right to left' : 'left to right'}: ${points.join('; ')}.`,
+  ]
+  const loopAt = loopIndexOf(s)
+  if (loopAt >= 0) {
+    const radius = said(s.radiusLabel)
+    const top = said(s.loopTopLabel)
+    sentences.push(`A loop stands at ${name(loopAt)}${radius ? `, its radius marked ${radius}` : ''}${top ? `, its top labeled ${top}` : ''}.`)
+  }
+  // Each run of rough stretches, with the friction label on the first and the length marks along it.
+  const rough: { from: number; to: number }[] = []
+  s.points.slice(0, -1).forEach((p, i) => {
+    if (!p.rough) return
+    const last = rough.at(-1)
+    if (last && last.to === i) last.to = i + 1
+    else rough.push({ from: i, to: i + 1 })
+  })
+  const marks = lengthRuns(s)
+  rough.forEach((r, k) => {
+    const mu = k === 0 ? said(s.roughLabel) : null
+    const lengths = marks.filter((m) => m.from >= r.from && m.to <= r.to).flatMap((m) => said(m.label) ?? [])
+    sentences.push(
+      `The track from ${name(r.from)} to ${name(r.to)} is rough${mu ? `, labeled ${mu}` : ''}${lengths.length ? `, its length marked ${lengths.join(' and ')}` : ''}.`,
+    )
+  })
+  if (s.object !== 'none') {
+    const label = said(s.objectLabel)
+    const at = s.objectOnLoop && loopAt >= 0 ? 'upside down at the top of the loop' : `at ${name(Math.min(s.objectAt, n) - 1)}`
+    const v = s.velocity === 'none' ? '' : `, moving ${s.velocity === 'forward' ? 'forward' : 'back'} along the track${said(s.velocityLabel) ? ` with velocity ${said(s.velocityLabel)}` : ''}`
+    sentences.push(`A ${s.object}${label ? ` labeled ${label}` : ''} is ${at}${v}.`)
+  }
+  return sentences.join(' ')
 }
