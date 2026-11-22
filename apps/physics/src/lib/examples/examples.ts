@@ -867,6 +867,50 @@ export const EXAMPLES: Example[] = [
       settings: { setup: 'like', sign: '-', fieldLines: false },
     },
   ]),
+  ...examplesOf('circular-motion', [
+    {
+      slug: 'velocity-and-centripetal-acceleration-in-uniform-circular-motion',
+      title: 'Velocity and centripetal acceleration in uniform circular motion',
+      alt: 'A ball at four points of a dashed circle seen from above, going counterclockwise, each with a dashed velocity arrow v along the tangent and a dashed centripetal acceleration arrow a_c pointing at the center',
+      caption:
+        'An object in uniform circular motion, seen from above, drawn at four points a quarter turn apart as it goes counterclockwise. At each point the velocity is along the tangent and the centripetal acceleration points at the center, so both turn as the object goes round while staying the same length.',
+      settings: { positions: 4 },
+    },
+    {
+      slug: 'two-coins-on-a-turntable',
+      title: 'Two coins on a turntable',
+      alt: 'A turntable seen from above with two coins on one radius, one at the edge of the dashed path and one halfway out, each with a velocity arrow, the inner one half as long, the radii r_1 and r_2, and a curved arrow ω round the center',
+      caption:
+        'Two coins on a turning turntable, seen from above, on the same radius: one twice as far from the center as the other. Both go round with the same angular speed ω, shown by the curved arrow, so the outer coin, at r₁, moves twice as fast as the inner one, at r₂: its velocity arrow is twice as long, because v = ωr.',
+      settings: { around: 'turntable', inner: true, angularSpeed: true, radius: 'radius', acceleration: false },
+    },
+    {
+      slug: 'ball-on-a-string-in-a-vertical-circle',
+      title: 'Ball on a string in a vertical circle',
+      alt: 'A ball on a string going round a vertical dashed circle, drawn at the top and the bottom. At the top gravity F_g and a shorter tension T both point down; at the bottom a longer tension points up and gravity down. Each has a velocity arrow along the tangent and a centripetal acceleration arrow beside it pointing at the center',
+      caption:
+        'A ball whirled on a string in a vertical circle, at the top and the bottom. Gravity is the same at both. At the top the tension adds to gravity, both pointing down to the center, so the tension is small; at the bottom it has to hold the ball up and turn it toward the center, so it is longer than gravity. The centripetal acceleration, drawn beside the ball, points at the center both times.',
+      settings: { setup: 'vertical' },
+    },
+    {
+      slug: 'car-going-over-a-hill',
+      title: 'Car going over the top of a hill',
+      alt: 'A block on the top of a rounded hill, with a short normal force F_N pointing up, a longer gravity arrow F_g pointing down, a velocity arrow v along the road, a centripetal acceleration arrow a_c pointing down beside it, and the radius r dashed down to the center of the curve below the hill',
+      caption:
+        'A car, drawn as a block, at the top of a hill whose top is part of a circle of radius r. Its centripetal acceleration points down, to the center of that circle below the road, so the net force is down: the normal force is shorter than gravity, and the car feels lighter going over the top.',
+      settings: { setup: 'vertical', held: 'hill', object: 'block', radius: 'radius' },
+    },
+    {
+      slug: 'conical-pendulum-with-tension-components',
+      title: 'Conical pendulum with the tension’s components',
+      alt: 'A ball on a string from a hatched ceiling at an angle θ from a dashed vertical, going round a dashed level circle drawn as an ellipse, with the tension T along the string split into a horizontal component T_x toward the center and a vertical component T_y as tall as gravity F_g, the velocity v out of the page as a dot, and the centripetal acceleration a_c beside it',
+      caption:
+        'A conical pendulum: a ball on a string of length L, at θ from the vertical, going round a level circle of radius r. The forces are drawn to scale. The tension’s vertical component T_y is exactly as long as gravity, so the ball neither rises nor falls, and its horizontal component T_x, toward the center of the circle, is the centripetal force.',
+      settings: { setup: 'conical', angle: 40, components: true, radius: 'radius' },
+    },
+  ]),
+
+  // A hidden label's text isn't in a link, so it's written as the row's default: A for a point, 0 m for a height mark.
 ]
 
 /** A generator's examples, in order; the first is its best. */

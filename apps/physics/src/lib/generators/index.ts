@@ -10,6 +10,7 @@
 import type { Component } from 'svelte'
 import { generatorsOn, matches } from '$shared/catalog/index'
 import { SITE_ID } from '$lib/site/config'
+import CircularMotionPreview from './circular-motion/Preview.svelte'
 import CircuitDiagramPreview from './circuit-diagram/Preview.svelte'
 import FieldsPreview from './fields/Preview.svelte'
 import FreeBodyPreview from './free-body-diagram/Preview.svelte'
@@ -40,6 +41,7 @@ export const PREVIEWS: Record<string, Component> = {
   'circuit-diagram': CircuitDiagramPreview,
   'ray-diagram': RayDiagramPreview,
   'electric-and-magnetic-fields': FieldsPreview,
+  'circular-motion': CircularMotionPreview,
 }
 
 /** Another way to start, under "Start from an example" in a generator's lead

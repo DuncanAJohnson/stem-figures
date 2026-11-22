@@ -587,6 +587,50 @@ export const COPY: Record<string, GeneratorCopy> = {
     imageAlt: 'A printable electric field diagram of a positive and a negative point charge side by side, with curved field lines running from the positive charge to the negative one, made with the Electric and Magnetic Field Generator',
     educationalLevel: ['Middle school', 'High school', 'AP Physics'],
   },
+
+  'circular-motion': {
+    heading: 'Circular motion diagrams with velocity, acceleration and forces',
+    intro: [
+      'The Circular Motion Generator draws an object going round a circle in one of three setups. The Top view shows the circle from above, with the object at one to eight positions: on its own, on a string, on a turntable or on a flat curved road. The Vertical circle shows it from the side at the top, side or bottom: on a string, inside a loop, over a hill or through a dip. The Conical pendulum is a bob on a string from a ceiling, going round a level circle.',
+      'Each figure can show the velocity along the tangent, the centripetal acceleration toward the center, and the forces: one inward force in the Top view, or gravity with the tension or the normal force in the side views. Velocity and acceleration are dashed and forces are solid, so they are never mixed up, even photocopied. Turn any of them off for students to draw, or rename any label.',
+    ],
+    settings: [
+      'The setup: Top view, Vertical circle or Conical pendulum',
+      'Top view: nothing, a string, a turntable or a road around the object, 1 to 8 positions, where the first one is, and clockwise or counterclockwise',
+      'A second object halfway out on a turntable, with a velocity arrow half as long',
+      'Vertical circle: a string, a loop, a hill or a dip, with the object at the top, the bottom, the side, or several of them',
+      'Conical pendulum: the string’s angle from the vertical, 15° to 60°, its angle and length labels, and the velocity into or out of the page',
+      'Velocity, centripetal acceleration, an inward force, gravity, tension and the normal force, each on or off with its own label',
+      'The tension’s horizontal and vertical components on the conical pendulum',
+      'A radius or diameter, the angular speed ω, an angle mark, and letters A, B, C… at the positions',
+      'A ball or a block with its own label, vector notation (an arrow over each label, or bold), and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'Which way do the velocity and the acceleration point?',
+        a: 'The velocity is along the tangent to the circle, the way the object is going round. The centripetal acceleration points from the object straight at the center of the circle. In the Top view both are drawn on the object; in the side views the acceleration is drawn beside the object, so it is not read as one of the forces.',
+      },
+      {
+        q: 'Are the arrows drawn to scale?',
+        a: 'The motion is uniform, so every velocity arrow in a figure is the same length, and so is every acceleration arrow. On a turntable the second object, halfway out, has arrows half as long, because v = ωr. On the Vertical circle gravity is the same length everywhere, and the tension or normal force is shorter than gravity at the top and longer at the bottom, so the net force points to the center there. The Conical pendulum’s forces are to scale: the tension’s vertical component is exactly as long as gravity.',
+      },
+      {
+        q: 'Is there an arrow for the centripetal force?',
+        a: 'In the Top view, turn on Inward force. It is one solid arrow toward the center, labeled F_c until you rename it for the force that supplies it: T for a string, F_f for friction on a road or turntable, F_g for gravity. The side views draw the real forces instead (gravity, and the tension or the normal force), since the centripetal force there is their sum.',
+      },
+      {
+        q: 'Can it draw a car going over a hill or through a dip?',
+        a: 'Yes. Choose Vertical circle, then Hill or Dip, and Block for the object. Gravity and the normal force are drawn on it, with the centripetal acceleration beside it, and the radius can be marked with the center of the curve dashed below the hill or above the dip.',
+      },
+      {
+        q: 'Can it draw a banked curve, or work out the forces from a mass and a speed?',
+        a: 'Not yet. A flat curve seen from above is the Top view’s road. Labels are text you type, so no values are worked out. If you need a banked curve or worked values, use Request a generator on the home page and tell us what it should draw.',
+      },
+    ],
+    imageAlt: 'A printable circular motion diagram of a ball at four points of a dashed circle seen from above, each with a velocity arrow along the tangent and a centripetal acceleration arrow pointing at the center, made with the Circular Motion Generator',
+    educationalLevel: ['High school', 'AP Physics'],
+  },
+
 }
 
 /** The copy for a generator; every generator on the site has some. */

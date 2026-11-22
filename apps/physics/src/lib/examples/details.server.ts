@@ -8,6 +8,7 @@
 // written (a force past the scale, a misspelled choice) fails the build.
 
 import { circuitAnswer } from '$lib/generators/circuit-diagram/circuit'
+import { circularSettings } from '$lib/generators/circular-motion/settings'
 import { circuitSettings } from '$lib/generators/circuit-diagram/settings'
 import { fieldSettings } from '$lib/generators/fields/settings'
 import { fbdSettings } from '$lib/generators/free-body-diagram/settings'
@@ -118,6 +119,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   },
   'ray-diagram': { definition: raySettings, answer: (s) => ({ heading: 'Answer key (real is positive)', lines: rayAnswer(s) }) },
   'electric-and-magnetic-fields': { definition: physics(fieldSettings), answer: none },
+  'circular-motion': { definition: physics(circularSettings), answer: none },
 }
 
 function detailsOf<G extends ExampleGeneratorId>(generator: G, example: Example): ExampleDetails {

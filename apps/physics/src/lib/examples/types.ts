@@ -2,6 +2,7 @@
 // teacher would search for it by. The settings types are imported as types
 // only, so the gallery on a generator page doesn't pull in every generator.
 
+import type { CircularSettings } from '$lib/generators/circular-motion/settings'
 import type { CircuitSettings } from '$lib/generators/circuit-diagram/settings'
 import type { FieldSettings } from '$lib/generators/fields/settings'
 import type { FbdSettings } from '$lib/generators/free-body-diagram/settings'
@@ -31,6 +32,7 @@ export interface SettingsById {
   'circuit-diagram': CircuitSettings
   'ray-diagram': RaySettings
   'electric-and-magnetic-fields': FieldSettings
+  'circular-motion': CircularSettings
 }
 
 export type ExampleGeneratorId = keyof SettingsById

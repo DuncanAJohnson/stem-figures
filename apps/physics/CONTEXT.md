@@ -346,3 +346,33 @@ _Avoid_: Zero offset (that's a spring scale's), offset, calibration error
 **Jaws**:
 What holds the object on a caliper (its outside jaws) or a micrometer (its anvil and spindle): nothing, a block, a cylinder, a ball or a wire, drawn as wide as the reading less the zero error.
 _Avoid_: Clamp, grip
+### Circular Motion
+
+**Circular Motion**:
+A figure of an object going round a circle at a steady speed, in one of three setups, with its velocity along the tangent, its centripetal acceleration toward the center, and the forces on it. Its generator is the Circular Motion Generator. A planet or moon going round is a future orbits generator's; a track of several hills and dips is a Roller Coaster figure.
+_Avoid_: Centrifugal (never drawn or named), orbit, UCM diagram (UCM is fine as a search word)
+
+**Setup**:
+Which of the three ways the Circular Motion figure draws the circle: the Top view, the Vertical circle or the Conical pendulum. Each has a choice or two of its own, and fixes which forces can be drawn; they are only switched on and named.
+_Avoid_: View (alone), mode, scenario
+
+**Top view**:
+The circle seen from above, dashed, with its center, and the object at 1 to 8 positions on it: on its own, on a string to the center, on a turntable (with a second object halfway out, if wanted) or on a flat road. It shows velocity, acceleration and one inward force, never gravity.
+_Avoid_: Horizontal circle, overhead view
+
+**Vertical circle**:
+The circle standing upright, seen from the side, with the object at the top, side or bottom: on a string, inside a loop, at the top of a hill or the bottom of a dip. Gravity is one length everywhere; the tension or normal force is shorter at the top and longer at the bottom, so the net force points to the center.
+_Avoid_: Loop-the-loop (it's a loop), side view (alone)
+
+**Conical pendulum**:
+A bob on a string from a hatched ceiling at 15° to 60° from the vertical, going round a level circle drawn as an ellipse, its back half lighter. Its forces are to scale: the tension's vertical component is as long as gravity. Its velocity is along the line of sight, a dot (out of the page) or a cross (into it).
+_Avoid_: Cone pendulum, swing
+
+**Inward force**:
+The Top view's one solid arrow toward the center, beside the acceleration, named by the teacher for what supplies it (F_c, T, F_f, F_g). The side views draw the real forces instead.
+_Avoid_: Centripetal force (fine as its default label and as a search word), net force, center-seeking force
+
+**Position**:
+One of the places the object is drawn on the circle, all evenly spaced from the first, which can be lettered A, B, C… in the order the object reaches them. Past four, only the first position's vectors are labeled.
+_Avoid_: Point (fine in "top and bottom points"), instant, snapshot
+
