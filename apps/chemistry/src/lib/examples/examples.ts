@@ -1440,6 +1440,94 @@ export const EXAMPLES: Example[] = [
       settings: { count: 3, s1Text: '', s2Text: '', s3Text: '', color: false, speciesLabels: false, xTo: '28', xStep: '2' },
     },
   ]),
+  ...examplesOf('chromatography', [
+    {
+      slug: 'paper-chromatogram-calculate-rf-values',
+      title: 'Paper chromatogram: calculate Rf values',
+      alt: 'Chromatography paper hanging from a glass rod in a beaker of water, with inks A, B and C separated into colored spots and arrows marking each spot’s distance and the solvent front’s 8.0 cm from the pencil origin line',
+      caption:
+        'Three inks, A, B and C, after water has carried them up chromatography paper hanging from a glass rod in a beaker. Arrows from the pencil origin line mark how far the solvent front traveled, 8.0 cm, and how far each spot traveled, for working out each spot’s Rf. Ink C’s three spots are level with A’s blue and yellow spots and B’s red one.',
+      settings: { measurements: true },
+    },
+    {
+      slug: 'chromatography-identify-dyes-in-unknown-ink',
+      title: 'Chromatography: identify the dyes in an unknown ink',
+      alt: 'A paper chromatogram of an unknown ink X beside four known dyes, red, yellow, green and blue: X has a red spot and a blue spot level with the red and blue dyes’ spots',
+      caption:
+        'A paper chromatogram of an unknown ink, X, run beside four known dyes: red, yellow, green and blue. X separates into two spots, a red one level with the red dye and a blue one level with the blue dye, and nothing level with the yellow or green dye. The solvent front is 10.0 cm above the pencil origin line.',
+      settings: {
+        setup: false,
+        front: 10,
+        samples: [
+          { name: 'X', spots: [{ color: 'red', distance: 3.5 }, { color: 'blue', distance: 7.2 }] },
+          { name: 'Red', spots: [{ color: 'red', distance: 3.5 }] },
+          { name: 'Yellow', spots: [{ color: 'yellow', distance: 5 }] },
+          { name: 'Green', spots: [{ color: 'green', distance: 6 }] },
+          { name: 'Blue', spots: [{ color: 'blue', distance: 7.2 }] },
+        ],
+      },
+    },
+    {
+      slug: 'labeled-paper-chromatography-setup-before-and-after',
+      title: 'Labeled paper chromatography setup, before and after',
+      alt: 'Two beakers of water side by side, each with chromatography paper hanging from a glass rod: before, three ink spots on the pencil line; after, the inks separated up the paper, with the lid, paper, solvent front, pencil line, water and beaker labeled',
+      caption:
+        'A paper chromatography setup before and after the solvent runs. Before, inks A, B and C sit as single spots on the pencil origin line, above the water. After, water has risen up the paper to the solvent front and separated each ink into its dyes. The labels name the lid, the chromatography paper, the solvent front, the pencil line (origin), the water (solvent) and the beaker.',
+      settings: { show: 'both', labels: true },
+    },
+    {
+      slug: 'chromatogram-pure-substances-and-mixtures',
+      title: 'Chromatogram: which inks are pure substances and which are mixtures?',
+      alt: 'A paper chromatogram of four inks: P a single purple spot, Q a red and a blue spot, R a black spot left on the origin line and a yellow spot, and S a single orange spot',
+      caption:
+        'A paper chromatogram of four inks, P, Q, R and S, with the solvent front 9.0 cm above the pencil origin line. P and S each give a single spot, while Q separates into red and blue spots and R into a yellow spot and a black spot that stayed on the origin line, not dissolving in the solvent.',
+      settings: {
+        setup: false,
+        front: 9,
+        samples: [
+          { name: 'P', spots: [{ color: 'purple', distance: 4.5 }] },
+          { name: 'Q', spots: [{ color: 'red', distance: 3 }, { color: 'blue', distance: 6 }] },
+          { name: 'R', spots: [{ color: 'black', distance: 0 }, { color: 'yellow', distance: 2.7 }] },
+          { name: 'S', spots: [{ color: 'orange', distance: 5.4 }] },
+        ],
+      },
+    },
+  ]),
+
+  ...examplesOf('electrochemical-cells', [
+    {
+      slug: 'zinc-copper-galvanic-cell-salt-bridge',
+      title: 'Zinc–copper galvanic cell with a salt bridge',
+      alt: 'A zinc–copper galvanic cell: a zinc strip in Zn²⁺(aq) and a copper strip in Cu²⁺(aq), joined by a salt bridge and wired to a digital voltmeter reading 1.10 V, with zinc labeled Anode (−), copper Cathode (+) and arrows marked e⁻ along the wire from zinc to copper',
+      caption:
+        'A zinc–copper (Daniell) galvanic cell: a zinc electrode in a solution of zinc ions and a copper electrode in a solution of copper(II) ions, the two beakers joined by a salt bridge. A digital voltmeter wired between the electrodes reads 1.10 V. Zinc is labeled the anode (−) and copper the cathode (+), and arrows show electrons flowing through the wire from zinc to copper.',
+      settings: { electrodes: true, electronFlow: true },
+    },
+    {
+      slug: 'copper-silver-galvanic-cell-label-anode-cathode',
+      title: 'Copper–silver galvanic cell: label the anode and cathode',
+      alt: 'A galvanic cell of a copper strip in Cu²⁺(aq) and a silver strip in Ag⁺(aq), joined by a salt bridge and wired to a digital voltmeter reading 0.46 V, with no anode, cathode or electron flow marked',
+      caption:
+        'A galvanic cell of a copper electrode in a solution of copper(II) ions and a silver electrode in a solution of silver ions, joined by a salt bridge. A digital voltmeter wired between them reads 0.46 V, its + terminal on the silver side. The anode, the cathode and the direction of electron flow are left for students to work out.',
+      settings: { left: 'Cu', right: 'Ag' },
+    },
+    {
+      slug: 'calculate-e-cell-zinc-silver-cell',
+      title: 'Calculate E°cell: zinc–silver cell',
+      alt: 'A galvanic cell of a zinc strip in Zn²⁺(aq) and a silver strip in Ag⁺(aq), joined by a salt bridge, with the electrodes wired to a coil of wire instead of a voltmeter',
+      caption:
+        'A galvanic cell of a zinc electrode in a solution of zinc ions and a silver electrode in a solution of silver ions, joined by a salt bridge. The electrodes are wired to a coil of wire rather than a voltmeter, so the figure gives no voltage: students work out E°cell from the standard reduction potentials.',
+      settings: { right: 'Ag', meter: 'coil' },
+    },
+    {
+      slug: 'aluminum-silver-voltaic-cell-dial-voltmeter',
+      title: 'Aluminum–silver voltaic cell with a dial voltmeter',
+      alt: 'A voltaic cell with a silver strip in Ag⁺(aq) on the left and an aluminum strip in Al³⁺(aq) on the right, joined by a salt bridge and wired to a dial voltmeter reading about 2.5 V, with aluminum labeled Anode (−), silver Cathode (+) and e⁻ arrows along the wire from right to left',
+      caption:
+        'A voltaic cell with a silver electrode in a solution of silver ions on the left and an aluminum electrode in a solution of aluminum ions on the right, joined by a salt bridge. A dial voltmeter wired between them reads 2.46 V, the needle a little under halfway from 2 to 3. The anode is on the right this time: aluminum is labeled the anode (−) and silver the cathode (+), and the arrows show electrons flowing through the wire from right to left.',
+      settings: { left: 'Ag', right: 'Al', meter: 'dial', electrodes: true, electronFlow: true },
+    },
+  ]),
 ]
 
 /** A generator's examples, in order; the first is its best. */

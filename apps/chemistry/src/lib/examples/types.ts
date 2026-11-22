@@ -4,8 +4,10 @@
 
 import type { BohrSettings } from '$lib/generators/bohr-model/settings'
 import type { BondSettings } from '$lib/generators/bond-energy-curve/settings'
+import type { ChromatographySettings } from '$lib/generators/chromatography/settings'
 import type { DotCrossSettings } from '$lib/generators/dot-and-cross/settings'
 import type { SyringeSettings } from '$lib/generators/gas-syringe/settings'
+import type { CellSettings } from '$lib/generators/electrochemical-cells/settings'
 import type { EquilibriumSettings } from '$lib/generators/equilibrium-graph/settings'
 import type { HalfLifeSettings } from '$lib/generators/half-life-graph/settings'
 import type { CurveSettings } from '$lib/generators/heating-cooling-curve/settings'
@@ -55,6 +57,8 @@ export interface SettingsById {
   'half-life-graph': HalfLifeSettings
   'rate-law-graphs': RateLawSettings
   'equilibrium-graph': EquilibriumSettings
+  chromatography: ChromatographySettings
+  'electrochemical-cells': CellSettings
 }
 
 export type ExampleGeneratorId = keyof SettingsById

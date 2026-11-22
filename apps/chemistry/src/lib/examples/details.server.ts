@@ -11,9 +11,13 @@ import { chargeOf, bohrSettings } from '$lib/generators/bohr-model/settings'
 import { element } from '$lib/generators/bohr-model/elements'
 import { answerLines as bondAnswer } from '$lib/generators/bond-energy-curve/figure'
 import { bondSettings } from '$lib/generators/bond-energy-curve/settings'
+import { answerLines as chromatographyAnswer, chromatographySettings } from '$lib/generators/chromatography/settings'
+import { cmText } from '$lib/generators/chromatography/inks'
 import { buildFigure as buildDotCross } from '$lib/generators/dot-and-cross/figure'
 import { dotCrossSettings, readOnce as readDotCross } from '$lib/generators/dot-and-cross/settings'
 import { syringeSettings, answerLine as syringeAnswer } from '$lib/generators/gas-syringe/settings'
+import { METAL_INFO, cellOf, voltageText, type Metal } from '$lib/generators/electrochemical-cells/cell'
+import { cellSettings, cellVoltage } from '$lib/generators/electrochemical-cells/settings'
 import { answerLines as equilibriumAnswer } from '$lib/generators/equilibrium-graph/figure'
 import { equilibriumSettings } from '$lib/generators/equilibrium-graph/settings'
 import { answerLines as halfLifeAnswer } from '$lib/generators/half-life-graph/figure'
@@ -206,6 +210,48 @@ function massSpectrumAnswerKey(s: SettingsById['mass-spectrum']): ExampleDetails
   return { heading: 'Answer key', lines: [...massSpectrumAnswer(s), `Relative atomic mass: ${working}`] }
 }
 
+function chromatographyAnswerKey(s: SettingsById['chromatography']): ExampleDetails['answer'] {
+  return {
+    heading: 'Answer key',
+    lines: [...chromatographyAnswer(s), `Rf = distance the spot moved ÷ distance the solvent moved (${cmText(s.front)})`],
+  }
+}
+
+/** An ion's charge from its superscripts, e.g. 2 for "Cu²⁺". */
+function ionCharge(ion: string) {
+  const digits = '⁰¹²³⁴⁵⁶⁷⁸⁹'
+  const n = [...ion].map((c) => digits.indexOf(c)).filter((d) => d >= 0)
+  return n.length ? Number(n.join('')) : 1
+}
+
+function cellAnswer(s: SettingsById['electrochemical-cells']): ExampleDetails['answer'] {
+  const cell = cellOf(s.left, s.right)
+  const anode: Metal = s[cell.anode]
+  const cathode: Metal = s[cell.cathode]
+  const [a, c] = [METAL_INFO[anode], METAL_INFO[cathode]]
+  const [na, nc] = [ionCharge(a.ion), ionCharge(c.ion)]
+  const electrons = (n: number) => `${n === 1 ? '' : n}e⁻`
+  // the overall reaction, each half-reaction scaled so the electrons cancel
+  const gcd = (x: number, y: number): number => (y ? gcd(y, x % y) : x)
+  const lcm = (na * nc) / gcd(na, nc)
+  const times = (k: number, what: string) => `${k === 1 ? '' : k}${what}`
+  const [ka, kc] = [lcm / na, lcm / nc]
+  const potential = (v: number) => (v < 0 ? `−${(-v).toFixed(2)}` : v.toFixed(2))
+  const v = cellVoltage(s)
+  return {
+    heading: 'Answer key',
+    lines: [
+      `Anode (−): ${anode}, oxidized: ${anode}(s) → ${a.ion}(aq) + ${electrons(na)}`,
+      `Cathode (+): ${cathode}, reduced: ${c.ion}(aq) + ${electrons(nc)} → ${cathode}(s)`,
+      `Overall: ${times(ka, anode)}(s) + ${times(kc, c.ion)}(aq) → ${times(ka, a.ion)}(aq) + ${times(kc, cathode)}(s)`,
+      `Electrons flow through the wire from ${anode} to ${cathode}`,
+      s.reading === 'table'
+        ? `E°cell = E°cathode − E°anode = ${potential(c.potential)} V − (${potential(a.potential)} V) = ${voltageText(v)} V`
+        : `E°cell = ${voltageText(v)} V`,
+    ],
+  }
+}
+
 const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<SettingsById[G]>; answer: Answer<SettingsById[G]> } } = {
   'volume-reading': { definition: volumeSettings, answer: (s) => lines(volumeAnswer(s)) },
   'volume-by-displacement': { definition: displacementSettings, answer: (s) => lines(displacementAnswer(s)) },
@@ -232,6 +278,8 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'half-life-graph': { definition: halfLifeSettings, answer: (s) => ({ heading: 'Answer key', lines: halfLifeAnswer(s) }) },
   'rate-law-graphs': { definition: rateLawSettings, answer: (s) => ({ heading: 'Answer key', lines: rateLawAnswer(s) }) },
   'equilibrium-graph': { definition: equilibriumSettings, answer: (s) => ({ heading: 'Answer key', lines: equilibriumAnswer(s) }) },
+  chromatography: { definition: chromatographySettings, answer: chromatographyAnswerKey },
+  'electrochemical-cells': { definition: cellSettings, answer: cellAnswer },
 }
 
 function detailsOf<G extends ExampleGeneratorId>(generator: G, example: Example): ExampleDetails {
