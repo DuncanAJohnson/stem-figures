@@ -869,6 +869,48 @@ export const EXAMPLES: Example[] = [
       settings: { setup: 'like', sign: '-', fieldLines: false },
     },
   ]),
+  ...examplesOf('lever', [
+    {
+      slug: 'class-1-lever-find-the-effort',
+      title: 'Class 1 lever: find the effort',
+      alt: 'A class 1 lever: a beam on a fulcrum with a 300 N load on a block 0.5 m to the left of the fulcrum and an effort arrow marked with a question mark pointing down 1.5 m to the right of it',
+      caption:
+        'A class 1 lever, with the fulcrum between the load and the effort. A 300 N load sits on the beam 0.5 m from the fulcrum, and the effort pushes down on the other end, 1.5 m from the fulcrum. The effort is marked ? for students to find. The beam is drawn to scale, so the effort arm is three times as long as the load arm.',
+      settings: { effortLabel: text('?') },
+    },
+    {
+      slug: 'class-2-lever-mechanical-advantage',
+      title: 'Class 2 lever with its mechanical advantage',
+      alt: 'A class 2 lever: a beam with the fulcrum at its left end, a 600 N load on a block 0.4 m from the fulcrum and a 200 N effort arrow pointing up at the far end, 1.2 m from the fulcrum, with the working for its mechanical advantage of 3 printed underneath',
+      caption:
+        'A class 2 lever, like a wheelbarrow: the fulcrum is at one end, the 600 N load is 0.4 m from it, and the 200 N effort lifts the far end, 1.2 m from the fulcrum. Both arms are marked from the fulcrum, and the answer key under the figure works out the mechanical advantage, 3, and the effort.',
+      settings: { class: '2', load: 600, effortArm: 1.2, loadArm: 0.4, answerKey: true },
+    },
+    {
+      slug: 'class-3-lever-load-in-kg',
+      title: 'Class 3 lever with a load in kg',
+      alt: 'A class 3 lever: a beam with the fulcrum at its left end, a 196 N effort arrow pointing up 10 cm from the fulcrum and a 5 kg block as the load at the far end, 40 cm from the fulcrum',
+      caption:
+        'A class 3 lever, like a forearm or a fishing rod: the effort is between the fulcrum and the load. A 5 kg load sits at the end of the beam, 40 cm from the fulcrum, and the effort pulls up only 10 cm from the fulcrum, so it has to be four times the load’s weight: 196 N.',
+      settings: { class: '3', effortArm: 10, loadArm: 40, lengthUnit: 'cm', load: 5, loadUnit: 'kg' },
+    },
+    {
+      slug: 'label-the-parts-of-a-lever',
+      title: 'Label the parts of a lever',
+      alt: 'A class 1 lever with no values: a beam on a fulcrum with an arrow pointing down on each end, and a blank line beside the fulcrum and above each arrow for students to write on',
+      caption:
+        'A class 1 lever with nothing written on it: a blank line beside the fulcrum and one above each force arrow, for students to label the fulcrum, the load and the effort. The longer arrow is the bigger force, the load, which is nearer the fulcrum.',
+      settings: {
+        loadShown: 'arrow',
+        loadLabel: none(''),
+        effortLabel: none(''),
+        effortName: blank('Effort'),
+        loadName: blank('Load'),
+        fulcrumName: blank('Fulcrum'),
+        arms: false,
+      },
+    },
+  ]),
   ...examplesOf('circular-motion', [
     {
       slug: 'velocity-and-centripetal-acceleration-in-uniform-circular-motion',

@@ -346,6 +346,41 @@ _Avoid_: Zero offset (that's a spring scale's), offset, calibration error
 **Jaws**:
 What holds the object on a caliper (its outside jaws) or a micrometer (its anvil and spindle): nothing, a block, a cylinder, a ball or a wire, drawn as wide as the reading less the zero error.
 _Avoid_: Clamp, grip
+
+### Lever
+
+**Lever**:
+A figure of a level, weightless beam resting on a fulcrum, with one load and one effort on it, always balanced. Its generator is the Lever Generator. The beam is drawn to scale from its two arms, and the effort is worked out from the load and the arms. A beam with several weights, its own weight, two supports or no balance is a Torque figure, not a Lever.
+_Avoid_: Seesaw (fine as a search word), simple machine (fine as a search word), balance
+
+**Lever class**:
+Which part is in the middle of a lever: the fulcrum (class 1, both forces down), the load (class 2, the effort up and farther out) or the effort (class 3, the effort up and nearer the fulcrum). Arms that don't suit the class are swapped.
+_Avoid_: Type, kind, order (as in "first-order lever")
+
+**Fulcrum**:
+The point a lever turns about, drawn as a triangle under the beam standing on a hatched ground line. On a class 2 or 3 lever it sits a little in from one end of the beam. Lever figures say "fulcrum"; "pivot" is the Torque figure's word.
+_Avoid_: Pivot (on a Lever figure), support, hinge
+
+**Effort**:
+The force put on a lever to work it, an arrow down onto the beam on a class 1 lever and up from it on class 2 and 3. It is never typed: it is the load's weight × the load arm ÷ the effort arm, to 3 significant figures, in lb for a load in lb and in N otherwise.
+_Avoid_: Input force (fine as a search word), applied force, push
+
+**Load**:
+What a lever moves: a force in N or lb, drawn as a block (an Object) on the beam or an arrow down onto it, or a mass in kg or g, always drawn as a block, whose weight is its mass × 9.8 N/kg.
+_Avoid_: Resistance, output force (both fine as search words), weight (for the thing drawn)
+
+**Effort arm**:
+The distance from the fulcrum to the effort, along the beam, marked with a dimension line under the ground.
+_Avoid_: Effort distance, input arm, moment arm
+
+**Load arm**:
+The distance from the fulcrum to the load, along the beam, marked with a dimension line under the ground. No arm is drawn shorter than 15% of the beam, so its label fits; the form says when an arm isn't to scale.
+_Avoid_: Load distance, resistance arm, output arm
+
+**Mechanical advantage**:
+The effort arm ÷ the load arm, which for a balanced lever is also the load ÷ the effort. It is in the answer key, never on the figure.
+_Avoid_: MA (fine in the answer key), leverage, ratio
+
 ### Circular Motion
 
 **Circular Motion**:

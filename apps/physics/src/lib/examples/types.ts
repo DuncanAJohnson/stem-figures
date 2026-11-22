@@ -8,6 +8,7 @@ import type { FieldSettings } from '$lib/generators/fields/settings'
 import type { FbdSettings } from '$lib/generators/free-body-diagram/settings'
 import type { InclineSettings } from '$lib/generators/inclined-plane/settings'
 import type { LengthSettings } from '$lib/generators/length-reading/settings'
+import type { LeverSettings } from '$lib/generators/lever/settings'
 import type { MotionSettings } from '$lib/generators/motion-graphs/settings'
 import type { MapSettings } from '$lib/generators/motion-map/settings'
 import type { ProjectileSettings } from '$lib/generators/projectile-motion/settings'
@@ -34,6 +35,7 @@ export interface SettingsById {
   'ray-diagram': RaySettings
   'roller-coaster': CoasterSettings
   'electric-and-magnetic-fields': FieldSettings
+  'lever': LeverSettings
   'circular-motion': CircularSettings
 }
 

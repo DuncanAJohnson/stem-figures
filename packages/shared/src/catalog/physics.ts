@@ -230,4 +230,19 @@ export const PHYSICS: CatalogEntry[] = [
       'circular motion', 'printable',
     ],
   },
+  {
+    id: 'lever',
+    site: 'physics',
+    name: 'Lever Generator',
+    path: '/lever',
+    blurb: 'Class 1, 2 and 3 levers with the fulcrum, load, effort and both arms.',
+    description:
+      'Make printable lever diagrams for physics and engineering classes. Pick a class 1, 2 or 3 lever, set the load and the two arms, and the effort and mechanical advantage are worked out, with any value left for students to find.',
+    keywords: [
+      'lever', 'levers', 'class 1 lever', 'class 2 lever', 'class 3 lever', 'first class', 'second class', 'third class',
+      '1st 2nd 3rd', 'fulcrum', 'pivot', 'effort', 'load', 'resistance', 'input force', 'output force', 'effort arm',
+      'load arm', 'mechanical advantage', 'simple machine', 'simple machines', 'seesaw', 'wheelbarrow', 'crowbar', 'tweezers',
+      'engineering', 'printable',
+    ],
+  },
 ]

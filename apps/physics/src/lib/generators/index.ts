@@ -15,6 +15,7 @@ import CircuitDiagramPreview from './circuit-diagram/Preview.svelte'
 import FieldsPreview from './fields/Preview.svelte'
 import FreeBodyPreview from './free-body-diagram/Preview.svelte'
 import InclinedPlanePreview from './inclined-plane/Preview.svelte'
+import LeverPreview from './lever/Preview.svelte'
 import LengthReadingPreview from './length-reading/Preview.svelte'
 import MotionGraphsPreview from './motion-graphs/Preview.svelte'
 import MotionMapPreview from './motion-map/Preview.svelte'
@@ -44,6 +45,7 @@ export const PREVIEWS: Record<string, Component> = {
   'roller-coaster': RollerCoasterPreview,
   'electric-and-magnetic-fields': FieldsPreview,
   'circular-motion': CircularMotionPreview,
+  'lever': LeverPreview,
 }
 
 /** Another way to start, under "Start from an example" in a generator's lead

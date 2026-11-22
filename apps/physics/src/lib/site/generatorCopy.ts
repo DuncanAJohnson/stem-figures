@@ -674,6 +674,55 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['High school', 'AP Physics'],
   },
 
+  'lever': {
+    heading: 'Class 1, 2 and 3 levers, drawn to scale',
+    intro: [
+      'The Lever Generator draws a beam on a triangular fulcrum with a load, an effort arrow, and the two arms marked underneath: the effort arm and the load arm, each measured from the fulcrum. Pick a class 1, 2 or 3 lever and type the two arms and the load. The beam is drawn to scale, and the effort is worked out for you, because an ideal lever balances: effort × effort arm = load × load arm.',
+      'Teachers use it for simple machines and mechanical advantage questions on bellringers, homework, tests and lab instructions. All four values start on the figure; blank one, or type ? or a symbol over it, and that is the one students find. Name the fulcrum, load and effort, leave blank lines for students to label the parts, or turn the arms off and ask which class of lever it is.',
+    ],
+    settings: [
+      'A class 1, 2 or 3 lever: the fulcrum, the load or the effort in the middle',
+      'The effort arm and the load arm, in cm, m, in or ft, drawn to scale',
+      'The load, as a force in N or lb or a mass in kg or g, drawn as a block on the beam or a force arrow',
+      'The effort, worked out from the load and the arms, to 3 significant figures',
+      'Labels for the load, the effort and each arm: its value, your own text such as F_E or ?, a blank line for students, or left off',
+      'Names for the effort, load and fulcrum, written, a blank line for students to label, or left off',
+      'The two arms’ dimension lines on or off',
+      'A chart title, an answer key with the mechanical advantage, label size, mirror, and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'What are the three classes of lever?',
+        a: 'They differ in what is in the middle. A class 1 lever has the fulcrum between the load and the effort, like a seesaw, a crowbar or scissors. A class 2 lever has the load in the middle, like a wheelbarrow or a nutcracker, so the effort is always smaller than the load. A class 3 lever has the effort in the middle, like tweezers, a fishing rod or a forearm, so the effort is always bigger than the load, but the load moves farther.',
+      },
+      {
+        q: 'How is the effort worked out?',
+        a: 'The lever is ideal: it balances, there is no friction, and the beam has no weight. So effort × effort arm = load × load arm, and the effort is the load × the load arm ÷ the effort arm. It is rounded to 3 significant figures, and the label, the form and the answer key all show the same rounded value.',
+      },
+      {
+        q: 'How is mechanical advantage worked out?',
+        a: 'Mechanical advantage is the effort arm ÷ the load arm, which for an ideal lever is also the load ÷ the effort. A lever with a 1.5 m effort arm and a 0.5 m load arm has a mechanical advantage of 3, so a 300 N load is lifted by a 100 N effort. Turn on the answer key to print the working under the figure.',
+      },
+      {
+        q: 'What if the load is a mass in kg or g?',
+        a: 'Then it is drawn as a block labeled with its mass, and its weight is its mass × 9.8 N/kg, so a 30 kg load weighs 294 N. The effort is always a force in newtons. The answer key shows the weight first. A load in N or lb is already a force, and can be drawn as a block or as an arrow pointing down.',
+      },
+      {
+        q: 'How do I make one value the unknown?',
+        a: 'Each of the four values, the load, the effort and the two arms, has its own label. Leave it empty and it shows its value; type ? or a symbol such as F_E or d_1 to replace it, or pick a blank line for students to write on. The answer key is the same whichever one you hide.',
+      },
+      {
+        q: 'Is the lever drawn to scale?',
+        a: 'Yes. The beam is split in the ratio of the two arms, so a 1.5 m arm is drawn three times as long as a 0.5 m one. The one exception is a very short arm: no arm is drawn shorter than 15% of the beam, so its label and dimension line still fit, and the form says when that happens. The longer force arrow is the bigger force.',
+      },
+      {
+        q: 'Can I draw a seesaw with several masses, a beam with its own weight, or a beam that doesn’t balance?',
+        a: 'Not on this generator. A lever here has one load, one effort and a weightless beam, and always balances. Moments about a pivot with several weights, a heavy beam or two supports are a torque figure: use the Torque Generator.',
+      },
+    ],
+    imageAlt: 'Three printable lever diagrams side by side, a class 1, a class 2 and a class 3 lever, each a beam on a fulcrum with its load, effort and arms labeled, made with the Lever Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Physics'],
+  },
 }
 
 /** The copy for a generator; every generator on the site has some. */

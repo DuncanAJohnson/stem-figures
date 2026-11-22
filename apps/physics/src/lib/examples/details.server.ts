@@ -14,6 +14,7 @@ import { fieldSettings } from '$lib/generators/fields/settings'
 import { fbdSettings } from '$lib/generators/free-body-diagram/settings'
 import { inclineSettings } from '$lib/generators/inclined-plane/settings'
 import { lengthSettings, workingLines as lengthWorking } from '$lib/generators/length-reading/settings'
+import { answerLines as leverAnswer, leverSettings } from '$lib/generators/lever/settings'
 import { motionOf, numberText, segmentLines, tangentAt } from '$lib/generators/motion-graphs/motion'
 import { motionSettings, viewsOf } from '$lib/generators/motion-graphs/settings'
 import { mapAnswer } from '$lib/generators/motion-map/map'
@@ -121,6 +122,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'ray-diagram': { definition: raySettings, answer: (s) => ({ heading: 'Answer key (real is positive)', lines: rayAnswer(s) }) },
   'roller-coaster': { definition: physics(coasterSettings), answer: none },
   'electric-and-magnetic-fields': { definition: physics(fieldSettings), answer: none },
+  'lever': { definition: leverSettings, answer: (s) => ({ heading: 'Answer key', lines: leverAnswer(s) }) },
   'circular-motion': { definition: physics(circularSettings), answer: none },
 }
 
