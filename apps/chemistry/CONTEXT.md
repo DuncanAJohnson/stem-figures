@@ -740,6 +740,43 @@ _Avoid_: Product, decay product (fine in help text), daughter isotope (that's th
 **Answer key** (half-life graphs):
 The lines in the settings panel and on example pages giving each isotope's half-life, decay constant and how it decays and to what, naming each hidden one ("Isotope A is carbon-14"), then what's left of the first isotope at each guide line ("After 3 half-lives (17,190 years): 12.5%").
 
+### Equilibrium graphs
+
+**Equilibrium graph**:
+A graph of every species' concentration in mol/L (up the side) against time (along the bottom) for a reversible reaction: settling to equilibrium from its starting concentrations, then answering up to three **stresses**. The generator is Equilibrium Graph. The graphs are solved from K, never drawn from typed levels: every level stretch gives the K it should and the lines always move in the ratio of the coefficients (`model.ts`). Each species is its own line, solid, dashed or dotted in the order of the equation, in color or all black, with its formula beside it where it first levels off unless the teacher turns the formulas off. The grid and titles are `$shared/graph`'s, as a half-life graph's.
+_Avoid_: Le Châtelier graph, concentration–time graph (both fine in search keywords), plateau (for an equilibrium; fine in help text)
+
+**Reaction setup**:
+One of the seven reactions a graph can show: N₂ + 3H₂ ⇌ 2NH₃, H₂ + I₂ ⇌ 2HI, N₂O₄ ⇌ 2NO₂, 2SO₂ + O₂ ⇌ 2SO₃, PCl₅ ⇌ PCl₃ + Cl₂, Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺ (the one in solution) and the made-up A + B ⇌ C, which stands in for any other. Each has its species, coefficients, its real direction of heat (cited in `reactions.ts`; A + B ⇌ C's is the teacher's to choose) and an **example K** with example starting concentrations, which picking it fills in. The teacher can't type a reaction of their own.
+_Avoid_: Preset (that's a teacher's saved settings), equation (fine in help text), system
+
+**Example K**:
+The K a reaction setup starts with, chosen with its starting concentrations so the lines level off well apart: not the reaction's measured equilibrium constant. The page says so in grey text always shown under the K box, in the answer key's first line ("K = 0.5 (an example value, not measured)"), in the About copy and in `/linking`; it is never written on the figure. The note stays when the teacher types their own K. K is Kc, from concentrations.
+_Avoid_: Real K, default K, Keq (fine in search keywords)
+
+**Stress**:
+What's done to the system at a time the teacher types: a species added or removed (that line alone jumps; a removal never goes below 0), the volume changed by a factor (every concentration jumps by 1 over it at once; for the solution setup it's water added or evaporated), or the temperature raised or lowered (no jump: K is multiplied or divided by a factor, down on heating an exothermic reaction, and the approach runs faster when heated, slower when cooled). Each is marked with a dashed vertical line with its words above the grid: the page's own ("N₂ added", "Volume halved", "Temperature raised") until the teacher types theirs, or none, for students to say what happened.
+_Avoid_: Disturbance, perturbation (both search words only), pressure change (it's a volume change here), change (alone)
+
+**Shift**:
+Which way the reaction runs after a stress to reach its new equilibrium: right, toward the products; left, toward the reactants; or no shift (a volume change with the same moles of gas on both sides, H₂ + I₂ ⇌ 2HI). The answer key gives it for each stress, with the new equilibrium concentrations, and the new K after a temperature change.
+_Avoid_: Response, direction (alone)
+
+**Established**:
+The time equilibrium is first reached, the first approach coming within 1% of it, typed by the teacher (4 by default). It sets how fast the whole graph runs: the same rate constants carry every later shift, so a shift can take longer or shorter than the first approach. The page says when a stress comes before the system has settled, or the time axis ends mid-shift.
+_Avoid_: Equilibrium time, rate (alone)
+
+**Extent** (code only):
+The one number that moves between stresses, ξ: each concentration is its start plus its coefficient × ξ, reactants minus. Where it settles is the ξ where Q = K; how it gets there is the reaction taken as elementary, rate forward minus rate reverse. Not a word on the page.
+_Avoid_: Progress, x (fine in an ICE table)
+
+**Fitted axes** (equilibrium graphs):
+What picking a setup, adding or removing a stress, and the Fit button give: time from 0 until the last shift has settled and stayed level as long again, concentration from 0 to a little over the highest any line goes, both in round steps. Typing a number never moves the axes.
+_Avoid_: Auto-scale, zoom
+
+**Answer key** (equilibrium graphs):
+The lines in the settings panel and on example pages: K, marked an example value, and the equilibrium concentrations first reached; then for each stress what it did, which way the system shifts, the new K after a temperature change and the new equilibrium concentrations, to three significant figures.
+
 ### Potential energy diagrams
 
 **Potential energy diagram**:

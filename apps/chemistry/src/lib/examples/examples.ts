@@ -1356,6 +1356,54 @@ export const EXAMPLES: Example[] = [
       settings: { iso1: 'x', curve: false, dots: true, xTo: '50', xStep: '5', xEvery: 1 },
     },
   ]),
+  ...examplesOf('equilibrium-graph', [
+    {
+      slug: 'haber-process-reaching-equilibrium',
+      title: 'Haber process reaching equilibrium: concentration vs time',
+      alt: 'Concentration in mol/L against time in minutes for N₂ + 3H₂ ⇌ 2NH₃: N₂ falling from 1 and H₂ from 3 while NH₃ rises from 0, all three leveling off by about 4 minutes, each line labeled with its formula',
+      caption:
+        'N₂ + 3H₂ ⇌ 2NH₃ starting from 1 mol/L of nitrogen and 3 mol/L of hydrogen with no ammonia. The reactants fall and ammonia rises, steeply at first and then more slowly, until all three level off at equilibrium: the forward and reverse rates are equal, and the concentrations stop changing. N₂ and H₂ fall in a 1 : 3 ratio and NH₃ rises twice as fast as N₂ falls, as the coefficients say. K is an example value chosen to give a clear graph, not the measured one.',
+      settings: {},
+    },
+    {
+      slug: 'le-chatelier-nitrogen-added-haber-process',
+      title: 'Le Châtelier’s principle: nitrogen added to the Haber process',
+      alt: 'Concentration against time for N₂ + 3H₂ ⇌ 2NH₃: the three lines level off, then at 8 minutes, marked by a dashed line labeled N₂ added, the N₂ line jumps up and the system shifts, H₂ falling and NH₃ rising to new levels',
+      caption:
+        'N₂ + 3H₂ ⇌ 2NH₃ settles to equilibrium, then more nitrogen is added at 8 minutes, marked with a dashed line. Only the N₂ line jumps; the system then shifts toward the products, using up some of the added nitrogen and some hydrogen to make more ammonia, until it levels off again. Nitrogen ends above where it was before the stress, never back down to it. K is an example value, the same before and after.',
+      settings: { count: 1, xTo: '16', xStep: '1' },
+    },
+    {
+      slug: 'n2o4-no2-equilibrium-volume-halved',
+      title: 'N₂O₄ ⇌ 2NO₂ equilibrium with the volume halved',
+      alt: 'Concentration against time for N₂O₄ ⇌ 2NO₂: N₂O₄ falls from 1 and NO₂ rises from 0 until both level off, then at 8 minutes, at a dashed line labeled Volume halved, both lines jump to double, then N₂O₄ rises and NO₂ falls to new levels',
+      caption:
+        'Dinitrogen tetroxide dissociating, N₂O₄ ⇌ 2NO₂, from 1 mol/L of N₂O₄. At 8 minutes the volume is halved, so every concentration doubles at once, a vertical jump in both lines. The system then shifts toward N₂O₄, the side with fewer moles of gas, so NO₂ falls and N₂O₄ rises until they level off again. K is an example value chosen to give a clear graph.',
+      settings: {
+        reaction: 'n2o4', start1: 1, start2: 0, start3: 0, k: 0.2, count: 1, s1Kind: 'volume',
+        xTo: '14', xStep: '1', yTo: '1.8', yStep: '0.1',
+      },
+    },
+    {
+      slug: 'exothermic-equilibrium-temperature-raised',
+      title: 'Exothermic equilibrium heated: 2SO₂ + O₂ ⇌ 2SO₃',
+      alt: 'Concentration against time for 2SO₂ + O₂ ⇌ 2SO₃: the lines level off, then at 8 minutes, at a dashed line labeled Temperature raised, no line jumps but each turns a corner, SO₃ falling and SO₂ and O₂ rising to new levels',
+      caption:
+        'The Contact process equilibrium, 2SO₂ + O₂ ⇌ 2SO₃, whose forward reaction is exothermic. When the temperature is raised at 8 minutes nothing jumps, since no concentration changes at that moment: K changes. Heating an exothermic reaction makes K smaller, so the system shifts toward the reactants, SO₃ falling and SO₂ and O₂ rising to a new equilibrium. K is an example value chosen to give a clear graph.',
+      settings: {
+        reaction: 'so3', start1: 1, start2: 0.8, start3: 0, k: 10, count: 1, s1Kind: 'raise',
+        xTo: '14', xStep: '1', yTo: '1.2', yStep: '0.1',
+      },
+    },
+    {
+      slug: 'name-the-three-stresses-equilibrium-graph',
+      title: 'Name the three stresses: an equilibrium graph for students',
+      alt: 'A black and white graph of concentration against time for N₂ + 3H₂ ⇌ 2NH₃, the three lines solid, dashed and dotted with no names, and three unlabeled dashed lines at 8, 16 and 24 minutes where the system is stressed',
+      caption:
+        'N₂ + 3H₂ ⇌ 2NH₃ stressed three times, at 8, 16 and 24 minutes, in black with the lines told apart only by their dashes and with no names or words on the figure. Students work out which line is which species from the coefficients, then say what happened at each dashed line and which way the equilibrium shifted: one line jumping alone, all three jumping together, or every line turning a corner with no jump.',
+      settings: { count: 3, s1Text: '', s2Text: '', s3Text: '', color: false, speciesLabels: false, xTo: '28', xStep: '2' },
+    },
+  ]),
 ]
 
 /** A generator's examples, in order; the first is its best. */

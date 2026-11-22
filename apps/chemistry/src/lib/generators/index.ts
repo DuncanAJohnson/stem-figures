@@ -11,6 +11,7 @@ import BohrModelPreview from './bohr-model/Preview.svelte'
 import BondEnergyCurvePreview from './bond-energy-curve/Preview.svelte'
 import DotAndCrossPreview from './dot-and-cross/Preview.svelte'
 import ChromatographyPreview from './chromatography/Preview.svelte'
+import EquilibriumGraphPreview from './equilibrium-graph/Preview.svelte'
 import GasSyringePreview from './gas-syringe/Preview.svelte'
 import HalfLifeGraphPreview from './half-life-graph/Preview.svelte'
 import HeatingCoolingCurvePreview from './heating-cooling-curve/Preview.svelte'
@@ -47,6 +48,7 @@ export const PREVIEWS: Record<string, Component> = {
   'mass-reading': MassReadingPreview,
   'mass-spectrum': MassSpectrumPreview,
   'half-life-graph': HalfLifeGraphPreview,
+  'equilibrium-graph': EquilibriumGraphPreview,
   'orbital-diagram': OrbitalDiagramPreview,
   'particle-diagram': ParticleDiagramPreview,
   'ph-reading': PhReadingPreview,

@@ -7,6 +7,7 @@ import { bohrLinking } from '$lib/generators/bohr-model/linking'
 import { bondLinking } from '$lib/generators/bond-energy-curve/linking'
 import { chromatographyLinking } from '$lib/generators/chromatography/linking'
 import { dotCrossLinking } from '$lib/generators/dot-and-cross/linking'
+import { equilibriumLinking } from '$lib/generators/equilibrium-graph/linking'
 import { syringeLinking } from '$lib/generators/gas-syringe/linking'
 import { halfLifeLinking } from '$lib/generators/half-life-graph/linking'
 import { curveLinking } from '$lib/generators/heating-cooling-curve/linking'
@@ -56,6 +57,7 @@ const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
     pesLinking,
     massSpectrumLinking,
     halfLifeLinking,
+    equilibriumLinking,
     cellLinking,
   ].map((l) => [l.id, l as GeneratorLinking]),
 )

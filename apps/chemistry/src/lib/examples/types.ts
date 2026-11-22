@@ -6,6 +6,7 @@ import type { BohrSettings } from '$lib/generators/bohr-model/settings'
 import type { BondSettings } from '$lib/generators/bond-energy-curve/settings'
 import type { DotCrossSettings } from '$lib/generators/dot-and-cross/settings'
 import type { SyringeSettings } from '$lib/generators/gas-syringe/settings'
+import type { EquilibriumSettings } from '$lib/generators/equilibrium-graph/settings'
 import type { HalfLifeSettings } from '$lib/generators/half-life-graph/settings'
 import type { CurveSettings } from '$lib/generators/heating-cooling-curve/settings'
 import type { LengthSettings } from '$lib/generators/length-reading/settings'
@@ -51,6 +52,7 @@ export interface SettingsById {
   'photoelectron-spectrum': PesSettings
   'mass-spectrum': MassSpectrumSettings
   'half-life-graph': HalfLifeSettings
+  'equilibrium-graph': EquilibriumSettings
 }
 
 export type ExampleGeneratorId = keyof SettingsById

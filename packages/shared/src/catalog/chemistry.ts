@@ -153,6 +153,16 @@ export const CHEMISTRY: CatalogEntry[] = [
     keywords: ['bond', 'energy', 'length', 'curve', 'graph', 'diagram', 'potential', 'internuclear', 'distance', 'separation', 'covalent', 'well', 'minimum', 'attraction', 'repulsion', 'Morse', 'Lennard-Jones', 'Leonard', 'Jones', 'single', 'double', 'triple', 'order', 'compare', 'kJ/mol', 'pm', 'picometer', 'angstrom', 'AP'],
   },
   {
+    id: 'equilibrium-graph',
+    site: 'chemistry',
+    name: 'Equilibrium Graph',
+    path: '/equilibrium-graph',
+    blurb: 'Concentration against time for a reversible reaction settling to equilibrium, then shifting when it’s stressed: Le Châtelier’s principle.',
+    description:
+      'Make printable equilibrium graphs for chemistry tests. Pick a reversible reaction such as N₂ + 3H₂ ⇌ 2NH₃, type its starting concentrations and K, and get concentration against time settling to equilibrium, then shifting as Le Châtelier’s principle says when a species is added or removed, the volume changed or the temperature raised or lowered, on numbered axes with an answer key.',
+    keywords: ['equilibrium', 'equilibria', 'graph', 'Le', 'Chatelier', 'Châtelier', 'Chatelier’s', 'principle', 'concentration', 'vs', 'versus', 'against', 'time', 'reversible', 'reaction', 'stress', 'shift', 'disturbance', 'perturbation', 'Kc', 'Keq', 'K', 'constant', 'quotient', 'Q', 'Haber', 'ammonia', 'NH3', 'N2O4', 'NO2', 'HI', 'SO3', 'PCl5', 'FeSCN', 'ICE', 'table', 'dynamic', 'volume', 'pressure', 'temperature', 'exothermic', 'endothermic', 'AP', 'IB'],
+  },
+  {
     id: 'particle-diagram',
     site: 'chemistry',
     name: 'Particle Diagram',

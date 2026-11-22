@@ -58,6 +58,11 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('electrochemical-cells')
   })
 
+  it('finds Equilibrium Graph the ways teachers ask for it', () => {
+    for (const query of ['le chatelier', 'le châtelier’s principle', 'equilibrium graph', 'concentration vs time', 'haber', 'reversible reaction', 'Kc', 'ICE table', 'stress', 'shift'])
+      expect(ids(query), query).toContain('equilibrium-graph')
+  })
+
   it('keeps "lewis dot" for Lewis Structures', () => {
     expect(ids('lewis dot')).toEqual(['lewis-structures'])
   })

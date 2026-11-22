@@ -997,6 +997,49 @@ export const COPY: Record<string, GeneratorCopy> = {
     imageAlt: 'A printable mass spectrum of magnesium with a peak for each isotope and its percent abundance, made with Mass Spectrum',
     educationalLevel: ['High school', 'AP Chemistry'],
   },
+  'equilibrium-graph': {
+    heading: 'Equilibrium graphs for Le Châtelier’s principle',
+    intro: [
+      'Equilibrium Graph draws concentration against time for a reversible reaction: the reactants falling and the products rising until they level off at equilibrium, then shifting when the system is stressed. Pick N₂ + 3H₂ ⇌ 2NH₃, H₂ + I₂ ⇌ 2HI, N₂O₄ ⇌ 2NO₂, 2SO₂ + O₂ ⇌ 2SO₃, PCl₅ ⇌ PCl₃ + Cl₂, Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺ or a made-up A + B ⇌ C, type each starting concentration and K, and add up to three stresses: a species added or removed, the volume changed, or the temperature raised or lowered.',
+      'The page solves the chemistry instead of sketching it, so the lines always move in the ratio of the coefficients and every level stretch gives the same K: students can read the concentrations off the numbered axes and work out K, or fill in an ICE table. Each stress is marked with a dashed line and a few words, which you can change or leave off for students to say what happened. The answer key gives the equilibrium concentrations, which way each stress shifts the system, and the new K after a temperature change.',
+    ],
+    settings: [
+      'Reaction: six real reversible reactions and a made-up A + B ⇌ C, exothermic or endothermic',
+      'Each species’ starting concentration in mol/L (start from reactants, products or a mixture), K, and the time equilibrium is first established',
+      'Up to three stresses, each at the time you type: add or remove a species, change the volume, or raise or lower the temperature',
+      'The words over each stress’s dashed line: the page’s own (“N₂ added”, “Volume halved”), yours, or none',
+      'Each line’s formula beside it or hidden, and lines in color or in black, told apart as solid, dashed and dotted',
+      'Chart and axis titles (or blank lines), the axis ranges and numbering with a Fit button, gridlines, and label size',
+    ],
+    faqs: [
+      {
+        q: 'Are the K values real?',
+        a: 'No. Each reaction starts with an example K and example starting concentrations, chosen to give a clear graph with the lines well apart. They are not the reactions’ measured equilibrium constants. Type your own K and concentrations to match your textbook or a problem; the page says the same under the K box and in the answer key. Whether each reaction is exothermic or endothermic is real.',
+      },
+      {
+        q: 'How does the graph show Le Châtelier’s principle?',
+        a: 'Add a stress and the lines answer it. Adding a species makes its line jump up, then every line bends as the system shifts to use some of it up: the added species ends above where it was before, never back to it. Changing the volume makes every line jump together, then shift toward the side with fewer moles of gas if the volume fell. Changing the temperature has no jump: K changes, so every line turns a corner toward the new equilibrium.',
+      },
+      {
+        q: 'Can students work out K from the graph?',
+        a: 'Yes. The axes are numbered and every level stretch is at a true equilibrium, so the concentrations read off it give the K you typed, before and after a concentration or volume stress. After a temperature stress they give the new K, which the answer key lists.',
+      },
+      {
+        q: 'How is the shape of the curves worked out?',
+        a: 'Each stretch settles where the reaction quotient Q equals K. It gets there as an elementary reaction would: the forward rate is a constant times each reactant’s concentration to the power of its coefficient, and the reverse rate the same for the products. That is the usual teaching model and gives the familiar curve that is steep at first and then levels off. You choose when equilibrium is first established, which sets how fast the whole graph runs.',
+      },
+      {
+        q: 'Why does nothing shift when I change the volume for H₂ + I₂ ⇌ 2HI?',
+        a: 'There are two moles of gas on each side, so a volume change doesn’t move the equilibrium. Every concentration jumps by the same factor and then stays level, which is a good question to put to students.',
+      },
+      {
+        q: 'Can it show pressure changes, a catalyst or a rate graph?',
+        a: 'A pressure change by changing the volume is the volume stress: halving the volume doubles the pressure and every concentration. Adding an inert gas, adding a catalyst, partial pressures and the graph of forward and reverse rates against time aren’t drawn yet.',
+      },
+    ],
+    imageAlt: 'A printable equilibrium graph of N₂ + 3H₂ ⇌ 2NH₃, concentration against time, the three lines leveling off at equilibrium, made with Equilibrium Graph',
+    educationalLevel: ['High school', 'AP Chemistry', 'IB Chemistry'],
+  },
   'half-life-graph': {
     heading: 'Half-life graphs of radioactive decay',
     intro: [

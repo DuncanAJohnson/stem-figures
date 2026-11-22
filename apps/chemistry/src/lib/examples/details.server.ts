@@ -14,6 +14,8 @@ import { bondSettings } from '$lib/generators/bond-energy-curve/settings'
 import { buildFigure as buildDotCross } from '$lib/generators/dot-and-cross/figure'
 import { dotCrossSettings, readOnce as readDotCross } from '$lib/generators/dot-and-cross/settings'
 import { syringeSettings, answerLine as syringeAnswer } from '$lib/generators/gas-syringe/settings'
+import { answerLines as equilibriumAnswer } from '$lib/generators/equilibrium-graph/figure'
+import { equilibriumSettings } from '$lib/generators/equilibrium-graph/settings'
 import { answerLines as halfLifeAnswer } from '$lib/generators/half-life-graph/figure'
 import { halfLifeSettings } from '$lib/generators/half-life-graph/settings'
 import { buildCurve, degrees, segmentName } from '$lib/generators/heating-cooling-curve/figure'
@@ -226,6 +228,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'photoelectron-spectrum': { definition: pesSettings, answer: pesAnswerKey },
   'mass-spectrum': { definition: massSpectrumSettings, answer: massSpectrumAnswerKey },
   'half-life-graph': { definition: halfLifeSettings, answer: (s) => ({ heading: 'Answer key', lines: halfLifeAnswer(s) }) },
+  'equilibrium-graph': { definition: equilibriumSettings, answer: (s) => ({ heading: 'Answer key', lines: equilibriumAnswer(s) }) },
 }
 
 function detailsOf<G extends ExampleGeneratorId>(generator: G, example: Example): ExampleDetails {
