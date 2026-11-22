@@ -740,6 +740,38 @@ _Avoid_: Product, decay product (fine in help text), daughter isotope (that's th
 **Answer key** (half-life graphs):
 The lines in the settings panel and on example pages giving each isotope's half-life, decay constant and how it decays and to what, naming each hidden one ("Isotope A is carbon-14"), then what's left of the first isotope at each guide line ("After 3 half-lives (17,190 years): 12.5%").
 
+### Rate law graphs
+
+**Rate law graph**:
+A graph against time of one reactant in a reaction A → products with rate = k[A]ⁿ: its concentration [A], ln[A] or 1/[A]. The generator is Rate Law Graphs, which draws the three side by side on the same time axis (each 6 squares tall), or one alone, for students to find the order from which is a straight line. The figure never says the order; the answer key does. The grids are `$shared/graph`'s, the axes along the left and bottom edges (ln[A] is negative below 1 M), always fitted: time from 0 to when a tenth of [A]₀ is left, rounded up to a round step, and each y-axis to its own values. Not the curves of product made or gas collected under different conditions (temperature, catalyst, surface area): those would be a rate of reaction graph, not built.
+_Avoid_: Kinetics graph, linearised plot (both fine in search keywords), rate graph (the conditions curves), decay curve (that's Half-Life Graph)
+
+**Order**:
+Zero, first or second: the power n of [A] in the rate law. Its integrated rate law makes one graph straight: [A] = [A]₀ − kt for zero order, ln[A] = ln[A]₀ − kt for first, 1/[A] = 1/[A]₀ + kt for second. A zero-order reaction ends when [A] reaches 0, at [A]₀/k; nothing is drawn after it. Third order and pseudo-order aren't drawn.
+_Avoid_: Reaction order (fine in help text and search keywords), zeroth order (fine in search keywords), rate order
+
+**Rate constant**:
+k, typed by the teacher, in the unit its order gives it, written from the concentration and time units: M s⁻¹, s⁻¹ or M⁻¹ s⁻¹ (mol L⁻¹ min⁻¹, dm³ mol⁻¹ s⁻¹ and so on). Changing the order sets k so the first half-life, and so the time axis, stays the same. The half-lives follow from it: [A]₀/2k, each half as long as the last, for zero order; ln 2/k, all the same, for first; 1/(k[A]₀), each twice the last, for second.
+_Avoid_: Rate coefficient, k value
+
+**Straight graph**:
+The one of the three graphs that is a straight line for the order: [A] for zero order, ln[A] for first, 1/[A] for second, with slope −k, −k and +k. The answer key names it with its slope and intercept.
+_Avoid_: Linear plot, linearised graph, best fit
+
+**Data points**:
+5 to 10 measurements of [A], evenly spaced from time 0 at a plain spacing (every 12 s, not every 14.3 s), drawn as dots on each graph, in a data table under the graphs (time and [A], or ln[A] and 1/[A] too), or both. Each [A] is the model's value with any scatter, rounded to three significant figures, and ln[A] and 1/[A] are worked out from that rounded [A], as a student would; the first is [A]₀ exactly. With the curve off they are the data for students to judge; with the dots off too and the table on, the grids are empty for students to plot. The answer key gives r² of each graph's points.
+_Avoid_: Half-life dots (that's Half-Life Graph), measurements (fine in help text), readings
+
+**Scatter**:
+About 1, 2 or 5% random error on each data point's [A], drawn from a seed kept in the address (`docs/adr/0002-particles-placed-from-settings.md`), so a link redraws the same data; New data draws another seed. When the scatter makes another graph's points straighter than the right one's, the page says so.
+_Avoid_: Noise (that's the address parameter's name only), error, random data
+
+**Guide line** (rate law graphs):
+As on a half-life graph: a dashed line at one of the first one to three half-lives, from [A]₀/2, [A]₀/4 or [A]₀/8 across to the curve and down to the time axis, on the [A] graph only, labeled with its time, how many half-lives, a blank line or nothing. Where the labels can't all fit (three on a small graph in the row), the page says so.
+
+**Answer key** (rate law graphs):
+The lines in the settings panel and on example pages: the order and rate law ("First order: rate = k[A]"), the integrated rate law, k with its unit, the straight graph with its slope and intercept, the half-life, [A] at each guide line, and with data, r² of each graph's points and the scatter.
+
 ### Equilibrium graphs
 
 **Equilibrium graph**:

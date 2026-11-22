@@ -1356,6 +1356,42 @@ export const EXAMPLES: Example[] = [
       settings: { iso1: 'x', curve: false, dots: true, xTo: '50', xStep: '5', xEvery: 1 },
     },
   ]),
+
+  ...examplesOf('rate-law-graphs', [
+    {
+      slug: 'first-order-rate-law-graphs',
+      title: 'Rate law graphs: [A], ln[A] and 1/[A] vs time for a first-order reaction',
+      alt: 'Three graphs side by side against time in seconds from 0 to 120: [A] in M curving down from 1, ln[A] falling in a straight line from 0, and 1/[A] in M⁻¹ curving up from 1',
+      caption:
+        'A reaction A → products drawn three ways against the same time axis, from 0 to 120 s: the concentration [A] from 1.00 M, ln[A] and 1/[A]. Only the ln[A] graph is a straight line, so the reaction is first order; [A] falls in a curve that levels off, and 1/[A] rises in a curve that gets steeper. The figure doesn’t say the order, so students pick it from the straight graph.',
+      settings: {},
+    },
+    {
+      slug: 'zero-order-data-points-with-scatter',
+      title: 'Zero-order reaction data: which graph is straight?',
+      alt: 'Eight data points on each of three graphs against time in seconds: [A] in M falling in a nearly straight line, ln[A] curving down more and more steeply, and 1/[A] in M⁻¹ curving up',
+      caption:
+        'Eight measurements of [A] every 12 s from a reaction starting at 1.00 M, with a little scatter, as real data would have, and no curves drawn: the same data plotted as [A], ln[A] and 1/[A] against time. The [A] points lie close to a straight line, so the reaction is zero order, while the ln[A] and 1/[A] points curve away more and more as the reactant runs out.',
+      settings: { order: '0', k: 0.01, curve: false, points: true, noise: '2' },
+    },
+    {
+      slug: 'second-order-data-table-plot-the-graphs',
+      title: 'Plot the rate law graphs from a data table: second-order reaction',
+      alt: 'Three empty grids for [A], ln[A] and 1/[A] against time from 0 to 500 s, over a table of time and [A] from 0 to 420 s',
+      caption:
+        'A table of time and [A] for a reaction starting at 1.00 M, measured every 60 s up to 420 s, under three empty grids numbered for [A], ln[A] and 1/[A] against time. Students work out ln[A] and 1/[A] from the table, plot all three graphs and find the order from the straight one: here 1/[A], so the reaction is second order.',
+      settings: { order: '2', curve: false, table: 'conc' },
+    },
+    {
+      slug: 'first-order-concentration-vs-time-half-lives',
+      title: 'First-order concentration vs time in mol/L with three half-lives',
+      alt: 'Concentration of A in mol/L falling from 1 against time in seconds, with dashed guide lines from 0.5, 0.25 and 0.125 mol/L to the curve and down to 34.7, 69.3 and 104 s',
+      caption:
+        'The concentration of the reactant A in mol/L against time for a first-order reaction, falling from 1.00 mol/L. Dashed guide lines run from 0.5, 0.25 and 0.125 mol/L across to the curve and down to the time axis, each labeled with its time: 34.7, 69.3 and 104 s. Each half-life takes the same 34.7 s, as a first-order reaction’s always does.',
+      settings: { graphs: 'conc', concUnit: 'mol/L', guides: 3 },
+    },
+  ]),
+
   ...examplesOf('equilibrium-graph', [
     {
       slug: 'haber-process-reaching-equilibrium',

@@ -27,6 +27,7 @@ import PhReadingPreview from './ph-reading/Preview.svelte'
 import PhaseDiagramPreview from './phase-diagram/Preview.svelte'
 import PhotoelectronSpectrumPreview from './photoelectron-spectrum/Preview.svelte'
 import PotentialEnergyDiagramPreview from './potential-energy-diagram/Preview.svelte'
+import RateLawGraphsPreview from './rate-law-graphs/Preview.svelte'
 import TitrationCurvePreview from './titration-curve/Preview.svelte'
 import TemperatureReadingPreview from './temperature-reading/Preview.svelte'
 import VolumeByDisplacementPreview from './volume-by-displacement/Preview.svelte'
@@ -49,6 +50,7 @@ export const PREVIEWS: Record<string, Component> = {
   'mass-spectrum': MassSpectrumPreview,
   'half-life-graph': HalfLifeGraphPreview,
   'equilibrium-graph': EquilibriumGraphPreview,
+  'rate-law-graphs': RateLawGraphsPreview,
   'orbital-diagram': OrbitalDiagramPreview,
   'particle-diagram': ParticleDiagramPreview,
   'ph-reading': PhReadingPreview,

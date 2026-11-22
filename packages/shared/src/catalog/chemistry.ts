@@ -275,6 +275,16 @@ export const CHEMISTRY: CatalogEntry[] = [
     keywords: ['half-life', 'half', 'life', 'decay', 'radioactive', 'radioactivity', 'exponential', 'nuclear', 'isotope', 'parent', 'daughter', 'carbon', 'dating', 'radiometric', 'activity', 'becquerel', 'Bq', 'count', 'rate', 'remaining', 'iodine', 'uranium', 'curve', 'graph'],
   },
   {
+    id: 'rate-law-graphs',
+    site: 'chemistry',
+    name: 'Rate Law Graphs',
+    path: '/rate-law-graphs',
+    blurb: 'Concentration, ln[A] and 1/[A] against time for a zero, first or second order reaction, side by side.',
+    description:
+      'Make printable rate law graphs for chemistry tests. Set the order, the starting concentration and the rate constant and get [A], ln[A] and 1/[A] against time, side by side or one alone, for students to find the order from which graph is a straight line, with data points, a data table, scatter, or guide lines at each half-life.',
+    keywords: ['rate', 'law', 'laws', 'graph', 'graphs', 'kinetics', 'reaction', 'integrated', 'order', 'orders', 'zero', 'zeroth', 'first', 'second', 'constant', 'k', 'concentration', 'vs', 'versus', 'time', 'ln', 'ln[A]', '1/[A]', 'natural', 'log', 'inverse', 'reciprocal', 'half-life', 'half', 'life', 'linear', 'straight', 'line', 'slope', 'molarity', 'mol/L', 'reactant', 'data', 'table', 'plot', 'AP'],
+  },
+  {
     id: 'electrochemical-cells',
     site: 'chemistry',
     name: 'Electrochemical Cells',

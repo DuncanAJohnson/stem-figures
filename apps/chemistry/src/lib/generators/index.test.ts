@@ -63,6 +63,11 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('equilibrium-graph')
   })
 
+  it('finds Rate Law Graphs the ways teachers ask for it', () => {
+    for (const query of ['rate law graphs', 'integrated rate law', 'kinetics', 'reaction kinetics', 'first order', 'zero order', 'second order', 'reaction order', 'rate constant', 'concentration vs time', 'ln[A]', '1/[A]', 'molarity', 'straight line'])
+      expect(ids(query), query).toContain('rate-law-graphs')
+  })
+
   it('keeps "lewis dot" for Lewis Structures', () => {
     expect(ids('lewis dot')).toEqual(['lewis-structures'])
   })

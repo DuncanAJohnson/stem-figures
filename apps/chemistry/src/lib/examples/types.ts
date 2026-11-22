@@ -21,6 +21,7 @@ import type { PhSettings } from '$lib/generators/ph-reading/settings'
 import type { PesSettings } from '$lib/generators/photoelectron-spectrum/settings'
 import type { PhaseSettings } from '$lib/generators/phase-diagram/settings'
 import type { EnergySettings } from '$lib/generators/potential-energy-diagram/settings'
+import type { RateLawSettings } from '$lib/generators/rate-law-graphs/settings'
 import type { TemperatureSettings } from '$lib/generators/temperature-reading/settings'
 import type { TitrationSettings } from '$lib/generators/titration-curve/settings'
 import type { DisplacementSettings } from '$lib/generators/volume-by-displacement/settings'
@@ -52,6 +53,7 @@ export interface SettingsById {
   'photoelectron-spectrum': PesSettings
   'mass-spectrum': MassSpectrumSettings
   'half-life-graph': HalfLifeSettings
+  'rate-law-graphs': RateLawSettings
   'equilibrium-graph': EquilibriumSettings
 }
 

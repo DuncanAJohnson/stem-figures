@@ -42,6 +42,8 @@ import { phaseSettings } from '$lib/generators/phase-diagram/settings'
 import { answerLines as energyAnswer } from '$lib/generators/potential-energy-diagram/figure'
 import { energySettings } from '$lib/generators/potential-energy-diagram/settings'
 import { phSettings, answerLine as phAnswer } from '$lib/generators/ph-reading/settings'
+import { answerLines as rateLawAnswer } from '$lib/generators/rate-law-graphs/figure'
+import { rateLawSettings } from '$lib/generators/rate-law-graphs/settings'
 import { temperatureSettings, answerLine as temperatureAnswer } from '$lib/generators/temperature-reading/settings'
 import { buildTitration } from '$lib/generators/titration-curve/figure'
 import { titrationSettings } from '$lib/generators/titration-curve/settings'
@@ -228,6 +230,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'photoelectron-spectrum': { definition: pesSettings, answer: pesAnswerKey },
   'mass-spectrum': { definition: massSpectrumSettings, answer: massSpectrumAnswerKey },
   'half-life-graph': { definition: halfLifeSettings, answer: (s) => ({ heading: 'Answer key', lines: halfLifeAnswer(s) }) },
+  'rate-law-graphs': { definition: rateLawSettings, answer: (s) => ({ heading: 'Answer key', lines: rateLawAnswer(s) }) },
   'equilibrium-graph': { definition: equilibriumSettings, answer: (s) => ({ heading: 'Answer key', lines: equilibriumAnswer(s) }) },
 }
 

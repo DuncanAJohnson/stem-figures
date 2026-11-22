@@ -1083,6 +1083,50 @@ export const COPY: Record<string, GeneratorCopy> = {
     imageAlt: 'A printable half-life graph of carbon-14, percent remaining against time in years, with dashed guide lines at its first three half-lives, made with Half-Life Graph',
     educationalLevel: ['Middle school', 'High school', 'AP Chemistry', 'AP Physics'],
   },
+  'rate-law-graphs': {
+    heading: 'Rate law graphs for zero, first and second order reactions',
+    intro: [
+      'Rate Law Graphs draws how a reactant’s concentration falls with time in a reaction A → products with rate = k[A]ⁿ, and the three graphs that tell its order apart: [A], ln[A] and 1/[A] against time. A zero-order reaction gives a straight [A] graph, a first-order one a straight ln[A] graph, and a second-order one a straight 1/[A] graph. Set the order, the starting concentration [A]₀ and the rate constant k, and get all three side by side on the same time axis, or one graph alone.',
+      'Teachers use it for the AP Chemistry question of picking the order from the graph that is a straight line: the figure never says the order, and the answer key does. Show the curves, data points (with a little scatter if you like) or both, put a data table of time and [A] under the graphs for students to plot on empty grids, or draw dashed guide lines at the first one to three half-lives. Name the reactant (N2O5 is written N₂O₅), give concentrations in M, mol/L or mol dm⁻³ and time in seconds, minutes or hours, and k’s unit follows.',
+    ],
+    settings: [
+      'Order: zero, first or second, with [A]₀ and k; changing the order keeps the first half-life',
+      'Graphs: [A], ln[A] and 1/[A] against time side by side, or any one of them alone',
+      'The curve, 5 to 10 data points, or both, with no scatter or about 1, 2 or 5%, and New data for another set',
+      'A data table under the graphs of time and [A], or of ln[A] and 1/[A] too, and Copy data for a spreadsheet',
+      'Dashed guide lines at the first 1 to 3 half-lives on the [A] graph, labeled with their times, half-lives, blank lines or nothing',
+      'The reactant’s name or formula, concentration in M, mol/L or mol dm⁻³, time in seconds, minutes or hours',
+      'Numbers on the axes or sketch graphs without them, gridlines, color or black and white, chart and axis titles (or blank lines), and label size',
+    ],
+    faqs: [
+      {
+        q: 'How do you tell the order of a reaction from its graphs?',
+        a: 'Plot [A], ln[A] and 1/[A] against time and see which is a straight line. If [A] against time is straight, the reaction is zero order; if ln[A] is, first order; if 1/[A] is, second order. The other two graphs curve. This comes from the integrated rate laws: [A] = [A]₀ − kt, ln[A] = ln[A]₀ − kt and 1/[A] = 1/[A]₀ + kt.',
+      },
+      {
+        q: 'How do you find k from the straight graph?',
+        a: 'k is the size of its slope. For zero and first order the line falls, with slope −k; for second order it rises, with slope +k. The intercept on the y-axis is [A]₀, ln[A]₀ or 1/[A]₀. The answer key gives k with its unit, the slope and the intercept.',
+      },
+      {
+        q: 'What are the units of k?',
+        a: 'They depend on the order. With concentration in M and time in seconds, k is in M s⁻¹ for zero order, s⁻¹ for first order and M⁻¹ s⁻¹ for second order. The generator writes k’s unit from the units you choose, such as mol L⁻¹ min⁻¹ or dm³ mol⁻¹ s⁻¹.',
+      },
+      {
+        q: 'How does the half-life depend on the order?',
+        a: 'A first-order half-life is ln 2 / k and never changes. A zero-order one is [A]₀ / 2k, so each is half as long as the last; a second-order one is 1 / (k[A]₀), so each is twice as long as the last. The guide lines show the first one to three on the [A] graph.',
+      },
+      {
+        q: 'Can students plot the data themselves?',
+        a: 'Yes. Turn off the curve and the data points and add the data table: the grids are left empty for students to work out ln[A] and 1/[A] from the table and plot them. Each [A] in the table is rounded to three significant figures, and the ln[A] and 1/[A] rows, if shown, are worked out from those rounded values, as a student would.',
+      },
+      {
+        q: 'Why does the zero-order line stop?',
+        a: 'A zero-order reaction goes at the same rate until the reactant runs out, so [A] reaches 0 at t = [A]₀ / k and the reaction is over. Nothing is drawn after that, and ln[A] and 1/[A] have no value at 0, so their curves leave the top or bottom of the grid before it.',
+      },
+    ],
+    imageAlt: 'Printable rate law graphs of a first-order reaction: [A], ln[A] and 1/[A] against time side by side, the ln[A] graph a straight line, made with Rate Law Graphs',
+    educationalLevel: ['High school', 'AP Chemistry', 'IB Chemistry'],
+  },
 }
 
 /** The copy for a generator; every generator on the site has some. */
