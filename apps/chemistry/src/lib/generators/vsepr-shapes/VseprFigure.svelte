@@ -181,7 +181,7 @@
                 text-anchor="middle"
                 font-size={Math.min(SYMBOL_FONT, p.r * 0.95)}
                 font-weight="700"
-                fill={lightness(shade(fill, -shadow(p.near))) > 0.55 ? INK : '#fff'}>{p.element}</text
+                fill={lightness(fill) > 0.55 ? INK : '#fff'}>{p.element}</text
               >
             {/if}
           {:else}
@@ -260,6 +260,7 @@
             fill-opacity={ball ? 0.9 : 1}
             stroke={ball ? (s.grayscale ? '#8a8a8a' : '#7f93b8') : INK}
             stroke-width="1.4"
+            stroke-linejoin="round"
           />
           {#each p.dots as [x, y], j (j)}<circle cx={x} cy={y} r="2.6" fill={INK} />{/each}
         {:else}
