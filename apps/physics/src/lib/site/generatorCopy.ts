@@ -776,6 +776,90 @@ export const COPY: Record<string, GeneratorCopy> = {
     imageAlt: 'Three printable torque diagrams side by side: a balanced beam on a pivot with two hanging weights, a beam on two supports A and B with its weight at its middle, and a hanging sign on a beam held at a wall by a cable, each with its distances marked, made with the Torque Generator',
     educationalLevel: ['Middle school', 'High school', 'AP Physics', 'IGCSE', 'A level'],
   },
+
+  'pendulum': {
+    heading: 'Pendulum diagrams for energy, forces and simple harmonic motion',
+    intro: [
+      'The Pendulum Generator draws a bob on a string hanging from a pivot under a hatched ceiling, swung out θ from the vertical. The Swing shows the bob at its release point, at the bottom and at the same height on the far side, with its dashed path between them, the angle θ, the string’s length L and the height h it drops: the figure for energy conversion problems. The bottom and far-side bobs are drawn lighter, with dashed strings, so the release point stands out.',
+      'One bob shows the pendulum at one angle, with the tension and its weight, or with weight split into its components along the string (mg cos θ) and along the path (mg sin θ). The arrows are drawn at the release point, where the bob is momentarily at rest, so the tension is drawn as long as mg cos θ. Rename any label, leave it blank for students to fill in, or turn it off.',
+    ],
+    settings: [
+      'The picture: the Swing (release point, bottom and far side) or One bob',
+      'The angle from the vertical, 5° to 75° (at least 15° in the Swing, so its three bobs stand apart), and the side the bob is on',
+      'The bob’s dashed path, the angle mark θ, the string length L and the height mark h, each with its own label',
+      'Letters A, B and C at the release point, the bottom and the far side of the Swing, each editable',
+      'The velocity at the bottom of the Swing, with its label',
+      'On One bob: no forces, the tension and weight, or those with weight’s components along the string and the path',
+      'The bob’s label, a chart title, and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'How do I make a figure for a pendulum energy problem?',
+        a: 'Keep the Swing, the default. It shows the bob at its release point, at the bottom and at the far side, the height h from the lowest point up to the release point, and the angle θ and string length L. Turn on Letter the three bobs to name them A, B and C for questions like “find the speed at B”. The far-side bob is at the same height as the release point, as energy conservation says it should be without friction.',
+      },
+      {
+        q: 'Why is there no velocity arrow at the ends of the swing?',
+        a: 'At the release point and at the far side the bob stops for a moment before swinging back, so its velocity there is zero. The velocity arrow is drawn only on the bottom bob, along the path toward the far side, where the bob is fastest.',
+      },
+      {
+        q: 'Are the force arrows drawn to scale?',
+        a: 'Weight is always the same length, and the components along the string and along the path are its true components, mg cos θ and mg sin θ, with dotted lines from weight’s tip to theirs. The tension is drawn as long as mg cos θ, which is right at the release point, where the bob is momentarily at rest. Lower in the swing the tension is larger, so the forces are only drawn on One bob, at its release point.',
+      },
+      {
+        q: 'Can it draw a pendulum for simple harmonic motion?',
+        a: 'Yes: the Swing with its dashed path and the velocity at the bottom is the usual figure, with θ as the amplitude angle. Turn off the height mark if you don’t need it. Values like the period are not worked out; type them into the labels or the chart title.',
+      },
+      {
+        q: 'Can it work out the height, the speed or the period?',
+        a: 'Not yet. Labels are text you type, so nothing is worked out from θ and L. If you would like values and an answer key (h = L(1 − cos θ) and the speed at the bottom, for example), or a conical, double or ballistic pendulum, use Request a generator on the home page and tell us what it should draw. A conical pendulum is on the Circular Motion Generator.',
+      },
+    ],
+    imageAlt: 'A printable pendulum diagram of a bob on a string from a hatched ceiling, released at an angle θ from the vertical, drawn again lighter at the bottom and at the same height on the far side, with its dashed path, the string length L and the height h it drops, made with the Pendulum Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Physics'],
+  },
+
+  'spring': {
+    heading: 'Spring diagrams for Hooke’s law, simple harmonic motion, and springs in series and parallel',
+    intro: [
+      'The Spring Generator draws a spring fixed to a support, hanging from a ceiling or lying on a floor from a wall, with a block, a ball or slotted masses on its free end. Draw it once; before and after, at its natural length beside the same spring stretched or squashed, for Hooke’s law; or at three positions, −A, equilibrium and +A, for simple harmonic motion.',
+      'The coil is redrawn at every length with the same number of turns and the same line, so a stretched spring looks like the same spring pulled out, not a picture stretched. Mark the extension x, the natural length L₀ and the equilibrium line, add an applied force, or draw two or three springs in series or in parallel.',
+    ],
+    settings: [
+      'Hanging from a ceiling, or horizontal from a wall with the object on a floor',
+      'One spring; before and after; or three positions for simple harmonic motion',
+      'One spring, or two or three in series or in parallel, each labeled k or numbered k₁, k₂, k₃',
+      'The extension, up to the natural length again, or squashed by up to half of it on a floor; in three positions, the amplitude A',
+      'Zigzag or looped coils',
+      'A block, a ball or slotted masses, with its own label',
+      'The extension and the natural length as dimension lines, a dashed equilibrium line, and an applied force pulling or pushing',
+      'In three positions, the velocity at equilibrium and the acceleration at each end, with the way the object is moving',
+      'Every label written, a blank line for students, or left off; a chart title; and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'How do I draw a Hooke’s law figure?',
+        a: 'Keep the default, Before and after: the spring at its natural length with nothing on it, and beside it the same spring stretched by the object, with a dashed line at the natural length running across both and the extension x marked between it and the stretched end. Change the extension to stretch it more or less, or turn on the natural length L₀.',
+      },
+      {
+        q: 'Can it draw a compressed spring?',
+        a: 'Yes, on a floor. Choose Horizontal and move the extension below 0; the spring is squashed by up to half its natural length, and the applied force pushes the object toward the wall. A hanging spring with a mass on it is always stretched.',
+      },
+      {
+        q: 'How does it show simple harmonic motion?',
+        a: 'Choose Three positions. The same spring is drawn at −A, at equilibrium and at +A, side by side when hanging or in three rows on a floor, with a dashed equilibrium line. At each end the velocity is zero and the acceleration, pointing back to equilibrium, is greatest; at equilibrium the velocity is greatest and the acceleration is zero, so each copy has at most one arrow. A hanging spring oscillates about the point where it rests stretched by the object, not about its natural length.',
+      },
+      {
+        q: 'Do springs in series stretch by different amounts?',
+        a: 'Not in the figure. The spring constants are labels you type, so springs in series are drawn stretching equally, and springs in parallel all have the same extension, as they do in real life. If your springs have different k, say so in the question.',
+      },
+      {
+        q: 'Can it work out the extension from the mass and k?',
+        a: 'Not yet. Labels are text you type, so nothing is worked out or drawn to scale. If you would like values and an answer key, a spring on a ramp or between blocks, or a force–extension graph, use Request a generator on the home page and tell us what it should draw.',
+      },
+    ],
+    imageAlt: 'A printable Hooke’s law diagram of a spring hanging from a hatched ceiling at its natural length beside the same spring stretched by a block labeled m, with a dashed line at the natural length and the extension x marked, made with the Spring Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Physics'],
+  },
 }
 
 /** The copy for a generator; every generator on the site has some. */

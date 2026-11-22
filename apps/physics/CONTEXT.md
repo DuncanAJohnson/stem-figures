@@ -474,3 +474,65 @@ _Avoid_: Rope, wire, string (a string holds a hanging object)
 **Support force**:
 A force holding the beam up, drawn as a solid arrow: up at the Pivot or at A and B, or at a wall its parts along the beam and up the wall, with the Cable's tension along the cable. Off by default, since they are often the answer.
 _Avoid_: Reaction (fine as a search word), normal force
+
+### Pendulum
+
+**Pendulum**:
+A figure of a simple pendulum: a Bob on a string from a Pivot under a hatched ceiling, swung out 5° to 75° from the vertical, either as the Swing or as one bob with the forces on it. Its generator is the Pendulum Generator. The string is one length in every figure, so θ alone sets the shape; nothing is worked out from it. A bob going round a level circle is the Circular Motion figure's conical pendulum, and a spring is the Spring Generator's.
+_Avoid_: Swing (for the figure; that's one picture of it), simple harmonic oscillator (fine as a search word)
+
+**Pivot**:
+The dot under the ceiling the string hangs from, and the point θ is measured at. The Torque figure uses the word for its beam's triangle.
+_Avoid_: Hinge, support, suspension point
+
+**Bob**:
+The ball at the end of a pendulum's string. Its label (m) is its own.
+_Avoid_: Weight (that's the force on it), mass (fine in its label), ball, object (alone)
+
+The pendulum's **string** is drawn solid from the pivot to the bob, never a rope or rod, with its length label (L) beside it.
+
+**Swing**:
+The picture of the bob at three places, for energy problems: its release point, the bottom, and the far side, at the same height as the release point, with its dashed path between them. The bottom and far-side bobs are lighter copies with dashed strings. It needs θ of at least 15°, so the three bobs stand apart, and it can letter them A, B, C and show the velocity at the bottom (none at the two ends, where the bob is at rest).
+_Avoid_: Three positions, energy diagram, oscillation (fine as a search word)
+
+**Release point**:
+Where the bob is let go from rest, θ from the vertical on the chosen side: the solid bob in the Swing, and the one bob otherwise. Forces are drawn only there, on one bob: weight straight down and the tension as long as weight's component along the string, mg cos θ, which is right while the bob is at rest; weight's components (mg cos θ along the string, mg sin θ along the path) are thinner and dashed, as on the Free Body Diagram.
+_Avoid_: Start, amplitude position, extreme
+
+**Height mark**:
+On a Pendulum, a dimension line on the far side from the release point, from the release point's height down to the lowest point's, with dashed lines across to them, labelled h. When it is too short for its arrowheads, they sit outside it, pointing in. The Roller Coaster's height mark is measured from the ground instead.
+_Avoid_: Height arrow, drop
+
+### Spring
+
+**Spring**:
+A figure of a spring, or two or three joined in series or in parallel, fixed to a Support with an Object on its free end, drawn once, Before and after, or at Three positions, for Hooke's law and simple harmonic motion. Its generator is the Spring Generator. Labels are text, so nothing is worked out or drawn to scale, and springs in series stretch equally whatever their k. Reading a spring scale is the Spring Scale's; a spring inside a ramp or pulley setup is left to those generators.
+_Avoid_: Slinky, coil (alone, for the figure), spring diagram (fine as a search word)
+
+**Support**:
+What a Spring figure's springs are fixed to: a hatched ceiling they hang from, or a hatched wall on the left with a hatched floor the Object rests on. Hanging copies share one ceiling; horizontal copies are rows, each with its own wall and floor.
+_Avoid_: Mount, anchor, base
+
+**Natural length**:
+How long a spring is with nothing pulling or pushing it, L₀. Drawn as a dashed line where the free end would be, and as a dimension line on the spring drawn at it.
+_Avoid_: Rest length, unstretched length (fine in captions), original length
+
+**Extension**:
+How far the free end has moved from where it would be at the natural length, as a share of that length: up to 100% stretched, or, on a floor, down to −50%, squashed. Marked with a dimension line labelled x. A hanging spring with an Object on it is always stretched.
+_Avoid_: Stretch (as a noun), displacement (fine for Three positions), compression (fine for a squashed spring)
+
+**Equilibrium line**:
+A dashed line across the figure where the free end rests: on a floor, at the natural length; hanging, where the Object hangs at rest, stretched. Labelled x = 0 unless the teacher types another label. The Wave's rest line is a different thing.
+_Avoid_: Rest line (that's a Wave's), midline, zero line
+
+**Before and after**:
+The Spring figure drawn twice: at the natural length (hanging, with nothing on it but a hook), then stretched or squashed with the Object on it, side by side under one ceiling or in two rows, with the natural length's dashed line through both so the extension reads off.
+_Avoid_: Comparison, two states
+
+**Three positions**:
+The Spring figure drawn at −A, at equilibrium and at +A, for simple harmonic motion: side by side when hanging (+A, up, on the left) or three rows on a floor (−A, squashed, on top). A is the amplitude. A hanging spring oscillates about where it hangs at rest, stretched by half its natural length. Only one spring, never series or parallel. At each end the acceleration arrow points back to equilibrium and there is no velocity arrow; at equilibrium there is only the velocity arrow, toward or away from the Support.
+_Avoid_: Snapshots, SHM positions, phases
+
+**Coil style**:
+How a spring's coil is drawn: a zigzag or loops (a helix seen from the side). Either is redrawn at every length with the same number of turns and the same line weight, never scaled, so a stretched spring looks like the same spring pulled out. Squashed loops are drawn narrower along the spring so they never cross.
+_Avoid_: Spring type, coil shape

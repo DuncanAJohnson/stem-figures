@@ -19,11 +19,13 @@ import { motionOf, numberText, segmentLines, tangentAt } from '$lib/generators/m
 import { motionSettings, viewsOf } from '$lib/generators/motion-graphs/settings'
 import { mapAnswer } from '$lib/generators/motion-map/map'
 import { mapSettings } from '$lib/generators/motion-map/settings'
+import { pendulumSettings } from '$lib/generators/pendulum/settings'
 import { projectileSettings } from '$lib/generators/projectile-motion/settings'
 import { pulleySettings } from '$lib/generators/pulley/settings'
 import { answerLines as rayAnswer, raySettings } from '$lib/generators/ray-diagram/settings'
 import { coasterSettings } from '$lib/generators/roller-coaster/settings'
 import { answerLines as springScaleAnswer, springScaleSettings } from '$lib/generators/spring-scale/settings'
+import { springSettings } from '$lib/generators/spring/settings'
 import { answerLines as torqueAnswer } from '$lib/generators/torque/moments'
 import { torqueSettings } from '$lib/generators/torque/settings'
 import { resultantOf } from '$lib/generators/vector-diagram/vd'
@@ -127,6 +129,8 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'lever': { definition: leverSettings, answer: (s) => ({ heading: 'Answer key', lines: leverAnswer(s) }) },
   'circular-motion': { definition: physics(circularSettings), answer: none },
   'torque': { definition: physics(torqueSettings), answer: (s) => ({ heading: 'Answer key (directions as drawn)', lines: torqueAnswer(s) }) },
+  'pendulum': { definition: pendulumSettings, answer: none },
+  'spring': { definition: springSettings, answer: none },
 }
 
 function detailsOf<G extends ExampleGeneratorId>(generator: G, example: Example): ExampleDetails {

@@ -1087,6 +1087,66 @@ export const EXAMPLES: Example[] = [
       },
     },
   ]),
+  ...examplesOf('pendulum', [
+    {
+      slug: 'pendulum-energy-conversion-release-bottom-and-far-side',
+      title: 'Pendulum energy conversion: release point, bottom and far side',
+      alt: 'A bob on a string of length L from a hatched ceiling, released at angle θ from a dashed vertical at A, drawn lighter at the bottom B and at the same height on the far side C, with its dashed path between them and the height h from the lowest point up to A marked on the far side',
+      caption:
+        'A simple pendulum released from rest at A, θ from the vertical, swings through the bottom, B, and up to C on the far side. Without friction C is at the same height as A. The bob drops a height h from A to B, so its potential energy mgh there becomes kinetic energy at B, where it moves fastest.',
+      settings: { angle: 40, pointLabels: true },
+    },
+    {
+      slug: 'forces-on-a-pendulum-with-weight-components',
+      title: 'Forces on a pendulum, with weight’s components',
+      alt: 'A bob on a string from a hatched ceiling at 25° from a dashed vertical, with the tension T along the string toward the pivot, its weight mg straight down, and weight’s components drawn dashed: mg cos θ along the string, away from the pivot, and mg sin θ along the path, toward the bottom',
+      caption:
+        'The forces on a pendulum bob at its release point, 25° from the vertical: the tension T along the string and its weight mg straight down. Weight is split into mg cos θ along the string, which the tension balances while the bob is at rest, and mg sin θ along its path, the restoring force that pulls it back toward the bottom.',
+      settings: { picture: 'one', angle: 25, forces: 'components', arc: false, heightMark: false },
+    },
+    {
+      slug: 'simple-pendulum-with-angle-and-length',
+      title: 'Simple pendulum with its angle and length',
+      alt: 'A bob m on a string of length L from a hatched ceiling, pulled to the right at angle θ from a dashed vertical line through the pivot',
+      caption:
+        'A simple pendulum: a bob of mass m on a string of length L, pulled aside to an angle θ from the vertical. The dashed vertical through the pivot is where it hangs at rest. Use it for questions on the period, T = 2π√(L/g), which for small angles does not depend on m or θ.',
+      settings: { picture: 'one', arc: false, heightMark: false },
+    },
+  ]),
+  ...examplesOf('spring', [
+    {
+      slug: 'hookes-law-spring-extension-before-and-after',
+      title: 'Hooke’s law: a spring before and after a mass is hung on it',
+      alt: 'Two identical springs k hanging from a hatched ceiling: the left one at its natural length L_0 with nothing on it, the right one stretched by a block m, with a dashed line at the natural length running across both and the extension x marked between it and the stretched end',
+      caption:
+        'The same spring drawn twice under one ceiling: on the left at its natural length L₀, on the right stretched by the block m hanging on it. The dashed line at the end of the unstretched spring runs across both, so the extension x reads off between it and the stretched end. The block hangs at rest, so the spring force kx balances its weight mg.',
+      settings: { lengthMark: true },
+    },
+    {
+      slug: 'compressed-horizontal-spring-with-applied-force',
+      title: 'Compressed horizontal spring with an applied force',
+      alt: 'Two rows, each a spring k fixed to a hatched wall with a block m on a hatched floor: in the upper row the spring is at its natural length, in the lower row it is squashed by x, marked from a dashed line at the natural end, and an applied force F pushes the block toward the wall',
+      caption:
+        'A spring on a floor, fixed to a wall, drawn at its natural length and again squashed by x, measured from the dashed line where its free end was. The applied force F pushes the block toward the wall, and the coil is drawn shorter with the same number of turns, so it looks like the same spring pushed in.',
+      settings: { orientation: 'horizontal', stretch: -0.4, appliedForce: true },
+    },
+    {
+      slug: 'simple-harmonic-motion-mass-on-a-spring-three-positions',
+      title: 'Simple harmonic motion: a mass on a spring at −A, 0 and +A',
+      alt: 'Three rows of a block m on a floor on a spring k from a hatched wall, at x = −A with the spring squashed, at x = 0 and at x = +A with it stretched, a dashed vertical line x = 0 through all three, a dashed velocity arrow v pointing right at x = 0, and dashed acceleration arrows a pointing back toward x = 0 at −A and +A',
+      caption:
+        'A mass on a spring oscillating on a frictionless floor, drawn at three positions: squashed at x = −A, passing equilibrium at x = 0 and stretched at x = +A. At each end it stops for an instant, so it has no velocity there, and its acceleration a, back toward equilibrium, is greatest. At equilibrium its velocity v is greatest and its acceleration is zero.',
+      settings: { orientation: 'horizontal', picture: 'positions', stretch: 0.5, equilibriumLine: true },
+    },
+    {
+      slug: 'two-springs-in-parallel-with-a-hanging-mass',
+      title: 'Two springs in parallel with a hanging mass',
+      alt: 'Two springs k_1 and k_2 side by side from a hatched ceiling to a light bar, with a block m hanging from the middle of the bar, and the extension x marked from a dashed line at the springs’ natural length',
+      caption:
+        'Two springs, k₁ and k₂, hang side by side from a ceiling and hold a light bar, with the block m hanging from its middle. Both springs stretch by the same extension x, from the dashed line at their natural length, so together they act as one spring with k = k₁ + k₂.',
+      settings: { picture: 'one', springs: '2p' },
+    },
+  ]),
 ]
 
 /** A generator's examples, in order; the first is its best. */

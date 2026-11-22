@@ -260,4 +260,35 @@ export const PHYSICS: CatalogEntry[] = [
       'support force', 'reaction', 'clockwise', 'anticlockwise', 'counterclockwise', 'center of gravity', 'printable',
     ],
   },
+  {
+    id: 'pendulum',
+    site: 'physics',
+    name: 'Pendulum Generator',
+    path: '/pendulum',
+    blurb: 'A pendulum swinging, or one bob with the forces on it.',
+    description:
+      'Make printable pendulum diagrams for physics tests. Draw a bob swinging from its release point to the bottom and the far side, with θ, L and the height h for energy problems, or one bob with its tension, weight and components.',
+    keywords: [
+      'pendulum', 'simple pendulum', 'pendulums', 'swinging', 'swing', 'bob', 'string', 'energy conversion',
+      'conservation of energy', 'potential energy', 'kinetic energy', 'height', 'release point', 'tension', 'weight',
+      'mg cos theta', 'mg sin theta', 'components', 'forces on a pendulum', 'restoring force', 'simple harmonic motion',
+      'shm', 'oscillation', 'oscillations', 'period', 'amplitude', 'velocity', 'printable',
+    ],
+  },
+  {
+    id: 'spring',
+    site: 'physics',
+    name: 'Spring Generator',
+    path: '/spring',
+    blurb: 'A mass on a spring, hanging or on a floor, stretched or squashed.',
+    description:
+      "Make printable spring diagrams for physics tests. Draw a mass on a spring, hanging or horizontal, before and after it stretches for Hooke's law, at three positions for simple harmonic motion, or springs in series and parallel.",
+    keywords: [
+      'spring', 'springs', "hooke's law", 'hookes law', 'hooke', 'mass on a spring', 'mass-spring system', 'spring constant',
+      'k', 'extension', 'spring extension', 'stretch', 'stretched spring', 'compression', 'compressed spring', 'natural length',
+      'equilibrium', 'equilibrium position', 'displacement', 'simple harmonic motion', 'shm', 'oscillation', 'oscillator',
+      'amplitude', 'springs in series', 'springs in parallel', 'series', 'parallel', 'hanging mass', 'horizontal spring',
+      'elastic', 'elastic potential energy', 'restoring force', 'printable',
+    ],
+  },
 ]

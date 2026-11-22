@@ -122,6 +122,45 @@ strut or a crane; meter-stick markings, distances between neighbouring loads,
 and a tilted beam; people on a seesaw, a wrench or a door; a drawn spring
 scale, a title and printed answer key, center-of-mass problems.
 
+## Pendulum (built)
+
+A bob on a string from a pivot under a hatched ceiling, 5° to 75° from the
+vertical, to the left or right. The Swing (the default, for energy problems)
+draws the bob at its release point and, lighter, at the bottom and at the same
+height on the far side (θ at least 15°), with letters A, B, C and a velocity
+arrow at the bottom; One bob can show the tension and weight, or weight's
+components along the string and the path, drawn at the release point. Marks:
+the dashed path, θ, the string length L, and the height h on the far side. The
+string is one fixed length, and nothing is worked out. Left out, in order:
+values and an answer key (L and θ giving h = L(1 − cos θ) and the speed at the
+bottom, √(2gh)), the first follow-up if teachers ask; then forces at other
+points of the swing (the tension at the bottom bigger than mg), acceleration
+arrows (centripetal at the bottom, tangential at the ends), energy bar charts
+at A, B and C (with the roller coaster's), and conical (on Circular Motion
+already), double, physical and ballistic pendulums, and a pendulum hitting a
+block.
+
+## Spring (built)
+
+A spring fixed to a hatched ceiling, or to a wall with the object on a floor,
+with a block, a ball or slotted masses on its free end. Three choices shape
+it: the orientation; the picture (one spring, Before and after for Hooke's
+law, or Three positions at −A, equilibrium and +A for simple harmonic
+motion); and one spring, or two or three in series or in parallel. The
+extension runs from −50% (squashed, on a floor only) to 100% of the natural
+length; marks are the extension x, the natural length L₀, a dashed
+equilibrium line and an applied force; Three positions adds velocity and
+acceleration arrows. The coil, zigzag or loops, is redrawn at every length
+with the same turns (`src/lib/shared/spring.ts`, ready for other generators)
+and the hatching is `src/lib/shared/support.ts`. Labels are text, so springs
+in series stretch equally. Left out, in order: springs inside other setups (on
+a ramp, between blocks, on a cart: options on Inclined Plane and Pulley using
+`coilPath`), and a spring launcher on the Roller Coaster; values and an answer
+key (k in N/m and m in kg, the extension worked out as mg/k and drawn to
+scale), the first follow-up if teachers ask; then a thicker spring for a
+bigger k, unequal extensions in series, force–extension graphs, energy bar
+charts, springs launching projectiles, and pistons.
+
 ## Magnetic Field
 
 Field figures that don't belong to Coil and Magnet (ADR 0002 keeps that one to
