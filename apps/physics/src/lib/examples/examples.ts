@@ -1133,7 +1133,7 @@ export const EXAMPLES: Example[] = [
     {
       slug: 'simple-harmonic-motion-mass-on-a-spring-three-positions',
       title: 'Simple harmonic motion: a mass on a spring at −A, 0 and +A',
-      alt: 'Three rows of a block m on a floor on a spring k from a hatched wall, at x = −A with the spring squashed, at x = 0 and at x = +A with it stretched, a dashed vertical line x = 0 through all three, a dashed velocity arrow v pointing right at x = 0, and dashed acceleration arrows a pointing back toward x = 0 at −A and +A',
+      alt: 'Three rows of a block m on a floor on a spring k from a hatched wall, at x = −A with the spring squashed, at x = 0 and at x = +A with it stretched, a dashed vertical equilibrium line through all three, a dashed velocity arrow v pointing right at x = 0, and dashed acceleration arrows a pointing back toward x = 0 at −A and +A',
       caption:
         'A mass on a spring oscillating on a frictionless floor, drawn at three positions: squashed at x = −A, passing equilibrium at x = 0 and stretched at x = +A. At each end it stops for an instant, so it has no velocity there, and its acceleration a, back toward equilibrium, is greatest. At equilibrium its velocity v is greatest and its acceleration is zero.',
       settings: { orientation: 'horizontal', picture: 'positions', stretch: 0.5, equilibriumLine: true },

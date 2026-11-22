@@ -143,6 +143,23 @@ describe('horizontal', () => {
     expect(f.dashed[0].y2).toBeGreaterThan(f.ends[1].y)
   })
 
+  test('parallel springs meet the object square on, level with its middle, whatever the object and number', () => {
+    for (const springs of ['2p', '3p'] as const)
+      for (const object of ['ball', 'block'] as const) {
+        const f = fig({ orientation: 'horizontal', picture: 'one', springs, object })
+        const o = f.objects[0]
+        const middle = { x: o.at.x, y: o.at.y - (object === 'ball' ? 26 : 28) }
+        const link = f.wires.at(-1)!
+        const bar = f.bars[0]
+        expect(link.y1).toBe(middle.y)
+        expect(link.y2).toBe(middle.y)
+        expect(link.x1).toBe(bar.x1)
+        expect(Math.min(bar.y1, bar.y2)).toBeLessThan(middle.y)
+        expect(Math.max(bar.y1, bar.y2)).toBeGreaterThan(middle.y)
+        expect(link.x2).toBeCloseTo(o.at.x - (object === 'ball' ? 26 : 28))
+      }
+  })
+
   test('a ball touches the free end where the spring meets its edge', () => {
     const f = fig({ orientation: 'horizontal', picture: 'one', object: 'ball' })
     const ball = f.objects[0]
@@ -158,7 +175,10 @@ describe('Three positions', () => {
     expect(f.ends.map((e) => e.y)).toEqual([0.2, 0.5, 0.8].map((e) => Math.round((CEILING_Y + natural * (1 + e)) * 100) / 100))
     expect(HANGING_EQUILIBRIUM).toBe(0.5)
     expect(f.dashed).toEqual([{ x1: 20, y1: f.ends[1].y, x2: 620, y2: f.ends[1].y }])
-    expect(f.labels.filter((l) => l.label.text.startsWith('x =')).map((l) => l.label.text)).toEqual(['x = +A', 'x = 0', 'x = −A', 'x = 0'])
+    expect(f.labels.filter((l) => l.label.text.startsWith('x =')).map((l) => l.label.text)).toEqual(['x = +A', 'x = 0', 'x = −A'])
+    // The middle copy's name says x = 0, so the line has no label of its own, unless the names are off.
+    const unnamed = fig({ picture: 'positions', equilibriumLine: true, amplitudeLabel: { mode: 'none', text: 'A' } })
+    expect(unnamed.labels.filter((l) => l.label.text.startsWith('x =')).map((l) => l.label.text)).toEqual(['x = 0'])
   })
 
   test('the acceleration at each end points back to equilibrium, and the velocity is only at equilibrium', () => {

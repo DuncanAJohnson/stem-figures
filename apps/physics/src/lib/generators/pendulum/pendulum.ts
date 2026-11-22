@@ -8,10 +8,13 @@
 // both the bob and the height mark on the far side fit.
 //
 // Force arrows are drawn about the right size, not to scale with anything
-// else: weight is always WEIGHT long, and the tension is as long as weight's
+// else: weight is WEIGHT long (longer at a wide angle, see weightOf), and the tension is as long as weight's
 // component along the string, mg cos θ, which is right at a release point,
 // where the bob is momentarily at rest. Every arrow on a bob starts at its
-// middle and the bob is drawn over it, so the arrow comes out of its edge.
+// middle and the bob is drawn over it, so the arrow comes out of its edge;
+// the tension and mg cos θ show at least MIN_SHOWN past it (see
+// weightOf), and mg sin θ shows at least MIN_SHOWN_ACROSS, at a small angle by
+// being drawn a little longer than to scale.
 //
 // Angles are in degrees counterclockwise from the right (see $lib/shared/layout).
 // Labels are placed last, each at the first clear spot near where it belongs
@@ -35,6 +38,17 @@ export const LENGTH = 256
 const CEILING_HALF = 70
 /** The weight arrow, and the velocity arrow. */
 export const WEIGHT = 96
+/** How much of a force arrow, at the least, shows past the bob's edge. */
+export const MIN_SHOWN = 32
+/** The same for mg sin θ at a small angle, which is drawn longer than to scale to show this much: less, so it is drawn to scale from about 25°. */
+export const MIN_SHOWN_ACROSS = 22
+
+/**
+ * How long weight is drawn at θ: WEIGHT, or longer at a wide angle, so the
+ * tension and weight's component along the string (both mg cos θ) still show
+ * past the bob. Every force grows with it, so they stay to scale with each other.
+ */
+export const weightOf = (deg: number) => Math.max(WEIGHT, (BOB_R + MIN_SHOWN) / Math.cos((deg * Math.PI) / 180))
 export const VELOCITY = 64
 /** The angle mark's arc, around the pivot. */
 export const ARC_R = 50
@@ -142,7 +156,7 @@ export function pivotOf(s: PendulumSettings): Point {
   const x = Math.max(4 + far, Math.min(WIDTH - 4 - near, WIDTH / 2 + (far - near) / 2))
   // Below the pivot: the lowest point and what's under it, or the bob and its forces.
   const lowest = swing || s.arc || s.heightMark || s.angleMark ? LENGTH + (swing ? BOB_R + ROOM.under : 0) : 0
-  const bottom = Math.max(lowest, down + (forces ? WEIGHT + 40 : BOB_R + ROOM.bob))
+  const bottom = Math.max(lowest, down + (forces ? weightOf(s.angle) + 40 : BOB_R + ROOM.bob))
   const top = CEILING_HATCH_LENGTH
   const y = Math.max(top + 4, (HEIGHT - bottom - top) / 2 + top)
   return pt(sign > 0 ? x : WIDTH - x, y)
@@ -227,7 +241,13 @@ export function buildPendulum(s: PendulumSettings): PendulumFigure {
     let at: Point
     let out: Point
     let alt: Point | undefined
-    if (place === 'tip') {
+    if (place === 'tip' && kind === 'across') {
+      // Level with its tip, on the vertical's side, a little lower: clear of the dotted guide, and by its arrow even when the label is wide.
+      const sx = Math.sign(d.x) || 1
+      const tip = add(from, d, length)
+      at = pt(tip.x + sx * (labelBox(tip, label).w / 2 + 6), tip.y + 6)
+      out = { x: sx, y: 0 }
+    } else if (place === 'tip') {
       at = add(add(from, d, length), d, 12 + (lw / 2) * Math.abs(d.x) + 15 * Math.abs(d.y))
       out = d
     } else {
@@ -254,7 +274,9 @@ export function buildPendulum(s: PendulumSettings): PendulumFigure {
 
   // The path, then the marks, then the strings, so the strings are drawn over the dashed lines.
   if (s.arc) arc(P, LENGTH, 270 - theta, 270 + theta, 'path')
-  if (s.angleMark && !swing) line(P, lowest, 'ref')
+  // With forces on and nothing else at the bottom, the vertical stops level with the bob, leaving room for mg sin θ's label.
+  const shortVertical = s.forces !== 'none' && !s.arc && !s.heightMark
+  if (s.angleMark && !swing) line(P, shortVertical ? pt(P.x, release.y) : lowest, 'ref')
   if (s.heightMark) {
     // On the far side, so it crosses no string; its dashed lines reach across under the release bob.
     const x = r2(far.x - sign * (BOB_R + HEIGHT_GAP))
@@ -288,13 +310,20 @@ export function buildPendulum(s: PendulumSettings): PendulumFigure {
   const downPath = { x: -sign * Math.cos(rad), y: Math.sin(rad) }
   const awayFromVertical = { x: sign * Math.cos(rad), y: -Math.sin(rad) }
   if (!swing && s.forces !== 'none') {
-    arrow('tension', release, { x: -outward.x, y: -outward.y }, WEIGHT * Math.cos(rad), s.tensionLabel, 'beside', awayFromVertical)
-    const weight = arrow('weight', release, { x: 0, y: 1 }, WEIGHT, s.weightLabel, 'tip')
+    const W = weightOf(theta)
+    // The tension's label goes on the vertical's side of the string, leaving the outside for the bob's.
+    const towardVertical = { x: -awayFromVertical.x, y: -awayFromVertical.y }
+    arrow('tension', release, { x: -outward.x, y: -outward.y }, W * Math.cos(rad), s.tensionLabel, 'beside', towardVertical)
+    const weight = arrow('weight', release, { x: 0, y: 1 }, W, s.weightLabel, 'tip')
     if (s.forces === 'components') {
-      const along = arrow('along', release, outward, WEIGHT * Math.cos(rad), s.alongLabel, 'beside', awayFromVertical)
-      const across = arrow('across', release, downPath, WEIGHT * Math.sin(rad), s.acrossLabel, 'tip')
+      const along = arrow('along', release, outward, W * Math.cos(rad), s.alongLabel, 'beside', awayFromVertical)
+      // At a small angle mg sin θ is drawn a little longer than to scale, so it shows past the bob.
+      const short = W * Math.sin(rad) < BOB_R + MIN_SHOWN_ACROSS
+      const across = arrow('across', release, downPath, Math.max(W * Math.sin(rad), BOB_R + MIN_SHOWN_ACROSS), s.acrossLabel, 'tip')
       const tip = pt(weight.v.x2, weight.v.y2)
-      fig.guides.push(seg(tip, pt(along.v.x2, along.v.y2)), seg(tip, pt(across.v.x2, across.v.y2)))
+      // Dotted lines from weight's tip, each as long as the other component: the second only when that one is to scale.
+      fig.guides.push(seg(tip, pt(along.v.x2, along.v.y2)))
+      if (!short) fig.guides.push(seg(tip, pt(across.v.x2, across.v.y2)))
       lines.push(...fig.guides)
     }
   }
@@ -309,9 +338,13 @@ export function buildPendulum(s: PendulumSettings): PendulumFigure {
   bob(release, 'release', false)
   fig.extent.push(P)
 
-  // The bob's label beside it, away from the vertical; the Swing's letters past each end of the path, and under the bottom.
+  // The bob's label beside it, away from the vertical: level with it in the Swing (its letter A is above),
+  // and up and out on One bob, clear of the forces below it. It stays on that side.
   const lw = labelWidth(s.bobLabel)
-  note(s.bobLabel, pt(release.x + sign * (BOB_R + 8 + lw / 2), release.y), { x: sign, y: 0 }, true, pt(release.x - sign * (BOB_R + 8 + lw / 2), release.y))
+  const bobOut = swing ? { x: sign, y: 0 } : awayFromVertical
+  note(s.bobLabel, add(release, bobOut, BOB_R + 8 + (lw / 2) * Math.abs(bobOut.x) + 12 * Math.abs(bobOut.y)), bobOut)
+  // It is placed first, so it stays by the bob and the force labels find room round it.
+  const bobWant = noteWants.pop()!
   if (swing && s.pointLabels) {
     const beyond = (at: Point, d: Point, l: Label) => add(at, d, BOB_R + 8 + (labelWidth(l) / 2) * Math.abs(d.x) + 12 * Math.abs(d.y))
     const upFar = { x: -sign * Math.cos(rad), y: -Math.sin(rad) }
@@ -324,7 +357,7 @@ export function buildPendulum(s: PendulumSettings): PendulumFigure {
   // The figure's edges count as lines, so a label finds a clear spot inside them.
   const edge = [pt(2, 2), pt(WIDTH - 2, 2), pt(WIDTH - 2, HEIGHT - 2), pt(2, HEIGHT - 2)]
   const edges = edge.map((p, i) => seg(p, edge[(i + 1) % 4]))
-  const order = [...vectorWants, ...noteWants]
+  const order = [bobWant, ...vectorWants, ...noteWants]
   placeLabels(order, [...lines, ...edges], null).forEach((p, i) => {
     const b = labelBox(p, order[i].label)
     order[i].put(pt(Math.min(WIDTH - 4 - b.w / 2, Math.max(4 + b.w / 2, p.x)), Math.min(HEIGHT - 4 - b.h / 2, Math.max(4 + b.h / 2, p.y))))

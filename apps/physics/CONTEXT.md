@@ -496,7 +496,7 @@ The picture of the bob at three places, for energy problems: its release point, 
 _Avoid_: Three positions, energy diagram, oscillation (fine as a search word)
 
 **Release point**:
-Where the bob is let go from rest, θ from the vertical on the chosen side: the solid bob in the Swing, and the one bob otherwise. Forces are drawn only there, on one bob: weight straight down and the tension as long as weight's component along the string, mg cos θ, which is right while the bob is at rest; weight's components (mg cos θ along the string, mg sin θ along the path) are thinner and dashed, as on the Free Body Diagram.
+Where the bob is let go from rest, θ from the vertical on the chosen side: the solid bob in the Swing, and the one bob otherwise. Forces are drawn only there, on one bob: weight straight down and the tension as long as weight's component along the string, mg cos θ, which is right while the bob is at rest; weight's components (mg cos θ along the string, mg sin θ along the path) are thinner and dashed, as on the Free Body Diagram. All are to scale with each other, weight drawn longer at a wide angle so mg cos θ shows past the bob, except mg sin θ at a small angle, drawn just long enough to show.
 _Avoid_: Start, amplitude position, extreme
 
 **Height mark**:

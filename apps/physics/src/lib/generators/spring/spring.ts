@@ -156,7 +156,7 @@ export function buildSpring(s: SpringSettings): SpringFigure {
     // Across the springs: to the right of a hanging one, down from a horizontal one.
     const across = hanging ? { x: 1, y: 0 } : { x: 0, y: 1 }
     const length = c.natural * (1 + c.extension)
-    const end = pt(c.base.x + c.along.x * length, c.base.y + c.along.y * length)
+    let end = pt(c.base.x + c.along.x * length, c.base.y + c.along.y * length)
     const at = (from: Point, along: number, off = 0) => pt(from.x + c.along.x * along + across.x * off, from.y + c.along.y * along + across.y * off)
 
     if (joined === 'series' || count === 1) {
@@ -193,7 +193,14 @@ export function buildSpring(s: SpringSettings): SpringFigure {
       }
       const reachEnd = at(c.base, reach)
       fig.bars.push(seg(at(c.base, reach, -spread - 6), at(c.base, reach, spread + 6)))
-      fig.wires.push(seg(reachEnd, end))
+      // On a floor the springs may sit higher than the object's middle, to clear
+      // the floor, so the link leaves the bar level with the object's middle and
+      // meets it square on, a ball at its widest.
+      if (!hanging && c.carries === 'object') {
+        const middleY = floorY - objectHeight(kind === 'ball' ? 'ball' : 'block', OBJECT_SIZE) / 2
+        end = pt(end.x, middleY)
+        fig.wires.push(seg(pt(reachEnd.x, middleY), end))
+      } else fig.wires.push(seg(reachEnd, end))
     }
 
     const springSpread = spread + coilWidth / 2
@@ -245,6 +252,9 @@ function copiesOf(s: SpringSettings) {
   const middle = hanging ? HANGING_EQUILIBRIUM : 0
   return { extensions: [middle - s.stretch, middle, middle + s.stretch], rest: 1 }
 }
+
+/** Does the equilibrium line carry its own label? In Three positions the middle copy's name (x = 0) says it, unless the names are off. */
+export const equilibriumLabelled = (s: Pick<SpringSettings, 'picture' | 'amplitudeLabel'>) => s.picture !== 'positions' || s.amplitudeLabel.mode === 'none'
 
 /** The positions' names: x = +A, x = 0, x = −A, in the order the copies are drawn. */
 function positionNames(s: SpringSettings): Label[] {
@@ -330,7 +340,7 @@ function buildHanging(s: SpringSettings, fig: SpringFigure, draw: Draw, vector: 
   if (s.equilibriumLine) {
     const y = fig.ends[rest].y
     fig.dashed.push(seg(pt(20, y), pt(fig.width - 20, y)))
-    ink(s.equilibriumLabel, pt(20, y - 14), 'start')
+    if (equilibriumLabelled(s)) ink(s.equilibriumLabel, pt(20, y - 14), 'start')
   }
 
   fig.height = Math.ceil(bottom + 24)
@@ -411,7 +421,7 @@ function buildHorizontal(s: SpringSettings, fig: SpringFigure, draw: Draw, vecto
   // On a floor the free end rests where the spring is at its natural length.
   if (s.equilibriumLine) {
     fig.dashed.push(seg(pt(naturalX, HORIZONTAL.top - 8), pt(naturalX, last.floorY)))
-    ink(s.equilibriumLabel, pt(naturalX, HORIZONTAL.top - 18))
+    if (equilibriumLabelled(s)) ink(s.equilibriumLabel, pt(naturalX, HORIZONTAL.top - 18))
   }
 
   fig.height = HORIZONTAL.top + rows.length * rowHeight - 8

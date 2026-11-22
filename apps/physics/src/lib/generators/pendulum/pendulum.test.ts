@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { labelBox, overlaps } from '$lib/shared/layout'
 import { boxAround, segmentHits } from '$lib/shared/overlap'
 import type { Point } from '$lib/shared/vector'
-import { BOB_R, HEIGHT, LENGTH, SHORT_HEIGHT, WEIGHT, WIDTH, buildPendulum, describe as describeFigure, type FigureVector, type PendulumFigure } from './pendulum'
+import { BOB_R, HEIGHT, LENGTH, MIN_SHOWN, MIN_SHOWN_ACROSS, SHORT_HEIGHT, WEIGHT, WIDTH, buildPendulum, weightOf, describe as describeFigure, type FigureVector, type PendulumFigure } from './pendulum'
 import { FORCES, MAX_ANGLE, MIN_ANGLE, MIN_SWING_ANGLE, PICTURES, SIDES, pendulumSettings, type PendulumSettings } from './settings'
 
 const settings = (s: Partial<PendulumSettings>) => pendulumSettings.tidy({ ...pendulumSettings.defaults, ...s })
@@ -125,6 +125,35 @@ describe('forces on One bob', () => {
       expect(way(of(f, 'weight'))).toEqual({ x: 0, y: 1 })
       expect(length(of(f, 'weight'))).toBeCloseTo(WEIGHT, 1)
     }
+  })
+
+  test('at every angle each force shows past the bob, and the tension stays mg cos θ of weight', () => {
+    for (let angle = MIN_ANGLE; angle <= MAX_ANGLE; angle += 5) {
+      const f = fig({ picture: 'one', angle, forces: 'components' })
+      for (const v of f.vectors) expect(length(v), `${v.kind} at ${angle}°`).toBeGreaterThanOrEqual(BOB_R + (v.kind === 'across' ? MIN_SHOWN_ACROSS : MIN_SHOWN) - 0.01)
+      const cos = Math.cos((angle * Math.PI) / 180)
+      expect(length(of(f, 'tension')) / length(of(f, 'weight'))).toBeCloseTo(cos, 3)
+      expect(length(of(f, 'along')) / length(of(f, 'weight'))).toBeCloseTo(cos, 3)
+      expect(length(of(f, 'weight'))).toBeCloseTo(weightOf(angle), 1)
+    }
+    expect(weightOf(30)).toBe(WEIGHT)
+    expect(weightOf(75)).toBeGreaterThan(WEIGHT)
+  })
+
+  test('mg sin θ too short to show is drawn longer, without its guide', () => {
+    const f = fig({ picture: 'one', angle: 5, forces: 'components' })
+    expect(length(of(f, 'across'))).toBeCloseTo(BOB_R + MIN_SHOWN_ACROSS, 1)
+    expect(f.guides).toHaveLength(1)
+  })
+
+  test('the bob’s label stays on its side away from the vertical', () => {
+    for (const side of SIDES)
+      for (const forces of FORCES)
+        for (const angle of [5, 25, 50, 75]) {
+          const f = fig({ picture: 'one', side, angle, forces })
+          const m = f.notes.find((n) => n.label.text === 'm')!
+          expect(Math.sign(m.at.x - release(f).x), `${side} ${forces} ${angle}°`).toBe(side === 'right' ? 1 : -1)
+        }
   })
 
   test('the components add up to weight: along the string, away from the pivot, and along the path, toward the bottom', () => {

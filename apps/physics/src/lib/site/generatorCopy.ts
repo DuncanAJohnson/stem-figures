@@ -803,7 +803,7 @@ export const COPY: Record<string, GeneratorCopy> = {
       },
       {
         q: 'Are the force arrows drawn to scale?',
-        a: 'Weight is always the same length, and the components along the string and along the path are its true components, mg cos θ and mg sin θ, with dotted lines from weight’s tip to theirs. The tension is drawn as long as mg cos θ, which is right at the release point, where the bob is momentarily at rest. Lower in the swing the tension is larger, so the forces are only drawn on One bob, at its release point.',
+        a: 'They are drawn to scale with each other: the components along the string and along the path are weight’s true components, mg cos θ and mg sin θ, with dotted lines from weight’s tip to theirs. At a wide angle every arrow is drawn longer, so mg cos θ still shows past the bob; at a small angle mg sin θ is drawn a little longer than to scale, so it shows at all. The tension is drawn as long as mg cos θ, which is right at the release point, where the bob is momentarily at rest. Lower in the swing the tension is larger, so the forces are only drawn on One bob, at its release point.',
       },
       {
         q: 'Can it draw a pendulum for simple harmonic motion?',

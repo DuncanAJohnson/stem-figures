@@ -75,8 +75,9 @@
 
   <circle cx={fig.pivot.x} cy={fig.pivot.y} r="3" fill={p.ink} />
 
-  <!-- A white outline under each arrow, so it stands clear of the string it lies on. -->
-  {#each fig.vectors as v}
+  <!-- A white outline under each arrow, so it stands clear of the dashed lines it crosses. The tension lies on
+       the string itself, so it has none: an outline would cut the string where the arrowhead ends. -->
+  {#each fig.vectors.filter((v) => v.kind !== 'tension') as v}
     {@const a = arrow(v.v, headOf(v))}
     <line x1={a.shaft.x1} y1={a.shaft.y1} x2={a.shaft.x2} y2={a.shaft.y2} stroke="#fff" stroke-width={VECTOR_WIDTH + 5} stroke-linecap="round" />
     <polygon points={a.head.map((c) => `${c.x},${c.y}`).join(' ')} fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round" />

@@ -11,6 +11,7 @@
   import TitleField from '$shared/LabelField.svelte'
   import { generatorState } from '$shared/generatorState.svelte'
   import Spring from './Spring.svelte'
+  import { equilibriumLabelled } from './spring'
   import { HORIZONTAL_MOST_AMPLITUDE, MOST_COMPRESSED, MOST_STRETCHED, arrangementOf, springSettings, type Orientation, type Picture } from './settings'
 
   const gen = generatorState(springSettings, 'spring', { history: 'physicsfigures.spring.history', presets: 'physicsfigures.spring.presets' })
@@ -128,7 +129,7 @@
         {#if clean.lengthMark}<div class="field"><LabelField name="Natural length label" bind:label={s.lengthLabel} /></div>{/if}
       {/if}
       <label class="check"><input type="checkbox" bind:checked={s.equilibriumLine} /> Equilibrium line</label>
-      {#if clean.equilibriumLine}<div class="field"><LabelField name="Equilibrium line label" bind:label={s.equilibriumLabel} /></div>{/if}
+      {#if clean.equilibriumLine && equilibriumLabelled(clean)}<div class="field"><LabelField name="Equilibrium line label" bind:label={s.equilibriumLabel} /></div>{/if}
       {#if !positions}
         <label class="check"><input type="checkbox" bind:checked={s.appliedForce} /> Applied force</label>
         {#if clean.appliedForce}<div class="field"><LabelField name="Applied force label" bind:label={s.forceLabel} /></div>{/if}
