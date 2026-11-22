@@ -77,6 +77,13 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('heating-cooling-curve')
   })
 
+  it('finds Phase Diagram the ways teachers ask for it', () => {
+    for (const query of ['phase diagram', 'phase change diagram', 'triple point', 'critical point', 'sublimation', 'dry ice', 'supercritical fluid', 'normal boiling point', 'carbon dioxide'])
+      expect(ids(query), query).toContain('phase-diagram')
+    // Phase change still finds the heating curve too.
+    expect(ids('phase change')).toContain('heating-cooling-curve')
+  })
+
   it('finds Length Reading the ways teachers ask for it', () => {
     for (const query of ['ruler', 'length', 'measuring length', 'centimeter', 'millimeter', 'inches', 'metric ruler'])
       expect(ids(query), query).toContain('length-reading')

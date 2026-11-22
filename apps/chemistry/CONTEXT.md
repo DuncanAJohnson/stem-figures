@@ -663,6 +663,38 @@ _Avoid_: Annotation, caption
 What's written by the temperature axis just above (or below) a plateau's dashed line: its temperature (78.3 °C), m.p. or b.p. (f.p. and b.p. on a cooling curve), or a blank line for students to write the melting or boiling point on. It goes along the line, inside the grid, as far from the axis as the curve makes it. The temperature by default.
 _Avoid_: Axis label (that's the letter at an axis's end), tick label
 
+### Phase diagrams
+
+**Phase diagram**:
+A graph of one substance's pressure (up the side) against its temperature (along the bottom), split by its phase boundaries into regions. The generator is Phase Diagram. The substance is water, carbon dioxide, nitrogen, oxygen, argon, methane or ammonia, with values from each one's reference equation of state as the NIST Chemistry WebBook gives them (cited in `phase.ts`), or Your own, from six typed values: the triple point, the critical point and the normal melting and boiling points.
+_Avoid_: Phase change diagram (a search word only; it is also what teachers call a heating curve), P–T diagram
+
+**Phase boundary**:
+One of the three lines between regions: the **sublimation curve**, from the graph's bottom left corner up to the triple point; the **fusion line**, straight from the triple point to the top of the graph, leaning left only for water; and the **vaporization curve**, from the triple point to the critical point, rising ever more steeply, where it stops. The sublimation curve arrives at the triple point steeper than the vaporization curve leaves it. Each can be named along it with its changes (Melting / freezing, Boiling / condensing, Sublimation / deposition), lettered beside a small dot on it, or given a blank line.
+_Avoid_: Equilibrium line, phase line, coexistence curve
+
+**Region**:
+The area of one phase: Solid left of the sublimation curve and fusion line, Liquid between the fusion line and the vaporization curve, Gas below and right. With the supercritical fluid marked, dashed lines run up and right from the critical point and the region past them is Supercritical fluid.
+_Avoid_: Vapor (for the Gas region), phase area, zone
+
+**Triple point**:
+Where the three phase boundaries meet: the one temperature and pressure where solid, liquid and gas can be present together. A dot, named, lettered, blank or bare, with dashed lines to both axes.
+
+**Critical point**:
+Where the vaporization curve ends: past it the liquid and gas can't be told apart. A dot, labeled as the triple point is.
+
+**1 atm line**:
+A dashed line across the graph at 1 atm (101.3 kPa), named at the pressure axis, with a dot and a dashed line down where it crosses each boundary. For carbon dioxide, whose triple point is above 1 atm, it crosses only the sublimation curve. In the panel it's the "1 atm line".
+_Avoid_: Isobar (the setting's name in the address, not in the panel), normal pressure line
+
+**Normal melting point** / **Normal boiling point**:
+Where the 1 atm line crosses the fusion line and the vaporization curve: the temperatures a substance melts and boils at under 1 atm. Marked by its temperature, its name (Normal m.p., Normal b.p.), a letter or a blank line. Every real substance but water melts within a few hundredths of a kelvin of its triple point's temperature, so its melting point isn't written apart from the triple point's; for Your own both are typed.
+_Avoid_: Melting point / boiling point alone (fine in help text), m.p. and b.p. alone
+
+**Not to scale** / **On a grid**:
+The two kinds of axes. Not to scale (the default, and the only one for a real substance) is the textbook figure on a fixed block grid with no numbers or gridlines: the triple point low and left, the critical point high and right, 1 atm between, and the real values written at the axes where the dashed lines land. On a grid is Your own substance on numbered axes and gridlines, to scale, its vaporization curve bent to pass through the typed boiling point. Named in the address as Potential Energy Diagram's are, shape and numbered.
+_Avoid_: Schematic (that's a heating curve's), log scale, qualitative
+
 ### Half-life graphs
 
 **Half-life graph**:

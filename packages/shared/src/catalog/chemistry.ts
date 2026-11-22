@@ -122,6 +122,16 @@ export const CHEMISTRY: CatalogEntry[] = [
     keywords: ['heating', 'cooling', 'curve', 'graph', 'phase', 'change', 'changes', 'state', 'states', 'matter', 'melting', 'freezing', 'boiling', 'condensation', 'condensing', 'vaporization', 'fusion', 'plateau', 'point', 'temperature', 'time', 'heat', 'energy', 'specific', 'enthalpy', 'supercooling', 'solid', 'liquid', 'gas', 'ice', 'water', 'steam', 'ethanol', 'acetone', 'mercury', 'salt', 'kinetic', 'potential', 'thermochemistry', 'AP'],
   },
   {
+    id: 'phase-diagram',
+    site: 'chemistry',
+    name: 'Phase Diagram',
+    path: '/phase-diagram',
+    blurb: 'A pressure–temperature phase diagram for water, carbon dioxide and other substances, or your own, labeled, lettered or blank.',
+    description:
+      'Make printable phase diagrams for chemistry tests. Pick water, carbon dioxide, nitrogen, oxygen, argon, methane or ammonia, or type your own triple and critical points, and get the pressure–temperature diagram with its solid, liquid and gas regions, triple point, critical point and 1 atm line named, lettered or left blank for students.',
+    keywords: ['phase', 'diagram', 'phase-change', 'change', 'triple', 'critical', 'point', 'pressure', 'temperature', 'sublimation', 'deposition', 'fusion', 'vaporization', 'supercritical', 'fluid', 'normal', 'boiling', 'melting', 'freezing', 'solid', 'liquid', 'gas', 'vapor', 'water', 'carbon', 'dioxide', 'CO2', 'dry', 'ice', 'nitrogen', 'oxygen', 'argon', 'methane', 'ammonia', 'states', 'matter', 'atm', 'kPa', 'AP'],
+  },
+  {
     id: 'potential-energy-diagram',
     site: 'chemistry',
     alsoOn: ['biology'],

@@ -22,6 +22,7 @@ import NuclideNotationPreview from './nuclide-notation/Preview.svelte'
 import OrbitalDiagramPreview from './orbital-diagram/Preview.svelte'
 import ParticleDiagramPreview from './particle-diagram/Preview.svelte'
 import PhReadingPreview from './ph-reading/Preview.svelte'
+import PhaseDiagramPreview from './phase-diagram/Preview.svelte'
 import PhotoelectronSpectrumPreview from './photoelectron-spectrum/Preview.svelte'
 import PotentialEnergyDiagramPreview from './potential-energy-diagram/Preview.svelte'
 import TitrationCurvePreview from './titration-curve/Preview.svelte'
@@ -52,6 +53,7 @@ export const PREVIEWS: Record<string, Component> = {
   'temperature-reading': TemperatureReadingPreview,
   'titration-curve': TitrationCurvePreview,
   'heating-cooling-curve': HeatingCoolingCurvePreview,
+  'phase-diagram': PhaseDiagramPreview,
   'potential-energy-diagram': PotentialEnergyDiagramPreview,
   'volume-by-displacement': VolumeByDisplacementPreview,
   'gas-syringe': GasSyringePreview,

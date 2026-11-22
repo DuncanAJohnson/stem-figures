@@ -418,6 +418,47 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school', 'AP Chemistry'],
   },
 
+  'phase-diagram': {
+    heading: 'Phase diagrams',
+    intro: [
+      'Phase Diagram draws a substance’s pressure against temperature: the sublimation curve rising to the triple point, the fusion line running up from it, and the vaporization curve running from it to the critical point, where it stops. The regions between them are the solid, the liquid and the gas. Pick water, carbon dioxide, nitrogen, oxygen, argon, methane or ammonia, or type your own substance’s triple point, critical point and normal melting and boiling points. A real substance is drawn not to scale, as textbooks draw it, with its real temperatures and pressures written at the axes where dashed lines from each point land. Your own substance can also go on numbered axes and gridlines, to scale, for students to read values from.',
+      'Teachers use it for questions on states of matter and phase changes: what phase is the substance in at 1 atm and 50 °C, what are its normal melting and boiling points, why does dry ice sublime. Name the regions, the points and the phase boundaries, letter them for questions, or leave blank lines for students to fill in, and add the 1 atm line with a dot where it crosses each boundary. Everything lettered shares one run of A, B, C…, which you can shuffle, and the answer key lists each point’s values and what each letter marks.',
+    ],
+    settings: [
+      'The substance: water, carbon dioxide, nitrogen, oxygen, argon, methane or ammonia, or your own, from its triple point, critical point and normal melting and boiling points',
+      'Not to scale, with the values written at the axes, or, for your own substance, numbered axes and gridlines, to scale',
+      'Temperatures in °C or K, pressures in atm or kPa',
+      'The regions (Solid, Liquid, Gas), the triple and critical points and the phase boundaries each named, lettered, left as blank lines, or bare',
+      'Dashed lines from the triple and critical points to the axes, with the values, blank lines or nothing written there',
+      'The 1 atm line, with the normal melting and boiling points (or the sublimation point) marked by their temperatures, names, letters or blank lines',
+      'The supercritical fluid region, shuffled letters, the curve’s color, the chart and axis titles (or blank lines), the axis ranges and numbering on a grid, and label size',
+    ],
+    faqs: [
+      {
+        q: 'What are the triple point and the critical point?',
+        a: 'The triple point is the one temperature and pressure where the solid, the liquid and the gas can all be present together; it is where the three phase boundaries meet. The critical point is where the vaporization curve ends: above its temperature and pressure the liquid and the gas can no longer be told apart, and the substance is a supercritical fluid.',
+      },
+      {
+        q: 'Why does water’s fusion line lean left?',
+        a: 'Ice is less dense than liquid water, so squeezing ice favors the denser liquid and lowers the melting point: the higher the pressure, the lower the temperature the solid melts at, and the line between solid and liquid leans to the left. Almost every other substance’s solid is denser than its liquid, so its fusion line leans right.',
+      },
+      {
+        q: 'Why does dry ice sublime instead of melting?',
+        a: 'Carbon dioxide’s triple point is at 5.11 atm, above normal air pressure. At 1 atm the liquid can’t exist at any temperature, so the 1 atm line crosses only the sublimation curve, at −78.5 °C: solid carbon dioxide turns straight into gas.',
+      },
+      {
+        q: 'Are the real substances drawn to scale?',
+        a: 'No. Their pressures span too much for one plain axis: water’s triple point is at 0.006 atm and its critical point at 218 atm. So the real substances are drawn not to scale, in the textbook’s shape, with their real values written at the axes. The fusion line’s lean is exaggerated too: a real one is nearly upright, so for every substance but water the normal melting point is within a few hundredths of a degree of the triple point’s temperature. To read values off a graph to scale, type your own substance and choose On a grid.',
+      },
+      {
+        q: 'Where do the values come from?',
+        a: 'The triple and critical points and the normal boiling points are from each substance’s reference equation of state, as the NIST Chemistry WebBook gives them; water’s normal melting point is from the IAPWS melting curve of ice.',
+      },
+    ],
+    imageAlt: 'A printable phase diagram of water, not to scale, its solid, liquid and gas regions and its triple and critical points named, with their temperatures and pressures written at the axes, made with Phase Diagram',
+    educationalLevel: ['Middle school', 'High school', 'AP Chemistry'],
+  },
+
   'potential-energy-diagram': {
     heading: 'Potential energy diagrams and reaction energy profiles',
     intro: [

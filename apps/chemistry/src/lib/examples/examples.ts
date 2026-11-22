@@ -469,6 +469,49 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('phase-diagram', [
+    {
+      slug: 'phase-diagram-of-water',
+      title: 'Phase diagram of water',
+      alt: 'Phase diagram of water, not to scale, with Solid, Liquid and Gas regions, the fusion line leaning left, and the triple point at 0.01 °C and 0.00604 atm and the critical point at 373.9 °C and 218 atm',
+      caption:
+        'The pressure–temperature phase diagram of water, drawn not to scale in the textbook’s shape. The sublimation curve rises to the triple point, the fusion line runs up from it, leaning left because ice is less dense than liquid water, and the vaporization curve runs to the critical point, where it stops. The regions are named Solid, Liquid and Gas, and dashed lines from the two points carry their real values to the axes: 0.01 °C and 0.00604 atm, and 373.9 °C and 218 atm.',
+      settings: {},
+    },
+    {
+      slug: 'phase-diagram-of-carbon-dioxide-dry-ice-sublimes',
+      title: 'Phase diagram of carbon dioxide: why dry ice sublimes',
+      alt: 'Phase diagram of carbon dioxide, not to scale, its triple point at 5.11 atm above a dashed 1 atm line that crosses only the sublimation curve, at −78.5 °C',
+      caption:
+        'The phase diagram of carbon dioxide, not to scale, with a dashed line across at 1 atm. Its triple point, at −56.6 °C and 5.11 atm, is above 1 atm, so the 1 atm line crosses only the sublimation curve, at −78.5 °C: at normal pressure solid carbon dioxide, dry ice, turns straight into gas. Its fusion line leans right, as almost every substance’s does, and its critical point is at 31.0 °C and 72.8 atm.',
+      settings: { substance: 'co2', isobar: true },
+    },
+    {
+      slug: 'phase-diagram-of-nitrogen-kelvin-kpa',
+      title: 'Phase diagram of nitrogen in kelvin and kPa',
+      alt: 'Phase diagram of nitrogen, not to scale, in K and kPa: triple point 63.2 K and 12.5 kPa, critical point 126.2 K and 3,400 kPa, and a 101.3 kPa line crossing the vaporization curve at its normal boiling point, 77.4 K',
+      caption:
+        'The phase diagram of nitrogen, not to scale, with temperatures in kelvin and pressures in kPa. The triple point is at 63.2 K and 12.5 kPa and the critical point at 126.2 K and 3,400 kPa. A dashed line at 101.3 kPa, 1 atm, crosses the fusion line and the vaporization curve, which it meets at the normal boiling point, 77.4 K. Nitrogen melts within a few hundredths of a kelvin of its triple point’s temperature, so the melting point isn’t written apart from it.',
+      settings: { substance: 'nitrogen', tUnit: 'K', pUnit: 'kPa', isobar: true },
+    },
+    {
+      slug: 'phase-diagram-worksheet-blank',
+      title: 'Blank phase diagram worksheet: label the regions and points',
+      alt: 'Phase diagram of water, not to scale, with blank lines for the three regions, the triple and critical points, their temperatures and pressures at the axes, and the normal melting and boiling points on a dashed 1 atm line',
+      caption:
+        'A blank phase diagram of water for students to fill in, drawn not to scale. Each region, the triple point and the critical point have a blank line, and so do the temperatures and pressures at the axes where the dashed lines from the two points land. A dashed line at 1 atm crosses the fusion line and the vaporization curve, with a blank line under each crossing for the normal melting and boiling points.',
+      settings: { regions: 'blank', points: 'blank', axisValues: 'blank', isobar: true, normalPoints: 'blank' },
+    },
+    {
+      slug: 'phase-diagram-on-a-grid-substance-x-lettered',
+      title: 'Phase diagram on a grid: read the values for Substance X',
+      alt: 'Phase diagram of a made-up Substance X on numbered axes and gridlines, its regions, triple point, critical point and the crossings of a dashed 1 atm line lettered A to G',
+      caption:
+        'The phase diagram of a made-up substance, Substance X, drawn to scale on numbered axes and gridlines, so students can read values off it. Its triple point is at 20 °C and 0.4 atm and its critical point at 140 °C and 3 atm; at 1 atm, the dashed line across, it melts at 22 °C and boils at 75 °C. The solid, liquid and gas regions are lettered A, B and C, the triple and critical points D and E, and the normal melting and boiling points F and G.',
+      settings: { substance: 'custom', axes: 'numbered', regions: 'letters', points: 'letters', isobar: true, normalPoints: 'letters' },
+    },
+  ]),
+
   ...examplesOf('potential-energy-diagram', [
     {
       slug: 'potential-energy-diagram-exothermic-reaction',

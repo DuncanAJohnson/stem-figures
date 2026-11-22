@@ -18,6 +18,7 @@ import { nuclideLinking } from '$lib/generators/nuclide-notation/linking'
 import { orbitalLinking } from '$lib/generators/orbital-diagram/linking'
 import { particleLinking } from '$lib/generators/particle-diagram/linking'
 import { phLinking } from '$lib/generators/ph-reading/linking'
+import { phaseLinking } from '$lib/generators/phase-diagram/linking'
 import { pesLinking } from '$lib/generators/photoelectron-spectrum/linking'
 import { energyLinking } from '$lib/generators/potential-energy-diagram/linking'
 import { temperatureLinking } from '$lib/generators/temperature-reading/linking'
@@ -40,6 +41,7 @@ const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
     phLinking,
     titrationLinking,
     curveLinking,
+    phaseLinking,
     energyLinking,
     particleLinking,
     bohrLinking,

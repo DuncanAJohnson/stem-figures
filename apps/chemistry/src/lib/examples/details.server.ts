@@ -33,6 +33,8 @@ import { answerLines as orbitalAnswer, orbitalSettings } from '$lib/generators/o
 import { boxContents, keyKinds, particleSettings } from '$lib/generators/particle-diagram/settings'
 import { answerLines as pesAnswer, pesSettings } from '$lib/generators/photoelectron-spectrum/settings'
 import { energyText, peaksOf } from '$lib/generators/photoelectron-spectrum/spectrum'
+import { answerLines as phaseAnswer } from '$lib/generators/phase-diagram/figure'
+import { phaseSettings } from '$lib/generators/phase-diagram/settings'
 import { answerLines as energyAnswer } from '$lib/generators/potential-energy-diagram/figure'
 import { energySettings } from '$lib/generators/potential-energy-diagram/settings'
 import { phSettings, answerLine as phAnswer } from '$lib/generators/ph-reading/settings'
@@ -208,6 +210,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'ph-reading': { definition: phSettings, answer: (s) => lines(phAnswer(s)) },
   'titration-curve': { definition: titrationSettings, answer: titrationAnswer },
   'heating-cooling-curve': { definition: curveSettings, answer: curveAnswer },
+  'phase-diagram': { definition: phaseSettings, answer: (s) => ({ heading: 'Answer key', lines: phaseAnswer(s) }) },
   'potential-energy-diagram': { definition: energySettings, answer: (s) => ({ heading: 'Answer key', lines: energyAnswer(s) }) },
   'particle-diagram': { definition: particleSettings, answer: particleAnswer },
   'bohr-model': { definition: bohrSettings, answer: bohrAnswer },
