@@ -441,3 +441,36 @@ _Avoid_: Loop-de-loop and loop-the-loop (fine as search words), circle (alone)
 The track from one point to the next with friction on it, hatched along its underside. Its length mark is horizontal, under the ground: on a level stretch its length, on a slope its distance along the ground. A rough stretch with no length label of its own is taken into the mark of the one before it.
 _Avoid_: Friction zone, rough patch
 
+### Torque
+
+**Torque**:
+A figure of a level beam held up by a Support, with up to six Loads at set distances along it, for torque and the principle of moments. Its generator is the Torque Generator, which works out the torques, the Support forces or the cable's tension beside the figure. The beam is always drawn level, balanced or not. A beam with one load and one effort, named by its lever class, is a Lever figure; a ladder against a wall is neither, for now.
+_Avoid_: Seesaw, balance and beam balance (fine as search words), moment diagram (moment is fine in About copy and search words; the page says torque)
+
+**Beam**:
+The bar the loads are on, drawn to scale along its length (up to 480 px), light or with its own weight drawn at its middle. Places along it are measured from its left end, which is the wall's end; mirrored, from its right end.
+_Avoid_: Rod, plank (fine in an example), lever
+
+**Support**:
+What holds a Torque figure's beam up: one Pivot, two supports A and B (triangles like the Pivot), or a hatched wall at the beam's end, with a Cable (a hinge dot where the beam meets the wall) or without one (the beam fixed into the wall, a cantilever).
+_Avoid_: Setup, mount, fulcrum
+
+**Pivot**:
+The one triangle a Torque figure's beam rests on, anywhere along it. Torques are taken about it. The Lever's word for the same triangle is fulcrum.
+_Avoid_: Fulcrum (on a Torque figure; fine as a search word), axis, hinge
+
+**Load**:
+One thing on a Torque figure's beam: an Object hanging from it on a string, an Object resting on it, or a force arrow down or up with no object. Its value is a weight in N or a mass in kg or g (all the same unit), and its label shows the value unless the teacher types over it.
+_Avoid_: Mass or weight (for the thing drawn), effort (that's a Lever's)
+
+**Distance mark**:
+A dimension line from the Pivot, support A or the wall to a load (and to B, or to where the Cable meets the beam), stacked in rows above the beam, the nearest load on the lowest row, with dashed lines down to what it measures. Rows that don't fit are left off, farthest first, and the form says so.
+_Avoid_: Lever arm, moment arm (fine as search words), dimension
+
+**Cable**:
+The line from a beam up to the wall it is hinged to, at 15° to 75° to the beam, with an angle mark at the beam. It is drawn at its true angle, so a steep cable shortens the beam drawn; too steep to fit, it meets the wall above the figure.
+_Avoid_: Rope, wire, string (a string holds a hanging object)
+
+**Support force**:
+A force holding the beam up, drawn as a solid arrow: up at the Pivot or at A and B, or at a wall its parts along the beam and up the wall, with the Cable's tension along the cable. Off by default, since they are often the answer.
+_Avoid_: Reaction (fine as a search word), normal force

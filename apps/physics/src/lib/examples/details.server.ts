@@ -24,6 +24,8 @@ import { pulleySettings } from '$lib/generators/pulley/settings'
 import { answerLines as rayAnswer, raySettings } from '$lib/generators/ray-diagram/settings'
 import { coasterSettings } from '$lib/generators/roller-coaster/settings'
 import { answerLines as springScaleAnswer, springScaleSettings } from '$lib/generators/spring-scale/settings'
+import { answerLines as torqueAnswer } from '$lib/generators/torque/moments'
+import { torqueSettings } from '$lib/generators/torque/settings'
 import { resultantOf } from '$lib/generators/vector-diagram/vd'
 import { vectorSettings } from '$lib/generators/vector-diagram/settings'
 import { answerLines as waveAnswer, waveSettings } from '$lib/generators/waves/settings'
@@ -124,6 +126,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'electric-and-magnetic-fields': { definition: physics(fieldSettings), answer: none },
   'lever': { definition: leverSettings, answer: (s) => ({ heading: 'Answer key', lines: leverAnswer(s) }) },
   'circular-motion': { definition: physics(circularSettings), answer: none },
+  'torque': { definition: physics(torqueSettings), answer: (s) => ({ heading: 'Answer key (directions as drawn)', lines: torqueAnswer(s) }) },
 }
 
 function detailsOf<G extends ExampleGeneratorId>(generator: G, example: Example): ExampleDetails {

@@ -245,4 +245,19 @@ export const PHYSICS: CatalogEntry[] = [
       'engineering', 'printable',
     ],
   },
+  {
+    id: 'torque',
+    site: 'physics',
+    name: 'Torque Generator',
+    path: '/torque',
+    blurb: 'A beam on a pivot, two supports or a wall, with weights at set distances.',
+    description:
+      'Make printable torque and moments diagrams for physics tests. Put up to six weights, masses or forces on a beam on a pivot, two supports or a wall with a cable, and the torques, support forces and tension are worked out.',
+    keywords: [
+      'torque', 'moment', 'moments', 'moment of a force', 'turning force', 'turning effect', 'principle of moments',
+      'equilibrium', 'rotational equilibrium', 'statics', 'balance', 'beam', 'beam balance', 'seesaw', 'see-saw', 'pivot',
+      'fulcrum', 'lever', 'lever arm', 'meter stick', 'metre rule', 'cantilever', 'hanging sign', 'cable', 'tension',
+      'support force', 'reaction', 'clockwise', 'anticlockwise', 'counterclockwise', 'center of gravity', 'printable',
+    ],
+  },
 ]

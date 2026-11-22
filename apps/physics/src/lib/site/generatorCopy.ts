@@ -723,6 +723,59 @@ export const COPY: Record<string, GeneratorCopy> = {
     imageAlt: 'Three printable lever diagrams side by side, a class 1, a class 2 and a class 3 lever, each a beam on a fulcrum with its load, effort and arms labeled, made with the Lever Generator',
     educationalLevel: ['Middle school', 'High school', 'AP Physics'],
   },
+  'torque': {
+    heading: 'Torque and moments diagrams, worked out',
+    intro: [
+      'The Torque Generator draws a level beam held up by a pivot, by two supports, or by a wall, with up to six loads on it: objects hanging from it or resting on it, and force arrows pushing down or pulling up. Every load is at a set distance along the beam, drawn to scale, with its distance marked from the pivot, from support A or from the wall. A Torque section beside the figure works out each torque, the clockwise and counterclockwise totals, the forces on two supports, or a cable’s tension and the wall’s force.',
+      'Teachers use it for the principle of moments, seesaws and beam balances, planks on two trestles, hanging signs and cantilevers, on tests, worksheets and slides. Every weight and distance shows its value until you type over it: type ? or a symbol such as m_1 or x, or pick a blank line, and that is the unknown students find. The Balance with this load button sets a load to the value that balances the beam, so a “find the missing weight” question takes a moment to write.',
+    ],
+    settings: [
+      'What holds the beam up: a pivot anywhere along it, two supports A and B, or a wall with a cable at 15° to 75° (a hanging sign) or with none (a cantilever)',
+      'The beam’s length in m or cm, drawn to scale, and its own weight or mass at its middle, or a light beam',
+      'Up to six loads: a block or ball hanging from the beam or resting on it, or a force arrow down or up, each at its own place along the beam',
+      'Values in N, or masses in kg or g with g = 9.8, 9.81 or 10 N/kg',
+      'A label for every load and distance: its value, your own text such as m_1, x or ?, a blank line for students, or left off',
+      'Distance marks from the pivot, support A or the wall, the beam’s whole length, weight arrows on objects, and the forces holding the beam up',
+      'The torques, support forces or tension worked out step by step, and a button that balances the beam with any load',
+      'Mirror, to put the wall on the right, and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'Is the figure drawn to scale?',
+        a: 'Along the beam, yes: a load 0.4 m from the pivot is drawn twice as far from it as one 0.2 m away, on whatever length of beam you set. Up and down, nothing is to scale: objects, strings and force arrows are drawn at fixed sizes, so a 6 N block is no bigger than a 3 N one and every force arrow is the same length. A beam held by a cable is drawn shorter when the cable is steep, so the cable reaches the wall at its true angle.',
+      },
+      {
+        q: 'Why doesn’t the beam tilt when it isn’t balanced?',
+        a: 'Exam figures draw the beam level whether it balances or not, since the question is usually whether it does, or what would make it. A tilted beam would give the answer away, and would change every distance. The Torque section says whether it balances, and if not, the net torque and which way it turns.',
+      },
+      {
+        q: 'How do I make one weight or distance the unknown?',
+        a: 'Each load has a label and a distance label. Left empty they show their values, such as 6 N and 0.2 m. Type ? or a symbol such as W, m_1 or d to replace one, or pick a blank line for students to write on. The load still counts at its real value in the working, so set it to the right answer first: with a pivot, Balance with this load sets it to the value that balances the beam.',
+      },
+      {
+        q: 'Should I use kg or N?',
+        a: 'Either. Values in N are weights, drawn as they are. Values in kg or g are masses, and the working turns each into a weight with g = 9.8, 9.81 or 10 N/kg, whichever your course uses, before taking moments. Every load and the beam’s own weight use the same unit.',
+      },
+      {
+        q: 'How are the forces on two supports worked out?',
+        a: 'By taking moments about support A: the force at B times the distance from A to B equals the sum of each weight times its distance from A. Then the forces up equal the forces down, which gives the force at A. If either comes out negative, the beam would tip over the other support, and the generator says so.',
+      },
+      {
+        q: 'How is a hanging sign’s cable tension worked out?',
+        a: 'By taking moments about the wall, where the beam is hinged: T sin θ times the cable’s distance from the wall equals the sum of each weight times its distance from the wall, so T = Σ(W d) ÷ (d sin θ). The wall’s force on the beam is then T cos θ along the beam and the rest of the weight up the wall. With no cable, the beam is a cantilever fixed into the wall, which holds up all of its weight and supplies the torque.',
+      },
+      {
+        q: 'Is a moment the same as a torque?',
+        a: 'Yes. Torque and moment (or moment of a force, or turning effect) are names for the same thing: a force times its perpendicular distance from the pivot, in N·m. British and IGCSE courses tend to say moment; American and AP courses say torque. The generator says torque, clockwise and counterclockwise (anticlockwise).',
+      },
+      {
+        q: 'Where are levers, effort and mechanical advantage?',
+        a: 'On the Lever Generator, which draws a class 1, 2 or 3 lever with its fulcrum, load and effort named, and works out the mechanical advantage. A balanced seesaw can be drawn on either; this one is for several loads, a heavy beam, two supports or a wall.',
+      },
+    ],
+    imageAlt: 'Three printable torque diagrams side by side: a balanced beam on a pivot with two hanging weights, a beam on two supports A and B with its weight at its middle, and a hanging sign on a beam held at a wall by a cable, each with its distances marked, made with the Torque Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Physics', 'IGCSE', 'A level'],
+  },
 }
 
 /** The copy for a generator; every generator on the site has some. */

@@ -17,6 +17,7 @@ import type { InclineObject } from '$lib/generators/inclined-plane/settings'
 import type { Segment } from '$lib/generators/motion-graphs/settings'
 import type { PulleyObject } from '$lib/generators/pulley/settings'
 import type { TrackPoint } from '$lib/generators/roller-coaster/settings'
+import type { Load as TorqueLoad } from '$lib/generators/torque/settings'
 import type { Vector } from '$lib/generators/vector-diagram/settings'
 import type { Label } from '$lib/shared/label'
 import { SITE_ID } from '$lib/site/config'
@@ -88,6 +89,27 @@ const load = (value: Label, more: Partial<Load> = {}): Load => ({ kind: 'resisto
 const none = (t: string): Label => ({ mode: 'none', text: t })
 
 /** A Roller Coaster point, its height marked as "40 m" unless `more` says otherwise. */
+/** A Torque load, every field written out, its labels showing its values unless given. */
+const onBeam = (kind: TorqueLoad['kind'], position: number, value: number, more: Partial<TorqueLoad> = {}): TorqueLoad => ({
+  kind,
+  position,
+  value,
+  label: text(''),
+  distanceLabel: text(''),
+  shape: 'block',
+  size: 1,
+  ...more,
+})
+
+const coasterPoint = (height: number, label: string, more: Partial<TrackPoint> = {}): TrackPoint => ({
+  height,
+  label: text(label),
+  heightLabel: text(`${height} m`),
+  rough: false,
+  lengthLabel: text('d'),
+  ...more,
+})
+
 export const EXAMPLES: Example[] = [
   ...examplesOf('free-body-diagram', [
     {
@@ -909,6 +931,48 @@ export const EXAMPLES: Example[] = [
         fulcrumName: blank('Fulcrum'),
         arms: false,
       },
+    },
+  ]),
+  ...examplesOf('torque', [
+    {
+      slug: 'balanced-seesaw-with-two-masses',
+      title: 'Balanced seesaw with two masses',
+      alt: 'A beam on a pivot at its middle with a 3 kg block hanging 0.2 m to the left of the pivot and a 2 kg block hanging 0.3 m to the right, with both distances marked from the pivot',
+      caption:
+        'The principle of moments on a seesaw: a 3 kg mass hangs 0.2 m to the left of the pivot and a 2 kg mass 0.3 m to the right. Both turn the beam equally, 3 kg × 0.2 m against 2 kg × 0.3 m, so it balances. The beam is drawn to scale, so the 0.3 m distance is drawn half as long again as the 0.2 m one.',
+      settings: { unit: 'kg', loads: [onBeam('hanging', 0.3, 3), onBeam('hanging', 0.8, 2)] },
+    },
+    {
+      slug: 'find-the-unknown-weight-on-a-balanced-beam',
+      title: 'Find the unknown weight on a balanced beam',
+      alt: 'A balanced beam on a pivot at its middle with three hanging blocks: 8 N 0.4 m to the left of the pivot, one with a blank line 0.2 m to the right, and 4 N 0.4 m to the right',
+      caption:
+        'A beam balanced on a pivot with three weights: 8 N 0.4 m to the left, and two to the right, one 0.2 m from the pivot with a blank line for its weight and 4 N at 0.4 m. Students take moments about the pivot: 8 × 0.4 = W × 0.2 + 4 × 0.4, so the missing weight is 8 N.',
+      settings: { loads: [onBeam('hanging', 0.1, 8), onBeam('hanging', 0.7, 8, { label: blank('') }), onBeam('hanging', 0.9, 4)] },
+    },
+    {
+      slug: 'uniform-plank-on-two-supports',
+      title: 'Uniform plank on two supports',
+      alt: 'A 4 m plank resting on supports A and B at its two ends, with a 600 N block on it 1 m from A, its own 200 N weight drawn down from its middle, and the forces F_A and F_B pointing up at the supports',
+      caption:
+        'A uniform 4 m plank weighing 200 N on two supports at its ends, with a 600 N load 1 m from support A. The forces at the supports, F_A and F_B, are drawn and left for students to find: taking moments about A gives F_B = 250 N, and then F_A = 800 − 250 = 550 N.',
+      settings: { support: 'two', length: 4, supportA: 0, supportB: 4, beamWeight: 200, supportForces: true, loads: [onBeam('resting', 1, 600)] },
+    },
+    {
+      slug: 'hanging-sign-on-a-beam-with-a-cable-at-30-degrees',
+      title: 'Hanging sign on a beam with a cable at 30°',
+      alt: 'A 2 m beam hinged to a wall at its left end, held up by a cable from its far end to the wall above at angle theta to the beam, with a 100 N sign hanging 1.5 m from the wall and the beam’s own 50 N weight at its middle',
+      caption:
+        'A hanging sign: a 2 m beam weighing 50 N is hinged to a wall and held by a cable from its far end at 30° to the beam, with a 100 N sign hanging 1.5 m from the wall. Taking moments about the hinge, T sin 30° × 2 m = 50 N × 1 m + 100 N × 1.5 m, so the tension is 200 N.',
+      settings: { support: 'wall', length: 2, cableAt: 2, cableAngle: 30, beamWeight: 50, loads: [onBeam('hanging', 1.5, 100)] },
+    },
+    {
+      slug: 'cantilever-with-two-loads',
+      title: 'Cantilever with two loads',
+      alt: 'A 1 m beam fixed into a wall at its left end with no other support, a 20 N block hanging 0.5 m from the wall and a 30 N block resting on its far end, and the wall’s force F pointing up',
+      caption:
+        'A cantilever: a light 1 m beam fixed into a wall, with a 20 N weight hanging halfway along and a 30 N block on its end. The wall holds it all up, 50 N, and supplies a torque of 20 × 0.5 + 30 × 1 = 40 N·m against the loads’ turning effect.',
+      settings: { support: 'wall', cable: false, supportForces: true, loads: [onBeam('hanging', 0.5, 20), onBeam('resting', 1, 30)] },
     },
   ]),
   ...examplesOf('circular-motion', [

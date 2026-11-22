@@ -13,7 +13,7 @@ relative lengths, with optional angle marks, components, and velocity or
 acceleration beside it. Left out on purpose, until teachers ask: tilted
 (along-the-slope) axes, plain x/y axes, a net force arrow, more than one body
 per figure, and placing a label by hand. Its force list is the settings `list`
-field, which Torque Balance can use for its hanging objects.
+field, which the Torque Generator uses for its loads.
 
 ## Projectile Motion (built)
 
@@ -49,12 +49,78 @@ superposition (two waves and their sum). Left for later: sound waves (loud
 and quiet, high and low pitch), the Doppler effect, the EM spectrum,
 diffraction and interference.
 
-## Torque Balance
+## Lever (built)
 
-A beam balanced on a pivot with objects hanging from it at different
-distances, for teaching torque. It can reuse the Pulley's hanging objects.
-Open questions: meter-stick markings, a beam with its own weight, more than
-one pivot, a spring scale holding the beam.
+A class 1, 2 or 3 lever: a weightless beam on a fulcrum, drawn to scale from
+its two arms, with one load (a block or a force arrow, in N, lb, kg or g),
+an effort arrow worked out so the lever balances, and the two arms marked
+from the fulcrum. Any of the four values can be the unknown, and the parts'
+names can be blank lines; the answer key gives the mechanical advantage and
+the effort. Left out on purpose, until teachers ask: wedges, screws and the
+wheel and axle (each would be its own generator), named real levers
+(wheelbarrow, crowbar, tweezers, forearm), a tilted lever, work in and out,
+efficiency, compound levers, distances between neighbours rather than from
+the fulcrum, and other values of g.
+
+## Circular Motion (built)
+
+An object going round a circle in one of three setups: the Top view (a
+dashed circle from above with the object at 1 to 8 positions, on its own, on
+a string, on a turntable, with a second object halfway out, or on a flat
+road), the Vertical circle (the top, side or bottom on a string or inside a
+loop, or the top of a hill or the bottom of a dip), and the Conical pendulum.
+Velocity and centripetal acceleration are dashed; an inward force (Top view),
+or gravity with the tension or normal force (side views), are solid, the
+Conical pendulum's to scale with its tension's components. Marks: radius or
+diameter, angular speed ω, an angle mark, and letters at the positions.
+Left out, in order: a banked curve as a fourth setup (seen from behind the
+car, with friction up or down the bank and the velocity into the page);
+values and an answer key (m, r, v giving a_c and F_c); then non-uniform
+motion, arc length, a top and side view together, a sagging horizontal
+string, a rotor or a car on a wall, any angle on the vertical circle, and
+more than two objects on a turntable. Circular orbits go to a future orbits
+and gravitation generator.
+
+## Roller Coaster (built)
+
+A track through 2 to 8 points, evenly spaced from left to right, each with a
+height from 0 to 100: a smooth curve that never overshoots, so a point higher
+than its neighbours is the top of a hill and a lower one the bottom of a dip.
+Each point can have a dot and label and a height mark; one loop, to scale with
+the heights; a cart, ball or block at a point or upside down at the top of the
+loop, with a dashed velocity arrow; rough stretches, hatched, with a friction
+label and horizontal length marks under the ground. Nothing is worked out
+from the heights. Left out, in order: energy bar charts (their own generator,
+which could start from a roller coaster point); speeds, energies and an answer
+key worked out from the heights (with a mass, a starting speed and a
+coefficient typed in); a spring launcher or a spring at the end, once the
+Spring Generator's coil exists; then more than one loop, uneven spacing
+between points, length marks on stretches that aren't rough or along a slope,
+the object drawn at every point, force arrows on it (the Free Body Diagram's),
+solid ground under the track, supports, a projectile path off the end, and
+dragging points on the figure. Radius marks on single hills and dips stay with
+Circular Motion.
+
+## Torque (built)
+
+A level beam on a pivot, on two supports A and B, or at a wall with a cable
+(a hanging sign) or fixed into it (a cantilever), with up to six loads:
+objects hanging from it or resting on it, and force arrows down or up, in N,
+kg or g (g = 9.8, 9.81 or 10 N/kg). Places are to scale along the beam; the
+beam can have its own weight at its middle. Distance marks stack in rows above
+the beam; support forces, tension and weight arrows can be drawn. The panel
+works out the torques, the forces at A and B (warning when one comes out
+negative), or the tension and the wall's force, and "Balance with this load"
+sets a load to the value that balances a pivot. It reuses the Lever's beam,
+fulcrum, forces and distance marks (`src/lib/shared/beam.ts` and
+`Beam.svelte`), with the wall hatching in `src/lib/shared/support.ts`. Of the
+old open questions, a beam with its own weight and two pivots are in; a spring
+scale holding the beam is a Force up arrow for now; meter-stick markings are
+left for later. Left out, in order: ladders against a wall, with and without
+friction (the first follow-up); forces at other angles, a second cable, a
+strut or a crane; meter-stick markings, distances between neighbouring loads,
+and a tilted beam; people on a seesaw, a wrench or a door; a drawn spring
+scale, a title and printed answer key, center-of-mass problems.
 
 ## Magnetic Field
 
