@@ -6,7 +6,7 @@
   import FigureFrame from '$lib/shared/FigureFrame.svelte'
   import { segmentTextWidth, sevenSegment } from '$lib/shared/sevenSegment'
   import { METAL_INFO, cellOf, solutionLabel, voltageText, type Side } from './cell'
-  import { answerLine, type CellSettings } from './settings'
+  import { answerLine, cellVoltage, type CellSettings } from './settings'
 
   let { settings, svg = $bindable() }: { settings: CellSettings; svg?: SVGSVGElement } = $props()
 
@@ -37,7 +37,8 @@
 
   // Digital display
   const DIGIT_H = 30
-  const reading = $derived(voltageText(cell.voltage))
+  const voltage = $derived(cellVoltage(settings))
+  const reading = $derived(voltageText(voltage))
   const digits = $derived(sevenSegment(reading, MID - segmentTextWidth(reading, DIGIT_H) / 2 + 3, 38, DIGIT_H))
 
   // Dial: 0 to 4 V across 120° of arc
@@ -45,7 +46,7 @@
   const angleOf = (v: number) => ((150 - (v / DIAL.max) * 120) * Math.PI) / 180
   const on = (v: number, r: number) => ({ x: DIAL.cx + r * Math.cos(angleOf(v)), y: DIAL.cy - r * Math.sin(angleOf(v)) })
   const ticks = Array.from({ length: DIAL.max * 5 + 1 }, (_, i) => i / 5)
-  const needle = $derived(on(Math.min(cell.voltage, DIAL.max), DIAL.r - 4))
+  const needle = $derived(on(Math.min(voltage, DIAL.max), DIAL.r - 4))
   const arc = (() => {
     const a = on(0, DIAL.r)
     const b = on(DIAL.max, DIAL.r)
