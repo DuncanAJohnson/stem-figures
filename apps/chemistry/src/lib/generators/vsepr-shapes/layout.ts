@@ -23,9 +23,21 @@ export const OUT_OF_PAGE = 0.42
 export type Point = [number, number]
 
 export type Piece =
-  | { kind: 'atom'; z: number; x: number; y: number; r: number; element: string; central: boolean }
-  | { kind: 'bond'; z: number; from: Point; to: Point; order: number; depth: 'plane' | 'wedge' | 'dash'; width: number }
-  | { kind: 'lobe'; z: number; x: number; y: number; rx: number; ry: number; angle: number; dots: Point[] }
+  | {
+      kind: 'atom'; z: number; x: number; y: number; r: number; element: string; central: boolean
+      /** how far toward the viewer, from -1 (straight back) to 1, for fading the far ones */
+      near: number
+    }
+  | { kind: 'bond'; z: number; from: Point; to: Point; order: number; depth: 'plane' | 'wedge' | 'dash'; width: number; balls?: [number, number, number][]
+      /** ball-and-stick: how big the stick is drawn at each end, so one going back narrows, and how near each end is (-1 to 1) */
+      ends?: { size: [number, number]; near: [number, number] }
+    }
+  | {
+      /** a balloon, pointed at the central atom: its tip on the atom, its
+       *  length and half-width as seen, and its round end's middle (x, y) with
+       *  half its length (rx) and its half-width (ry) for keeping labels off it */
+      kind: 'lobe'; z: number; tip: Point; length: number; x: number; y: number; rx: number; ry: number; angle: number; dots: Point[]
+    }
   | { kind: 'dots'; z: number; dots: Point[] }
 
 export interface Arc {
@@ -62,7 +74,7 @@ const LOOKS: Record<VseprSettings['style'], Look> = {
     bond: 96,
     schematic: false,
     radius: (el) => (el === 'H' ? 14 : ELEMENTS[el].period <= 2 ? 20 : 24),
-    perspective: 1 / 600,
+    perspective: 1 / 380,
   },
 }
 
@@ -104,6 +116,45 @@ function outerPairDirs(away: Vec, n: number): Vec[] {
   })
 }
 
+/** The page directions (as angles) to draw lone pairs in: each the way it
+ *  points as seen, then pushed round until it is at least 40° from every bond
+ *  and 60° from every other lone pair. One seen end on starts in the widest gap
+ *  between the bonds. */
+export function flatAngles(lone: Vec[], bonds: Vec[]): number[] {
+  const GAP = 40 * deg
+  const PAIR_GAP = 60 * deg
+  const fixed = bonds.filter((b) => Math.hypot(b[0], b[1]) > 0.15).map((b) => Math.atan2(b[1], b[0]))
+  const diff = (a: number, b: number) => Math.atan2(Math.sin(a - b), Math.cos(a - b))
+  const widestGap = () => {
+    const all = [...fixed].sort((a, b) => a - b)
+    if (all.length === 0) return -Math.PI / 2
+    let best = all[0] + Math.PI
+    let size = -1
+    all.forEach((a, i) => {
+      const next = i + 1 < all.length ? all[i + 1] : all[0] + 2 * Math.PI
+      if (next - a > size) [size, best] = [next - a, (a + next) / 2]
+    })
+    return best
+  }
+  const angles = lone.map((u, i) => (Math.hypot(u[0], u[1]) > 0.15 ? Math.atan2(u[1], u[0]) : widestGap() + i * PAIR_GAP))
+  for (let round = 0; round < 60; round++) {
+    angles.forEach((a, i) => {
+      let push = 0
+      for (const f of fixed) {
+        const d = diff(a, f)
+        if (Math.abs(d) < GAP) push += (d >= 0 ? 1 : -1) * (GAP - Math.abs(d))
+      }
+      angles.forEach((o, j) => {
+        if (j === i) return
+        const d = diff(a, o)
+        if (Math.abs(d) < PAIR_GAP) push += (d > 0 || (d === 0 && i > j) ? 1 : -1) * ((PAIR_GAP - Math.abs(d)) / 2)
+      })
+      angles[i] = a + push * 0.5
+    })
+  }
+  return angles
+}
+
 export function layoutFigure(s: VseprSettings, structure: Structure, shape: VseprShape): Layout {
   const look = LOOKS[s.style]
   const view = (v: Vec) => turn(v, s.yaw, s.pitch)
@@ -125,7 +176,7 @@ export function layoutFigure(s: VseprSettings, structure: Structure, shape: Vsep
   const pieces: Piece[] = []
   const centralEl = structure.atoms[shape.central].element
   const rc = look.radius(centralEl, true)
-  pieces.push({ kind: 'atom', z: 0, x: 0, y: 0, r: rc, element: centralEl, central: true })
+  pieces.push({ kind: 'atom', z: 0, x: 0, y: 0, r: rc, element: centralEl, central: true, near: 0 })
 
   /** Two dots (or one) side by side across a direction, centered on a point. */
   const pairAt = (at: Point, along: Point, electrons: number): Point[] => {
@@ -145,13 +196,18 @@ export function layoutFigure(s: VseprSettings, structure: Structure, shape: Vsep
     const r = look.radius(el, false) * sizeAt(centerZ)
     const c = scale(u, look.bond)
     const [x, y] = project(c)
-    pieces.push({ kind: 'atom', z: centerZ, x, y, r, element: el, central: false })
+    pieces.push({ kind: 'atom', z: centerZ, x, y, r, element: el, central: false, near: u[2] })
 
-    // From the central atom's surface to the outer atom's, as seen.
-    const from = project(scale(u, s.style === 'ball-and-stick' ? rc * 0.6 : 0))
-    const to = project(scale(u, look.bond - (s.style === 'ball-and-stick' ? r * 0.6 : 0)))
+    // Wedge-and-dash: from the central atom to the outer one, trimmed when
+    // drawn. Ball-and-stick: from center to center, with both balls' discs
+    // (x, y, r) masked off, so the stick joins each at its outline.
+    const ball = s.style === 'ball-and-stick'
+    const from = project([0, 0, 0])
+    const to: Point = [x, y]
     const depth = u[2] > OUT_OF_PAGE ? 'wedge' : u[2] < -OUT_OF_PAGE ? 'dash' : 'plane'
-    pieces.push({ kind: 'bond', z: centerZ / 2, from, to, order: g.order, depth, width: sizeAt(centerZ / 2) })
+    const balls: [number, number, number][] | undefined = ball ? [[0, 0, rc], [x, y, r]] : undefined
+    const ends = ball ? { size: [sizeAt(0), sizeAt(centerZ)] as [number, number], near: [0, u[2]] as [number, number] } : undefined
+    pieces.push({ kind: 'bond', z: centerZ / 2, from, to, order: g.order, depth, width: sizeAt(centerZ / 2), balls, ends })
 
     if (s.outerPairs) {
       const lone = structure.atoms[g.atom].lone
@@ -165,33 +221,32 @@ export function layoutFigure(s: VseprSettings, structure: Structure, shape: Vsep
     }
   }
 
-  if (s.lonePairs !== 'none')
-    for (const g of shape.lone) {
-      const u = view(g.dir)
-      const along: Point = [u[0], u[1]]
+  // The central atom's lone pairs are drawn flat on the page and on top of
+  // the atom, never behind it or end on, each pointing the way it does as
+  // seen, fanned out so it is clear of the bonds and the other pairs.
+  if (s.lonePairs !== 'none') {
+    const angles = flatAngles(
+      shape.lone.map((g) => view(g.dir)),
+      shape.atoms.map((g) => view(g.dir)),
+    )
+    shape.lone.forEach((g, i) => {
+      const dir: Point = [Math.cos(angles[i]), Math.sin(angles[i])]
+      const z = rc + 1
       if (s.lonePairs === 'dots') {
-        const p = scale(u, rc + 8)
-        pieces.push({ kind: 'dots', z: p[2] + (u[2] > 0 ? rc : 0), dots: pairAt(project(p), along, g.electrons) })
-        continue
+        const at: Point = [dir[0] * (rc + 8), dir[1] * (rc + 8)]
+        pieces.push({ kind: 'dots', z, dots: pairAt(at, dir, g.electrons) })
+        return
       }
-      // A balloon: an ellipsoid along the lone pair, seen from the front.
-      const long = look.bond * 0.36
+      // A balloon pointed at the central atom: its tip just inside the
+      // atom's outline, so it always touches it, swelling to a round end.
+      const length = look.bond * 0.78
       const wide = look.bond * 0.2
-      const mid = scale(u, rc * 0.9 + long)
-      const [x, y] = project(mid)
-      const m = Math.hypot(u[0], u[1])
-      const k = sizeAt(mid[2])
-      pieces.push({
-        kind: 'lobe',
-        z: mid[2] + (u[2] > 0 ? rc : 0),
-        x,
-        y,
-        rx: Math.max(wide, Math.hypot(long * m, wide * Math.sqrt(1 - Math.min(1, m * m)))) * k,
-        ry: wide * k,
-        angle: m < 0.05 ? 0 : Math.atan2(u[1], u[0]) / deg,
-        dots: pairAt([x, y], along, g.electrons),
-      })
-    }
+      const tip: Point = [dir[0] * rc * 0.8, dir[1] * rc * 0.8]
+      const at = (t: number): Point => [tip[0] + dir[0] * length * t, tip[1] + dir[1] * length * t]
+      const [x, y] = at(0.66)
+      pieces.push({ kind: 'lobe', z, tip, length, x, y, rx: length * 0.34, ry: wide, angle: angles[i] / deg, dots: pairAt([x, y], dir, g.electrons) })
+    })
+  }
 
   pieces.sort((a, b) => a.z - b.z)
 
@@ -310,10 +365,11 @@ export function layoutFigure(s: VseprSettings, structure: Structure, shape: Vsep
       const [x, y] = move([p.x, p.y])
       return { ...p, x, y }
     }
-    if (p.kind === 'bond') return { ...p, from: move(p.from), to: move(p.to) }
+    if (p.kind === 'bond')
+      return { ...p, from: move(p.from), to: move(p.to), balls: p.balls?.map(([x, y, r]): [number, number, number] => [...move([x, y]), r]) }
     if (p.kind === 'lobe') {
       const [x, y] = move([p.x, p.y])
-      return { ...p, x, y, dots: p.dots.map(move) }
+      return { ...p, x, y, tip: move(p.tip), dots: p.dots.map(move) }
     }
     return { ...p, dots: p.dots.map(move) }
   })

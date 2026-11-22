@@ -947,7 +947,7 @@ export const EXAMPLES: Example[] = [
       title: 'VSEPR shape of H₂O (water): bent, with its bond angle',
       alt: 'Water drawn wedge-and-dash: an oxygen with two lone pair lobes and two hydrogens below it, with the H–O–H angle marked 104.5°',
       caption:
-        'The VSEPR shape of water, H₂O: bent, with two lone pairs on the oxygen pointing toward and away from the viewer. The H–O–H angle is labeled 104.5°, less than the tetrahedral 109.5° because the lone pairs push the bonds closer.',
+        'The VSEPR shape of water, H₂O: bent, with two lone pairs on the oxygen drawn above it. The H–O–H angle is labeled 104.5°, less than the tetrahedral 109.5° because the lone pairs push the bonds closer.',
       settings: { formula: 'H2O', bondAngles: true, angles: '104.5°' },
     },
     {
