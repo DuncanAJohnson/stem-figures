@@ -376,3 +376,33 @@ _Avoid_: Centripetal force (fine as its default label and as a search word), net
 One of the places the object is drawn on the circle, all evenly spaced from the first, which can be lettered A, B, C… in the order the object reaches them. Past four, only the first position's vectors are labeled.
 _Avoid_: Point (fine in "top and bottom points"), instant, snapshot
 
+### Roller Coaster
+
+**Roller Coaster**:
+A picture of a track of hills and dips, and maybe one loop, with an object on it, labelled points and their heights, for conservation of energy. Its generator is the Roller Coaster Generator. Only the heights and the loop's radius are to scale; nothing (speed, energy) is worked out from them. A single hill or dip with its radius and forces is a Circular Motion figure.
+_Avoid_: Energy track (fine as a search word), graph (it's a picture, not a graph)
+
+**Track**:
+The smooth curve the object rides, through the points from left to right. It never goes higher than a hill's height or lower than a dip's, and two points at the same height make a level stretch.
+_Avoid_: Path, rail, curve (alone)
+
+**Point**:
+One row of the track: a place on it, evenly spaced from the others, with a height from 0 to 100. A point higher than both neighbours is the top of a hill, a lower one the bottom of a dip. It can have a dot and a label (A, PE_g, KE = 0) or none, when it only shapes the track.
+_Avoid_: Node, waypoint, knot
+
+**Hill** and **dip**:
+A point higher, or lower, than both its neighbours, where the track is level.
+_Avoid_: Bump (for a hill), valley (for a dip; fine as a search word)
+
+**Height mark**:
+A dimension line from the ground straight up to a point, with its label beside it (40 m, h, h/2) or a line to write on. Point heights are measured from the ground line.
+_Avoid_: Height arrow, altitude
+
+**Loop**:
+A full circle standing on one point, at its bottom, where the track is level. Its radius is in the units of the heights and drawn to scale with them, unless there's no room, when it's drawn smaller and the panel says so. One per figure.
+_Avoid_: Loop-de-loop and loop-the-loop (fine as search words), circle (alone)
+
+**Rough stretch**:
+The track from one point to the next with friction on it, hatched along its underside. Its length mark is horizontal, under the ground: on a level stretch its length, on a slope its distance along the ground. A rough stretch with no length label of its own is taken into the mark of the one before it.
+_Avoid_: Friction zone, rough patch
+

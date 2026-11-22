@@ -552,6 +552,49 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['Middle school', 'High school', 'AP Physics'],
   },
 
+  'roller-coaster': {
+    heading: 'Roller coaster figures for conservation of energy: hills, dips and a loop',
+    intro: [
+      'The Roller Coaster Generator draws a track from a short list of points, left to right, each with a height. A smooth curve runs through them: a point higher than its neighbours is the top of a hill, a lower one is the bottom of a dip, and two points at the same height make a level stretch. Each point can have a dot and a label on the track, and a mark from the ground up to it with its height.',
+      'Add a loop at any point, a cart, ball or block at a point or upside down at the top of the loop, a dashed velocity arrow, and friction on part of the track, hatched with its length marked under the ground. Teachers use it for potential and kinetic energy, conservation of mechanical energy, work done by friction, and the least speed at the top of a loop.',
+      'The heights and the loop’s radius are drawn to scale with each other. Nothing is worked out from them: no speeds and no energies, so the figure can go with any question, including a hill the cart can’t reach.',
+    ],
+    settings: [
+      'Two to eight points, each with a height from 0 to 100, evenly spaced from left to right',
+      'Each point’s label, like A, PE_g or KE = 0, a blank line, or none for a point that only shapes the track',
+      'Each point’s height mark, like 40 m, h or h/2, a blank line, or none',
+      'A loop at one point, its radius in the same units as the heights, a label for the radius and one for the top of the loop',
+      'A cart, ball or block with its label and size, at any point or at the top of the loop',
+      'Velocity forward or back along the track, drawn dashed',
+      'A rough stretch from any point to the next, hatched, with a friction label and a length mark like d or 12 m',
+      'The ground line on or off, Mirror, so the track runs right to left, and color for slides',
+    ],
+    faqs: [
+      {
+        q: 'Is the roller coaster drawn to scale?',
+        a: 'Up and down, yes: the heights and the loop’s radius share one scale, and the tallest fills the figure, so a 40 m hill is drawn twice as high as a 20 m one. Across, no: the points are evenly spaced, with extra room at the loop for its circle. If a loop is too big for the room between its neighbours it is drawn smaller, and a note under its radius says so.',
+      },
+      {
+        q: 'Does it work out the speed or the energy at each point?',
+        a: 'No. It draws the track, the heights and the labels, and leaves the numbers to you, so nothing on the figure gives an answer away. It doesn’t check that the cart can reach a point either, since a hill the cart can’t climb makes a good question.',
+      },
+      {
+        q: 'How do I make a hill, a dip, a level stretch or a cliff?',
+        a: 'Type the heights in order. A point higher than both its neighbours is the top of a hill, and a lower one is the bottom of a dip. Two points at the same height make a level stretch between them. A last point above the ground leaves the track ending in the air. The curve never goes higher than a hill’s height or lower than a dip’s.',
+      },
+      {
+        q: 'How do I show friction on part of the track?',
+        a: 'Turn on Rough at the point where the friction starts, and the track from there to the next point is hatched along its underside. Its length mark is drawn under the ground and is always horizontal: on a level stretch it is the stretch’s length, and on a sloping one it is the distance along the ground, not along the slope. Leave the next rough stretch’s length mark off and one mark spans both.',
+      },
+      {
+        q: 'Can it draw energy bar charts, a spring launcher or more than one loop?',
+        a: 'Not yet. A track has one loop, and the figure is the track only. If you need one of these, use Request a generator on the home page and tell us what it should draw.',
+      },
+    ],
+    imageAlt: 'A printable roller coaster figure with a cart at the top of the first hill, a dip, a second lower hill and four lettered points with their heights marked, made with the Roller Coaster Generator',
+    educationalLevel: ['Middle school', 'High school', 'AP Physics'],
+  },
+
   'electric-and-magnetic-fields': {
     heading: 'Electric and magnetic field lines, drawn from the real field',
     intro: [

@@ -22,6 +22,7 @@ import StartFromGraph from './motion-map/StartFromGraph.svelte'
 import ProjectileMotionPreview from './projectile-motion/Preview.svelte'
 import PulleyPreview from './pulley/Preview.svelte'
 import RayDiagramPreview from './ray-diagram/Preview.svelte'
+import RollerCoasterPreview from './roller-coaster/Preview.svelte'
 import SpringScalePreview from './spring-scale/Preview.svelte'
 import VectorDiagramPreview from './vector-diagram/Preview.svelte'
 import WavePreview from './waves/Preview.svelte'
@@ -40,6 +41,7 @@ export const PREVIEWS: Record<string, Component> = {
   'waves': WavePreview,
   'circuit-diagram': CircuitDiagramPreview,
   'ray-diagram': RayDiagramPreview,
+  'roller-coaster': RollerCoasterPreview,
   'electric-and-magnetic-fields': FieldsPreview,
   'circular-motion': CircularMotionPreview,
 }

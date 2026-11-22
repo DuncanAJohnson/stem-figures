@@ -16,6 +16,7 @@ import type { Force } from '$lib/generators/free-body-diagram/settings'
 import type { InclineObject } from '$lib/generators/inclined-plane/settings'
 import type { Segment } from '$lib/generators/motion-graphs/settings'
 import type { PulleyObject } from '$lib/generators/pulley/settings'
+import type { TrackPoint } from '$lib/generators/roller-coaster/settings'
 import type { Vector } from '$lib/generators/vector-diagram/settings'
 import type { Label } from '$lib/shared/label'
 import { SITE_ID } from '$lib/site/config'
@@ -86,6 +87,7 @@ const onRamp = (label: string, more: Partial<InclineObject> = {}): InclineObject
 const load = (value: Label, more: Partial<Load> = {}): Load => ({ kind: 'resistor', name: text(''), value, ...more })
 const none = (t: string): Label => ({ mode: 'none', text: t })
 
+/** A Roller Coaster point, its height marked as "40 m" unless `more` says otherwise. */
 export const EXAMPLES: Example[] = [
   ...examplesOf('free-body-diagram', [
     {
@@ -911,6 +913,74 @@ export const EXAMPLES: Example[] = [
   ]),
 
   // A hidden label's text isn't in a link, so it's written as the row's default: A for a point, 0 m for a height mark.
+  ...examplesOf('roller-coaster', [
+    {
+      slug: 'roller-coaster-hill-and-dip-with-heights',
+      title: 'Roller coaster with a hill and a dip, heights marked',
+      alt: 'A roller coaster track with a cart at the top of the first hill A, 40 m high, running down to a dip B at 10 m, up over a lower hill C at 25 m and down to D at 5 m, each height marked from the ground',
+      caption:
+        'A cart at the top of a 40 m hill, A, on a track that runs down to a dip at B, 10 m above the ground, over a lower hill at C, 25 m, and down to D, 5 m. The heights are drawn to scale with each other, ready for questions about potential and kinetic energy at each point.',
+      settings: {},
+    },
+    {
+      slug: 'roller-coaster-three-hills-getting-lower',
+      title: 'Roller coaster with three hills, each lower than the last',
+      alt: 'A roller coaster track with three hills, A at 45 m, C at 35 m and E at 25 m, with dips B and D at ground level between them and the track ending at F on the ground, a cart at the top of A',
+      caption:
+        'Three hills in a row, each lower than the one before: 45 m at A, 35 m at C and 25 m at E, with the track down to the ground at the dips B and D and at the end, F. A cart waits at the top of the first hill.',
+      settings: {
+        points: [coasterPoint(45, 'A'), coasterPoint(0, 'B'), coasterPoint(35, 'C'), coasterPoint(0, 'D'), coasterPoint(25, 'E'), coasterPoint(0, 'F')],
+      },
+    },
+    {
+      slug: 'roller-coaster-ramp-into-a-loop',
+      title: 'Roller coaster ramp into a loop-the-loop',
+      alt: 'A cart at the top of a ramp A of height h, running down to the bottom B of a vertical loop of radius R, with point C at the top of the loop, and the track running on level to D',
+      caption:
+        'A cart starts at the top of a ramp, A, at height h, runs down into a loop of radius R, from its bottom, B, round to its top, C, and out along level track to D. The loop is drawn to scale with the ramp, for finding the least height that gets the cart round the loop.',
+      settings: {
+        points: [coasterPoint(50, 'A', { heightLabel: text('h') }), coasterPoint(0, 'B'), coasterPoint(0, 'D')],
+        loopAt: 2,
+        loopRadius: 15,
+        loopTopLabel: text('C'),
+      },
+    },
+    {
+      slug: 'half-pipe-skate-ramp',
+      title: 'Half-pipe skate ramp',
+      alt: 'A U-shaped half-pipe with its two rims A and C at the same height h and its lowest point B on the ground, with a ball moving to the right at B with velocity v',
+      caption:
+        'A half-pipe, like a skate ramp: two rims, A and C, at the same height h, and the bottom, B, on the ground. The ball, at the bottom, moves to the right with velocity v.',
+      settings: {
+        points: [coasterPoint(20, 'A', { heightLabel: text('h') }), coasterPoint(0, 'B'), coasterPoint(20, 'C', { heightLabel: none('0 m') })],
+        object: 'ball',
+        objectAt: 2,
+        velocity: 'forward',
+      },
+    },
+    {
+      slug: 'ramp-down-to-a-rough-level-stretch',
+      title: 'Ramp down to a rough level stretch',
+      alt: 'A block at the top of a curved ramp A of height h, running down to the ground at B, then a hatched rough level stretch from B to C marked mu_k, with its length d marked below the ground',
+      caption:
+        'A block starts at the top of a smooth ramp, A, at height h, and slides down to B, where the track runs level along the ground. From B to C the track is rough, hatched and marked with its coefficient of kinetic friction μₖ, and the length of the rough stretch, d, is marked below it: for finding how far the block slides before it stops.',
+      settings: {
+        points: [coasterPoint(30, 'A', { heightLabel: text('h') }), coasterPoint(0, 'B', { rough: true }), coasterPoint(0, 'C')],
+        object: 'block',
+      },
+    },
+    {
+      slug: 'roller-coaster-track-ending-at-a-cliff',
+      title: 'Roller coaster track ending at a cliff',
+      alt: 'A cart moving right at the top of a 30 m hill A, on a track down to a dip B at 5 m, up to C at 15 m and along level to D, where the track ends 15 m above the ground',
+      caption:
+        'A cart moving at the top of a 30 m hill, A, on a track that dips to 5 m at B, rises to 15 m at C and runs level to D, where it ends in the air, 15 m above the ground, like the edge of a cliff.',
+      settings: {
+        points: [coasterPoint(30, 'A'), coasterPoint(5, 'B'), coasterPoint(15, 'C'), coasterPoint(15, 'D')],
+        velocity: 'forward',
+      },
+    },
+  ]),
 ]
 
 /** A generator's examples, in order; the first is its best. */

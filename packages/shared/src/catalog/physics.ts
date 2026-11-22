@@ -215,4 +215,19 @@ export const PHYSICS: CatalogEntry[] = [
       'car on a curve', 'tension', 'normal force', 'gravity', 'net force', 'top view', 'side view', 'period', 'printable',
     ],
   },
+  {
+    id: 'roller-coaster',
+    site: 'physics',
+    name: 'Roller Coaster Generator',
+    path: '/roller-coaster',
+    blurb: 'A track of hills, dips and a loop, with labelled points and heights.',
+    description:
+      'Make printable roller coaster figures for conservation of energy problems. Set the height of each hill and dip, label the points, add a loop, a cart, a rough stretch and height marks.',
+    keywords: [
+      'roller coaster', 'rollercoaster', 'energy track', 'track', 'hill', 'hills', 'dip', 'valley', 'loop', 'loop-the-loop',
+      'loop-de-loop', 'skate ramp', 'half-pipe', 'ramp', 'conservation of energy', 'mechanical energy', 'potential energy',
+      'kinetic energy', 'pe', 'ke', 'gravitational potential energy', 'height', 'cart', 'work and energy', 'friction',
+      'circular motion', 'printable',
+    ],
+  },
 ]

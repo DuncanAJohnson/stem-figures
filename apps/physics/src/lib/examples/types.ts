@@ -13,6 +13,7 @@ import type { MapSettings } from '$lib/generators/motion-map/settings'
 import type { ProjectileSettings } from '$lib/generators/projectile-motion/settings'
 import type { PulleySettings } from '$lib/generators/pulley/settings'
 import type { RaySettings } from '$lib/generators/ray-diagram/settings'
+import type { CoasterSettings } from '$lib/generators/roller-coaster/settings'
 import type { SpringScaleSettings } from '$lib/generators/spring-scale/settings'
 import type { VectorSettings } from '$lib/generators/vector-diagram/settings'
 import type { WaveSettings } from '$lib/generators/waves/settings'
@@ -31,6 +32,7 @@ export interface SettingsById {
   'waves': WaveSettings
   'circuit-diagram': CircuitSettings
   'ray-diagram': RaySettings
+  'roller-coaster': CoasterSettings
   'electric-and-magnetic-fields': FieldSettings
   'circular-motion': CircularSettings
 }
