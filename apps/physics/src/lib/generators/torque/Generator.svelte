@@ -119,21 +119,18 @@
           Pivot, from the {end} end ({unit})
           <input type="number" min="0" max={s.length} step="any" bind:value={gen.s.pivot} />
         </label>
-        <p class="note">A seesaw or a beam balance. Loads are measured from the {end} end, so they stay put when the pivot moves.</p>
       {:else if s.support === 'two'}
         <div class="field-row">
           <label class="field">
-            A ({unit})
+            A, from the {end} end ({unit})
             <input type="number" min="0" max={s.length} step="any" bind:value={gen.s.supportA} />
           </label>
           <label class="field">
-            B ({unit})
+            B, from the {end} end ({unit})
             <input type="number" min="0" max={s.length} step="any" bind:value={gen.s.supportB} />
           </label>
         </div>
-        <p class="note">From the {end} end. A plank on trestles or a bridge: the forces at A and B are worked out below.</p>
       {:else}
-        <p class="note">The beam’s {end} end is at the wall, and loads are measured from it.</p>
         <label class="check"><input type="checkbox" bind:checked={gen.s.cable} /> A cable from the wall (a hanging sign)</label>
         {#if s.cable}
           <label class="field">
@@ -152,11 +149,7 @@
             <p class="note warning" role="status">
               At {s.cableAngle}° the cable meets the wall above the figure. A smaller angle, or the cable nearer the wall, shows where it meets it.
             </p>
-          {:else if fig.beam.width < 479}
-            <p class="note">The beam is drawn shorter so the cable reaches the wall at its true angle.</p>
           {/if}
-        {:else}
-          <p class="note">With no cable the beam is fixed into the wall: a cantilever.</p>
         {/if}
       {/if}
     </Section>
@@ -172,13 +165,11 @@
           <Choice name="Length unit" options={[['m', 'm'], ['cm', 'cm']]} bind:value={() => s.lengthUnit, setUnit} />
         </div>
       </div>
-      <p class="note">Drawn to scale along its length. It is always drawn level, balanced or not.</p>
       <label class="field">
         Its own {s.unit === 'N' ? 'weight' : 'mass'} ({s.unit}), 0 for a light beam
         <input type="number" min="0" max="99999" step="any" bind:value={gen.s.beamWeight} />
       </label>
       {#if s.beamWeight > 0}
-        <p class="note">Drawn as a force down from the beam’s middle.</p>
         <div class="field">Label <LabelField name="Beam weight label" bind:label={gen.s.beamLabel} placeholder={valueText(s.beamWeight, s)} /></div>
       {/if}
     </Section>
@@ -196,7 +187,6 @@
           </div>
         {/if}
       </div>
-      <p class="note">Leave a label empty to show its value. Type ? or a symbol, or pick a blank line, for the one students are to find.</p>
       {#each gen.s.loads as load, i (load)}
         {@const l = s.loads[i]}
         <details class="row" open={unfolded.has(load)} ontoggle={(e) => toggle(e, load)}>
@@ -222,7 +212,6 @@
                 <input type="number" min="0" max="99999" step="any" bind:value={load.value} />
               </label>
             </div>
-            <p class="note">{whereText(s, i)}</p>
             {#if l.position > s.length}
               <p class="note warning" role="status">That’s past the end of the {exact(s.length)} {unit} beam, so it is drawn and worked out at the end.</p>
             {/if}
@@ -291,7 +280,6 @@
       <ol class="working">
         {#each working as line, k (k)}<li>{line}</li>{/each}
       </ol>
-      <p class="note">Directions are as the figure is drawn. Masses weigh their mass × g.</p>
     </Section>
 
     <FigureOptions bind:mirror={gen.s.mirror} bind:color={gen.s.color} />

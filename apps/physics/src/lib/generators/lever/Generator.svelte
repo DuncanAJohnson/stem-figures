@@ -21,9 +21,9 @@
   let svg = $state<SVGSVGElement>()
 
   const MIDDLE: Record<LeverClass, string> = {
-    '1': 'The fulcrum is between the load and the effort, as on a seesaw or a crowbar.',
-    '2': 'The load is between the fulcrum and the effort, as on a wheelbarrow. The effort is farther from the fulcrum than the load.',
-    '3': 'The effort is between the fulcrum and the load, as on tweezers or a fishing rod. The load is farther from the fulcrum than the effort.',
+    '1': 'Fulcrum in the middle, like a seesaw.',
+    '2': 'Load in the middle, like a wheelbarrow.',
+    '3': 'Effort in the middle, like tweezers.',
   }
 
   /** Changing to a class the arms don't suit swaps the two arms. */
@@ -81,7 +81,6 @@
         Measured in
         <Choice name="Length unit" options={[['cm', 'cm'], ['m', 'm'], ['in', 'in'], ['ft', 'ft']] as const} bind:value={s.lengthUnit} />
       </div>
-      <p class="note">Each arm is the distance from the fulcrum. The beam is drawn to scale.</p>
       {#if swapped}
         <p class="note warning" role="status">
           On a class {clean.class} lever the {clean.class === '2' ? 'effort' : 'load'} is farther from the fulcrum, so the two arms are drawn the other way
@@ -121,9 +120,7 @@
         Effort: <strong>{values.effort}</strong>{comesOutEven(sums.effort) ? '' : ', rounded to 3 significant figures'}. Mechanical advantage:
         <strong>{sig3(sums.advantage)}</strong>{comesOutEven(sums.advantage) ? '' : ' (rounded)'}.
       </p>
-      {#if sums.mass}
-        <p class="note">A load in {clean.loadUnit} is a mass, so it is drawn as a block.</p>
-      {:else}
+      {#if !sums.mass}
         <div class="field">
           Drawn as
           <Choice name="Load drawn as" options={[['block', 'Block'], ['arrow', 'Force arrow']] as const} bind:value={s.loadShown} />
@@ -132,15 +129,12 @@
     </Section>
 
     <Section title="Values" icon={Tag} summary={labelsSummary}>
-      <p class="note">Leave a label empty to show its value. Type ? or a symbol, or pick a blank line, for the one students are to find.</p>
       <div class="field">Load <LabelField name="Load label" bind:label={s.loadLabel} placeholder={values.load} /></div>
       <div class="field">Effort <LabelField name="Effort label" bind:label={s.effortLabel} placeholder={values.effort} /></div>
       <label class="check"><input type="checkbox" bind:checked={s.arms} /> Mark the two arms</label>
       {#if clean.arms}
         <div class="field">Effort arm <LabelField name="Effort arm label" bind:label={s.effortArmLabel} placeholder={values.effortArm} /></div>
         <div class="field">Load arm <LabelField name="Load arm label" bind:label={s.loadArmLabel} placeholder={values.loadArm} /></div>
-      {:else}
-        <p class="note">No distances are drawn, for “which class is this?” questions.</p>
       {/if}
     </Section>
 
