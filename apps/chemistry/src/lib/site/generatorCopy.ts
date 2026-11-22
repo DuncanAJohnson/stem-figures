@@ -500,6 +500,51 @@ export const COPY: Record<string, GeneratorCopy> = {
     educationalLevel: ['High school', 'AP Chemistry', 'IB Chemistry'],
   },
 
+  'bond-energy-curve': {
+    heading: 'Bond energy curves: potential energy against internuclear distance',
+    intro: [
+      'Bond Energy Curve draws the potential energy of two bonded atoms against the distance between their nuclei, from the two numbers students read back from it: the bond length and the bond energy. Type a bond’s name, its bond length in pm, Å or nm and its bond energy in kJ/mol, and the curve’s lowest point sits exactly at that length and that far below zero. Zero is the two atoms far apart: the curve rises toward it as they separate and climbs steeply past it when they are pushed together. Both axes are numbered in round steps, with light gridlines, so the values are read from the graph.',
+      'Teachers use it for AP Chemistry questions on bond length and bond energy. Put up to three bonds on one graph, solid, dashed and dotted, to compare a short strong bond with a long weak one or a single, a double and a triple bond, and hide the names so students match Bond A, B and C to a table. Add dashed guide lines from each minimum to both axes, labeled with the values, the words or blank lines, mark where the atoms repel and attract, or leave the numbers off for the shape alone. The answer key gives each bond’s length and energy.',
+    ],
+    settings: [
+      'Up to three bonds, each your own name, bond length and bond energy',
+      'Lengths in pm, Å or nm, and energies written kJ/mol or kJ mol⁻¹',
+      'Dashed guide lines from each minimum to both axes, labeled with the values, Bond length and Bond energy, blank lines or nothing, and a dot on each minimum',
+      'Repulsion and Attraction either side of one curve’s minimum, as words or blank lines',
+      'Names shown in a key, or hidden as Bond A, B and C',
+      'Numbered axes with a Fit button, or shape only, with just the 0 on the energy axis',
+      'Color or black and white curves, chart and axis titles (or blank lines), the axis ranges and numbering, gridlines, and label size',
+    ],
+    faqs: [
+      {
+        q: 'How do you read bond length and bond energy from the graph?',
+        a: 'Find the lowest point of the curve. The distance under it, on the horizontal axis, is the bond length. Its depth below zero, on the energy axis, is the bond energy: a minimum at −300 kJ/mol means it takes 300 kJ to break a mole of those bonds and take the atoms far apart, where the energy is 0. The guide lines draw exactly this.',
+      },
+      {
+        q: 'Why does the curve rise so steeply at short distances?',
+        a: 'Closer than the bond length, the two nuclei repel each other and so do the atoms’ inner electrons, and that repulsion grows much faster than the attraction, so the energy shoots up. Further apart than the bond length, the attraction between each nucleus and the other atom’s electrons wins, and the energy falls as the atoms come together. The bond length is where the two balance.',
+      },
+      {
+        q: 'Why are shorter bonds usually stronger?',
+        a: 'Between the same two atoms, a double bond shares more electrons than a single bond, and a triple bond more again. More shared electrons pull the nuclei closer and hold them harder, so the minimum moves left and down: shorter and deeper. Put a single, a double and a triple bond on one graph to show it.',
+      },
+      {
+        q: 'Is Bond X a real bond?',
+        a: 'No. Bond X, Bond Y and Bond Z are made up, with round numbers in the range of real bonds: 150 pm and 300 kJ/mol, 120 pm and 500 kJ/mol, 200 pm and 200 kJ/mol. For a real bond, type its name, bond length and bond energy from your own textbook’s table.',
+      },
+      {
+        q: 'Is the curve’s shape exact?',
+        a: 'Its minimum is: it is exactly at the bond length and the bond energy you type. The rest is a model. Every curve has the same shape, stretched to its own length and energy, while a real bond has a width of its own. So read the minimum, not the width of the well.',
+      },
+      {
+        q: 'Looking for potential energy against the reaction coordinate, with Eₐ and ΔH?',
+        a: 'That’s Potential Energy Diagram, for exothermic and endothermic reactions, catalysts and mechanisms. Bond Energy Curve is for one bond: potential energy against the distance between two nuclei.',
+      },
+    ],
+    imageAlt: 'A printable graph of potential energy against internuclear distance for a bond, with dashed guide lines from its minimum to 150 pm and −300 kJ/mol, made with Bond Energy Curve',
+    educationalLevel: ['High school', 'AP Chemistry'],
+  },
+
   'particle-diagram': {
     heading: 'Particle diagrams of atoms, ions and molecules',
     intro: [

@@ -143,6 +143,16 @@ export const CHEMISTRY: CatalogEntry[] = [
     keywords: ['potential', 'energy', 'diagram', 'reaction', 'profile', 'enthalpy', 'coordinate', 'progress', 'activation', 'Ea', 'ΔH', 'delta', 'transition', 'state', 'activated', 'complex', 'intermediate', 'catalyst', 'catalysed', 'catalyzed', 'enzyme', 'exothermic', 'endothermic', 'mechanism', 'multistep', 'step', 'rate', 'determining', 'level', 'kinetics', 'thermochemistry', 'AP', 'IB'],
   },
   {
+    id: 'bond-energy-curve',
+    site: 'chemistry',
+    name: 'Bond Energy Curve',
+    path: '/bond-energy-curve',
+    blurb: 'Potential energy against internuclear distance for a covalent bond, from its bond length and bond energy, up to three bonds on one graph.',
+    description:
+      'Make printable bond energy curves for chemistry tests. Type a bond’s name, bond length and bond energy and get the graph of potential energy against internuclear distance, its lowest point at the bond length and as far below zero as the bond energy, with numbered axes, up to three bonds on one graph, guide lines to the axes, and the names hidden for students to work out.',
+    keywords: ['bond', 'energy', 'length', 'curve', 'graph', 'diagram', 'potential', 'internuclear', 'distance', 'separation', 'covalent', 'well', 'minimum', 'attraction', 'repulsion', 'Morse', 'Lennard-Jones', 'Leonard', 'Jones', 'single', 'double', 'triple', 'order', 'compare', 'kJ/mol', 'pm', 'picometer', 'angstrom', 'AP'],
+  },
+  {
     id: 'particle-diagram',
     site: 'chemistry',
     name: 'Particle Diagram',

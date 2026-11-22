@@ -577,6 +577,52 @@ export const EXAMPLES: Example[] = [
     },
   ]),
 
+  ...examplesOf('bond-energy-curve', [
+    {
+      slug: 'bond-energy-curve-potential-energy-vs-internuclear-distance',
+      title: 'Bond energy curve: potential energy vs internuclear distance',
+      alt: 'Potential energy in kJ/mol against internuclear distance in pm for a made-up Bond X: a curve falling steeply to a minimum at 150 pm and −300 kJ/mol, then rising toward 0, with dashed guide lines from the minimum to both axes',
+      caption:
+        'The potential energy of two bonded atoms against the distance between their nuclei, for a made-up bond, Bond X. The curve drops steeply to its lowest point and rises toward 0, the energy of the atoms far apart. Dashed guide lines run from the minimum down to the distance axis at 150 pm, the bond length, and across to the energy axis at −300 kJ/mol, so the bond energy is 300 kJ/mol. Bond X is not a real bond: its numbers are round ones chosen for reading off the graph.',
+      settings: { guides: true },
+    },
+    {
+      slug: 'two-bond-energy-curves-compared',
+      title: 'Two bond energy curves on one graph: which bond is stronger?',
+      alt: 'Two potential energy curves against internuclear distance: Bond X, solid, with its minimum at 150 pm and −300 kJ/mol, and Bond Y, dashed, with a deeper minimum at 120 pm and −500 kJ/mol, named in a key',
+      caption:
+        'Two made-up bonds, Bond X and Bond Y, on the same axes, solid and dashed so they read apart in black and white, with a key. Bond Y’s minimum is further left and lower: it is the shorter bond, at 120 pm against 150 pm, and the stronger one, with a bond energy of 500 kJ/mol against 300 kJ/mol. Neither is a real bond; the numbers are made up for comparing.',
+      settings: { count: 2, yFrom: '-550', yTo: '150', yStep: '50' },
+    },
+    {
+      slug: 'single-double-triple-bond-energy-curves',
+      title: 'Single, double and triple bond energy curves',
+      alt: 'Three potential energy curves for a single, a double and a triple bond between the same two atoms, X–X, X=X and X≡X, each shorter and deeper than the one before',
+      caption:
+        'A single, a double and a triple bond between the same two atoms, X–X, X=X and X≡X, as bond order goes up: each curve’s minimum is further left and lower than the one before, at 150 pm and −300 kJ/mol, 130 pm and −550 kJ/mol, and 115 pm and −800 kJ/mol. The more electrons two atoms share, the shorter and the stronger the bond. X is a made-up element, and the lengths and energies are made up too.',
+      settings: {
+        count: 3, name1: 'X–X', name2: 'X=X', name3: 'X≡X', length2: 130, energy2: 550, length3: 115, energy3: 800,
+        yFrom: '-900', yTo: '200', yStep: '100', minor: 2,
+      },
+    },
+    {
+      slug: 'identify-the-bond-from-its-energy-curve',
+      title: 'Identify the bond from its energy curve: three hidden bonds',
+      alt: 'Three potential energy curves against internuclear distance, solid, dashed and dotted, named only Bond A, Bond B and Bond C in a key',
+      caption:
+        'Three bonds on one graph with their names hidden: the key calls them only Bond A, B and C. Students read each bond length and bond energy from its curve’s minimum and match the curves to three names in a table of bond lengths and bond energies. The three bonds here are made up; the answer key gives the names they stand for.',
+      settings: { count: 3, names: false, xTo: '600', xStep: '50', yFrom: '-550', yTo: '150', yStep: '50', minor: 2 },
+    },
+    {
+      slug: 'bond-energy-curve-repulsion-and-attraction',
+      title: 'Bond energy curve with repulsion and attraction labeled',
+      alt: 'The shape of a potential energy curve against internuclear distance with no numbers but 0 on the energy axis: Repulsion beside the steep wall left of the minimum and Attraction along the rise to its right',
+      caption:
+        'The shape of a bond energy curve with no numbers on its axes, only the 0 where the atoms are far apart. Right of the minimum the atoms attract each other, and the energy falls as they come together; left of it the repulsion between them wins, and the energy climbs steeply. The minimum between the two is the bond length. The curve is for a made-up bond.',
+      settings: { axes: 'shape', regions: 'words', xEndCap: 'triangle', yEndCap: 'triangle' },
+    },
+  ]),
+
   ...examplesOf('particle-diagram', [
     {
       slug: 'particle-diagram-mixture-of-two-elements',

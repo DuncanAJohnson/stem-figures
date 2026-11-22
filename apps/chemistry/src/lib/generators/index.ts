@@ -8,6 +8,7 @@ import type { Component } from 'svelte'
 import { generatorsOn, matches } from '$shared/catalog/index'
 import { SITE_ID } from '$lib/site/config'
 import BohrModelPreview from './bohr-model/Preview.svelte'
+import BondEnergyCurvePreview from './bond-energy-curve/Preview.svelte'
 import DotAndCrossPreview from './dot-and-cross/Preview.svelte'
 import ChromatographyPreview from './chromatography/Preview.svelte'
 import GasSyringePreview from './gas-syringe/Preview.svelte'
@@ -55,6 +56,7 @@ export const PREVIEWS: Record<string, Component> = {
   'heating-cooling-curve': HeatingCoolingCurvePreview,
   'phase-diagram': PhaseDiagramPreview,
   'potential-energy-diagram': PotentialEnergyDiagramPreview,
+  'bond-energy-curve': BondEnergyCurvePreview,
   'volume-by-displacement': VolumeByDisplacementPreview,
   'gas-syringe': GasSyringePreview,
   chromatography: ChromatographyPreview,

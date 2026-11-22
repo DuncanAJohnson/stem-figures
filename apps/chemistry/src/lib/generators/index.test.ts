@@ -89,6 +89,25 @@ describe('searching the directory', () => {
       expect(ids(query), query).toContain('length-reading')
   })
 
+  it('finds Bond Energy Curve the ways teachers ask for it', () => {
+    for (const query of ['bond energy', 'bond length', 'bond energy curve', 'bond graph', 'internuclear distance', 'potential energy internuclear', 'leonard jones potential', 'lennard-jones', 'morse', 'covalent bond graph'])
+      expect(ids(query), query).toContain('bond-energy-curve')
+  })
+
+  it('keeps bond words for Bond Energy Curve and reaction words for Potential Energy Diagram', () => {
+    for (const query of ['bond energy', 'bond length', 'internuclear distance']) {
+      expect(ids(query), query).toContain('bond-energy-curve')
+      expect(ids(query), query).not.toContain('potential-energy-diagram')
+    }
+    for (const query of ['activation energy', 'reaction coordinate', 'catalyst', 'enthalpy']) {
+      expect(ids(query), query).toContain('potential-energy-diagram')
+      expect(ids(query), query).not.toContain('bond-energy-curve')
+    }
+    // Teachers use these words for both; the cards tell them apart.
+    for (const query of ['potential energy', 'potential energy diagram'])
+      expect(ids(query), query).toEqual(expect.arrayContaining(['potential-energy-diagram', 'bond-energy-curve']))
+  })
+
   it('finds a generator by its path', () => {
     expect(findGenerator('/volume-by-displacement')?.name).toBe('Volume by Displacement')
   })

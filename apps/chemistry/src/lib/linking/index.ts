@@ -4,6 +4,7 @@
 import { CATALOG, type CatalogEntry } from '$shared/catalog/index'
 import { SITE_ID } from '$lib/site/config'
 import { bohrLinking } from '$lib/generators/bohr-model/linking'
+import { bondLinking } from '$lib/generators/bond-energy-curve/linking'
 import { chromatographyLinking } from '$lib/generators/chromatography/linking'
 import { dotCrossLinking } from '$lib/generators/dot-and-cross/linking'
 import { syringeLinking } from '$lib/generators/gas-syringe/linking'
@@ -43,6 +44,7 @@ const BY_ID: Record<string, GeneratorLinking> = Object.fromEntries(
     curveLinking,
     phaseLinking,
     energyLinking,
+    bondLinking,
     particleLinking,
     bohrLinking,
     nuclideLinking,

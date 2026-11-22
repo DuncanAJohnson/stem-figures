@@ -786,6 +786,48 @@ _Avoid_: Enthalpy diagram (fine in search keywords), energy level diagram (fine 
 The energy axis with no numbers or gridlines, fitted to the levels, for a diagram where the shape is the point (the enzyme setup). Numbered, with light gridlines, is the default.
 _Avoid_: Unnumbered, qualitative
 
+### Bond energy curves
+
+**Bond energy curve**:
+A graph of the potential energy of two bonded atoms (up the side, in kJ/mol or kJ mol⁻¹) against the internuclear distance (along the bottom): a curve that comes steeply down a wall, through a lowest point at the bond length and minus the bond energy, and rises toward the zero line. The generator is Bond Energy Curve. Only the bond length and bond energy are data: every curve has the same shape, stretched to its own two numbers (`morse.ts`), so the minimum is exact and the width is not. The grid and titles are `$shared/graph`'s, with the axes along the grid's edges as on a heating curve.
+_Avoid_: Potential energy diagram (the other figure, against the reaction coordinate), Morse curve, Lennard-Jones (both search words only), potential well diagram
+
+**Internuclear distance**:
+The x-axis: how far apart the two nuclei are, a real length, numbered. Kept in pm; the teacher can show it in Å or nm instead, which changes the axis and the labels, not the curve.
+_Avoid_: Separation, bond distance (fine in search keywords), reaction coordinate, equilibrium distance
+
+**Bond length**:
+The internuclear distance at a curve's lowest point, typed by the teacher, 10 to 1000 pm.
+_Avoid_: Equilibrium distance, r₀ (fine in code)
+
+**Bond energy**:
+How far below the zero line a curve's lowest point is, typed by the teacher as a positive number, 1 to 2000 kJ/mol. The minimum is at minus the bond energy.
+_Avoid_: Bond enthalpy, bond dissociation energy (both fine in help text), well depth (fine in code)
+
+**Bond**:
+One curve on the graph: one of up to three, each a name, a bond length and a bond energy the teacher types. The first screen's Bond X, Bond Y and Bond Z are made up, and the page says so. An empty name is "Bond 1".
+_Avoid_: Molecule, substance, curve (for what the teacher types)
+
+**Zero line**:
+The line across the grid at 0 on the energy axis, the energy of the two atoms far apart, drawn in the axes' ink. Every curve ends under it; the fitted axes always put it on a gridline.
+_Avoid_: Baseline, x-axis (the distance axis is along the grid's bottom edge, below the well)
+
+**Well**:
+The dip in a curve around its lowest point. A well under two blocks deep is too squashed to read, and the page says so.
+_Avoid_: Trough, valley
+
+**Hidden names**:
+The bonds' names left off the figure, so its key and its screen-reader description call them Bond A, B and C, for students to match to a table. The answer key names them ("Bond A is Bond X").
+_Avoid_: Anonymous, mystery bond
+
+**Guide line**:
+A dashed line from a curve's minimum across to the energy axis, or down to the distance axis. Off by default, so students find the minimum themselves. Each can be labeled by its foot with the value ("150 pm", "−300 kJ/mol"), with "Bond length" and "Bond energy", or with a blank line. Where two bonds' guide lines lie along each other, one is drawn, with one label. A length with no room beside its line is written on it, on a white patch; where the labels are crowded anyway, the page says so.
+_Avoid_: Drop line, reference line
+
+**Fitted axes**:
+What the Fit button gives, and what shape only always uses: the distance axis from 0 to about three times the longest bond length, the energy axis from just below the deepest well to about a quarter of its depth above 0, both in round steps, so the bond length and energy are read from the graph, not from a gridline made for them. Typing a length or energy never moves the axes; the page says when a minimum is off the grid.
+_Avoid_: Auto-scale, zoom
+
 ### Organic structures
 
 **Organic structure**:

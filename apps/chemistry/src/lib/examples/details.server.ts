@@ -9,6 +9,8 @@
 
 import { chargeOf, bohrSettings } from '$lib/generators/bohr-model/settings'
 import { element } from '$lib/generators/bohr-model/elements'
+import { answerLines as bondAnswer } from '$lib/generators/bond-energy-curve/figure'
+import { bondSettings } from '$lib/generators/bond-energy-curve/settings'
 import { buildFigure as buildDotCross } from '$lib/generators/dot-and-cross/figure'
 import { dotCrossSettings, readOnce as readDotCross } from '$lib/generators/dot-and-cross/settings'
 import { syringeSettings, answerLine as syringeAnswer } from '$lib/generators/gas-syringe/settings'
@@ -212,6 +214,7 @@ const GENERATORS: { [G in ExampleGeneratorId]: { definition: Definition<Settings
   'heating-cooling-curve': { definition: curveSettings, answer: curveAnswer },
   'phase-diagram': { definition: phaseSettings, answer: (s) => ({ heading: 'Answer key', lines: phaseAnswer(s) }) },
   'potential-energy-diagram': { definition: energySettings, answer: (s) => ({ heading: 'Answer key', lines: energyAnswer(s) }) },
+  'bond-energy-curve': { definition: bondSettings, answer: (s) => ({ heading: 'Answer key', lines: bondAnswer(s) }) },
   'particle-diagram': { definition: particleSettings, answer: particleAnswer },
   'bohr-model': { definition: bohrSettings, answer: bohrAnswer },
   'nuclide-notation': { definition: nuclideSettings, answer: (s) => ({ heading: 'Answer key', lines: nuclideAnswer(s) }) },
